@@ -10,13 +10,14 @@ import {
 } from "utils/dates.js";
 import { findFlightsForDate, findFlightsInMonth } from "api";
 import MonthSearchSwitch from "components/month-search-switch.jsx";
+import GolSearchSwitch from "components/gol-search-switch.jsx";
 import MonthsDropdown from "components/months-dropdown.jsx";
 import SearchTypeDropdown from "components/search-type-dropdown.jsx";
 import OriginDestinationInputs from "components/origin-destination-inputs.jsx";
 import { useSignal } from "@preact/signals";
 import { filtros } from "utils/flight.js";
 
-export default function MainForm({ params, monthSearchSignal, onSubmit }) {
+export default function MainForm({ params, monthSearchSignal, golSearchSignal, onSubmit }) {
   const searchTypeSignal = useSignal(
     params["search_type[id]"] ?? filtros.defaults.searchTypes.id,
   );
@@ -58,6 +59,8 @@ export default function MainForm({ params, monthSearchSignal, onSubmit }) {
               max={formatDate(maxDate)}
             />
           )}
+        <GolSearchSwitch signal={golSearchSignal}/>
+
       </fieldset>
       <button
         type="submit"

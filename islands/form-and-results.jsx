@@ -66,6 +66,7 @@ async function onSubmit(searchParams) {
         to: searchParams.destinationAirportCode,
         regionTo,
         month,
+        hideGolFlights: searchParams.hideGolFlights,
       });
       flights = monthFlights;
     } else {
@@ -75,6 +76,7 @@ async function onSubmit(searchParams) {
         to: searchParams.destinationAirportCode,
         regionTo,
         date: searchParams.departureDate,
+        hideGolFlights: searchParams.hideGolFlights,
       });
     }
     let filtered = monthSearch
@@ -104,14 +106,16 @@ export default function FormAndResults({ params }) {
   const flights = requestsSignal.value.filtered;
   const isLoading = requestsSignal.value.status === "loading";
   const monthSearchSignal = useSignal(!params.departureDate);
+  const golSearchSignal = useSignal(false); //set button to false by default
   return (
     <div class="p-4 gap-4 flex flex-col flex-grow-[1]">
       <ConsultasEnSimultaneo />
       <Regions />
       <MainForm
         params={params}
-        onSubmit={onSubmit}
         monthSearchSignal={monthSearchSignal}
+        golSearchSignal={golSearchSignal}
+        onSubmit={onSubmit}
       />
       {requestsSignal.value.data?.length > 0 && !isLoading && (
         <Filters

@@ -2,7 +2,7 @@ import { searchFlights } from "./smiles-api.js";
 import { formatDate, maxDate, minDate } from "./dates.js";
 import { sortByMilesAndTaxes } from "./flight.js";
 
-async function findFlightsForDate({ from, regionFrom, to, regionTo, date }) {
+async function findFlightsForDate({ from, regionFrom, to, regionTo, date, hideGolFlights }) {
   let flightPromises = [];
   let fromAirports = from ? [from] : regionFrom.airports;
   let toAirports = to ? [to] : regionTo.airports;
@@ -14,6 +14,7 @@ async function findFlightsForDate({ from, regionFrom, to, regionTo, date }) {
           originAirportCode: airportFrom,
           destinationAirportCode: airportTo,
           departureDate: date,
+          forceCongener: hideGolFlights,
         }),
       ];
     }
@@ -22,7 +23,7 @@ async function findFlightsForDate({ from, regionFrom, to, regionTo, date }) {
   return sortByMilesAndTaxes(allFlightsArray.flat().filter(Boolean));
 }
 
-function findFlightsInMonth({ from, regionFrom, to, regionTo, month }) {
+function findFlightsInMonth({ from, regionFrom, to, regionTo, month, hideGolFlights }) {
   let firstDay = new Date(month);
   firstDay.setHours(firstDay.getHours() + 3); // remove tz
   let currentDay = new Date(firstDay);
@@ -35,6 +36,7 @@ function findFlightsInMonth({ from, regionFrom, to, regionTo, month }) {
         to,
         regionTo,
         date: formatDate(currentDay),
+        hideGolFlights,
       });
       flightPromises = [...flightPromises, dayFlightsPromise];
     }
