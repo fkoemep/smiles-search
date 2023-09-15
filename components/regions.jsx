@@ -1,6 +1,7 @@
 import Collapsible from "components/collapsible.jsx";
 import { regionsSignal } from "utils/signals.js";
 import { AIRPORTS_SIZE, EMPTY_REGION, MAX_REGIONS } from "utils/constants.js";
+import {inputsStyle} from "../utils/styles.js";
 
 let airports = new Array(AIRPORTS_SIZE);
 airports.fill(undefined);
@@ -14,7 +15,7 @@ function Region({ name, selectedAirports }) {
         name="region_name"
         pattern="[a-zA-Z0-9_\-]{3,20}"
         placeholder="Region"
-        class="shadow-md px-2 h-10 rounded-sm"
+        class={`shadow-md px-2 h-10 rounded-sm ${inputsStyle}`}
         value={name}
       />
       {airports.map((_airport, idx) => (
@@ -26,7 +27,7 @@ function Region({ name, selectedAirports }) {
           maxLength={3}
           placeholder={`Aeropuerto ${idx + 1}`}
           onInput={(ev) => ev.target.value = ev.target.value.toUpperCase()}
-          class="shadow-md px-2 h-10 rounded-sm"
+          class={`shadow-md px-2 h-10 rounded-sm ${inputsStyle}`}
           value={selectedAirports?.[idx]}
         />
       ))}

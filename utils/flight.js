@@ -11,37 +11,68 @@ const tripTypes = {
 };
 
 function getLink(flight) {
-  const params = new URLSearchParams({
-    originAirportCode: flight.origin,
-    destinationAirportCode: flight.destination,
+
+  const params= flight.returnDate ? new URLSearchParams({
+      originAirportCode: flight.originForURL,
+      destinationAirportCode: flight.destinationForURL,
+      departureDate: flight.departureDate.getTime(),
+      adults: flight.passengers.adults,
+      infants: flight.passengers.infants,
+      children: flight.passengers.children,
+      cabinType: flight.cabin,
+      tripType : tripTypes.RETURN,
+      returnDate : flight.returnDate.getTime(),
+  }) :
+  new URLSearchParams({
+    originAirportCode: flight.originForURL,
+    destinationAirportCode: flight.destinationForURL,
     departureDate: flight.departureDate.getTime(),
-    adults: "1",
-    infants: "0",
-    children: "0",
+    adults: flight.passengers.adults,
+    infants: flight.passengers.infants,
+    children: flight.passengers.children,
     cabinType: flight.cabin,
     tripType: tripTypes.ONE_WAY,
   });
+
   return `https://www.smiles.com.ar/emission?${params.toString()}`;
 }
+
 
 function sortByMilesAndTaxes(flightList) {
   return flightList.sort(
     (a, b) => {
-      if (a.fare.miles === b.fare.miles) {
+
+      if (Boolean(a.returnDate) && Boolean(b.returnDate) && (a.totalFare.miles) === (b.totalFare.miles) && (a.totalFare.airlineTax) === (b.totalFare.airlineTax)) {
+        return a.departureDate - b.departureDate;
+      }
+      else if (Boolean(a.returnDate) && Boolean(b.returnDate) && (a.totalFare.miles) === (b.totalFare.miles)) {
+        return (a.totalFare.airlineTax) - (b.totalFare.airlineTax);
+      }
+      else if(Boolean(a.returnDate) && Boolean(b.returnDate)){
+        return (a.totalFare.miles) - (b.totalFare.miles)
+      }
+
+      else if (a.fare.miles === b.fare.miles) {
         return a.fare.airlineTax - b.fare.airlineTax;
+      }
+      else if (a.fare.miles === b.fare.miles && a.fare.airlineTax === b.fare.airlineTax) {
+        return a.departureDate - b.departureDate;
       }
       return a.fare.miles - b.fare.miles;
     },
   );
 }
 
+
+
 const cabinas = [
   { id: "all", name: "Todas" },
   { id: "ECONOMIC", name: "Económica" },
-  { id: "PREMIUM_ECONOMIC", name: "Económica Premium" },
+  { id: "PREMIUM_ECONOMIC", name: "Premium Economy" },
   { id: "COMFORT", name: "Confort (GOL)" },
   { id: "BUSINESS", name: "Ejecutiva" },
 ];
+
 
 const airlineCodes = [
   { id: "AA", name: "American Airlines" },
@@ -131,6 +162,12 @@ const searchTypes = [
   { id: "from-region-to-region", name: "De región a región" },
 ];
 
+const classTypes = [
+  { id: "all", name: "Todas" },
+  { id: "economic", name: "Económica" },
+  { id: "business", name: "Ejecutiva" },
+];
+
 const filtros = {
   cabinas,
   airlineCodes,
@@ -139,6 +176,7 @@ const filtros = {
   vuelosABrasil,
   smilesAndMoney,
   searchTypes,
+  classTypes,
   tarifas,
   defaults: {
     originAirportCode: "EZE",
@@ -148,46 +186,90 @@ const filtros = {
     viajeFacil: viajeFacil[0],
     tarifas: tarifas[0],
     searchTypes: searchTypes[0],
+    classTypes: classTypes[0],
   },
 };
 
-function filterFlights({ allFlights, monthSearch, filters }) {
+function filterFlights({ allFlights, daySearch, filters }) {
   const airlineCodes = Object.entries(filters).filter(([key, _value]) =>
     key.startsWith("airlines") && key.endsWith("[id]")
   ).map(([_key, value]) => value);
+
+  const layoverAirportCodes = Object.entries(filters).filter(([key, _value]) =>
+      key.startsWith("layoverAirports") && key.endsWith("[id]")
+  ).map(([_key, value]) => value);
+
+
   const filterFunction = (someFlight) => {
     let cabinFilter = true,
       airlinesFilter = true,
       stopsFilter = true,
       viajeFacilFilter = true,
       tarifaFilter = true,
-      hoursFilter = true;
+      hoursFilter = true,
+      layoverAirportsFilter = true;
+
+    let layoverMatch = false;
+    let layoverReturnMatch = false;
+
     if (
       filters["cabinType[id]"] &&
       filters["cabinType[id]"] !== filtros.defaults.cabina.id
     ) {
-      cabinFilter = someFlight.cabin === filters["cabinType[id]"];
+      cabinFilter = someFlight.cabin === filters["cabinType[id]"] && (!Boolean(someFlight.returnCabin) || someFlight.returnCabin === filters["cabinType[id]"]);
     }
     if (airlineCodes.length > 0) {
-      airlinesFilter = airlineCodes.includes(someFlight.airline.code);
+      airlinesFilter = airlineCodes.includes(someFlight.airline.code) || (Boolean(someFlight.returnAirline) && airlineCodes.includes(someFlight.returnAirline.code));
     }
+
+    if (layoverAirportCodes.length > 0 && someFlight.stops > 0) {
+      layoverMatch = someFlight.legList.some(function(leg) {
+
+
+        let departureMatches = leg.departure.airport.city !== someFlight.legList[0].departure.airport.city && layoverAirportCodes.includes(leg.departure.airport.code);
+
+        let arrivalMatches = leg.arrival.airport.city !== someFlight.legList.slice(-1)[0].arrival.airport.city && layoverAirportCodes.includes(leg.arrival.airport.code);
+
+        return departureMatches || arrivalMatches;
+
+      }, []);
+    }
+
+    if (Boolean(someFlight.returnDate) && layoverAirportCodes.length > 0 && someFlight.stopsReturnFlight > 0) {
+      layoverReturnMatch = someFlight.returnLegList.some(function(leg) {
+
+        let departureMatches = leg.departure.airport.city !== someFlight.legList.slice(-1)[0].arrival.airport.city && layoverAirportCodes.includes(leg.departure.airport.code);
+
+        let arrivalMatches = leg.arrival.airport.city !== someFlight.legList[0].departure.airport.city && layoverAirportCodes.includes(leg.arrival.airport.code);
+
+        return departureMatches || arrivalMatches;
+
+      }, []);
+    }
+
+    if(layoverAirportCodes.length > 0){
+      layoverAirportsFilter = (layoverMatch || layoverReturnMatch) && !(((!Boolean(someFlight.stopsReturnFlight) && someFlight.stops === 0) || (Boolean(someFlight.stopsReturnFlight) && someFlight.stopsReturnFlight === 0 && someFlight.stops === 0)));
+    }
+
+
+
     if (
       filters["stops[id]"] &&
       filters["stops[id]"] !== filtros.defaults.escalas.id
     ) {
-      stopsFilter = someFlight.stops <= Number(filters["stops[id]"]);
+      stopsFilter = someFlight.stops <= Number(filters["stops[id]"]) && (!Boolean(someFlight.stopsReturnFlight) || someFlight.stopsReturnFlight <= Number(filters["stops[id]"]));
     }
     if (filters["viaje-facil[id]"] === "1") {
-      viajeFacilFilter = someFlight.viajeFacil;
+      viajeFacilFilter = someFlight.viajeFacil && (!Boolean(someFlight.returnViajeFacil) || someFlight.returnViajeFacil);
     }
     if (
       filters["tarifa[id]"] &&
       filters["tarifa[id]"] !== filtros.defaults.tarifas.id
     ) {
-      tarifaFilter = someFlight.fare.type === filters["tarifa[id]"];
+      tarifaFilter = someFlight.fare.type === filters["tarifa[id]"] && (!Boolean(someFlight.returnFare) || someFlight.returnFare.type === filters["tarifa[id]"]);
     }
     if (filters["maxhours"]) {
-      hoursFilter = someFlight.durationInHours <= Number(filters["maxhours"]);
+      hoursFilter = someFlight.durationInHours <= Number(filters["maxhours"]) && (!Boolean(someFlight.returnDurationInHours) || someFlight.returnDurationInHours <= Number(filters["maxhours"]));
     }
     return [
       cabinFilter,
@@ -196,16 +278,12 @@ function filterFlights({ allFlights, monthSearch, filters }) {
       viajeFacilFilter,
       tarifaFilter,
       hoursFilter,
+      layoverAirportsFilter,
     ].every((filter) => filter);
   };
-  let filtered;
-  if (monthSearch) {
-    filtered = allFlights.map((dayFlights) =>
-      dayFlights?.filter(filterFunction)?.[0]
-    ).filter(Boolean);
-  } else {
-    filtered = allFlights.filter(filterFunction);
-  }
+
+  let filtered = !daySearch || (daySearch && allFlights.length > 0 && Array.isArray(allFlights[0])) ? allFlights.flat().filter(filterFunction) : allFlights.filter(filterFunction);
+
   filtered = sortByMilesAndTaxes(filtered);
   return filtered.slice(0, resultadosSignal.value);
 }
@@ -217,4 +295,5 @@ export {
   getLink,
   sortByMilesAndTaxes,
   tripTypes,
+  airlineCodes,
 };

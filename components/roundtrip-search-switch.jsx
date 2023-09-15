@@ -1,10 +1,11 @@
 import { Switch } from "@headlessui/react";
-import {notSelectedButtonStyle, selectedButtonStyle} from "../utils/styles.js";
+import { selectedButtonStyle, notSelectedButtonStyle } from "utils/styles.js";
 
-export default function GolSearch({ signal }) {
+
+export default function RountripSearch({ signal }) {
     return (
         <Switch.Group as="div" class="flex items-center gap-4">
-            <Switch.Label>Ocultar vuelos de Gol (útil en rutas internacionales donde vuela Gol)</Switch.Label>
+            <Switch.Label>Ida y Vuelta</Switch.Label>
             <Switch
                 checked={signal.value === true}
                 onChange={(newValue) => signal.value = newValue}
@@ -17,8 +18,6 @@ export default function GolSearch({ signal }) {
                 signal.value ? "translate-x-6" : "translate-x-1"
             }`}
         />
-        <input type="hidden" value={signal.value} name="hideGolFlights"/>
-
             </Switch>
         </Switch.Group>
     );

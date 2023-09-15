@@ -1,11 +1,13 @@
 import { AppProps } from "$fresh/server.ts";
 import Footer from "islands/footer.jsx";
+import { bodyStyle } from "utils/styles.js";
 
 const isDenoDeploy = Deno.env.get("DENO_DEPLOYMENT_ID") !== undefined;
 
 export default function App({ Component }: AppProps) {
-  return (
-    <html class="h-full">
+    return (
+
+    <html class="dark h-full">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -23,7 +25,8 @@ export default function App({ Component }: AppProps) {
           )
           : null}
       </head>
-      <body class="bg-gray-200 h-full flex flex-col">
+      {/*<body class="bg-gray-200 h-full flex flex-col"*/}
+      <body class={bodyStyle}>
         <Component />
         <Footer />
       </body>

@@ -4,8 +4,10 @@ import { resultadosSignal } from "utils/signals.js";
 import Dropdown from "components/dropdown.jsx";
 import Collapsible from "components/collapsible.jsx";
 import { apiPath } from "api";
+import {inputsStyle} from "../utils/styles.js";
 
-export default function Filtros({ onChange }) {
+export default function Filtros({ onChange, airlineCodeList, layoverAirports }) {
+
   return (
     <form
       onChange={(event) => {
@@ -18,12 +20,12 @@ export default function Filtros({ onChange }) {
         Resultados<input
           type="number"
           name="results"
-          max={30}
+          max={100}
           value={resultadosSignal.value}
           onChange={(ev) => {
             resultadosSignal.value = Number(ev.target.value);
           }}
-          class="h-10 ml-2 mb-2 rounded-sm px-2 w-16"
+          class={`h-10 ml-2 mb-2 rounded-sm px-2 w-16 ${inputsStyle}`}
         />
       </label>
       <Collapsible text="Filtros" class="sm:grid sm:grid-cols-2 lg:grid-cols-3">
@@ -41,7 +43,7 @@ export default function Filtros({ onChange }) {
           </Dropdown.Button>
 
           <Dropdown.Options>
-            {filtros.airlineCodes.map((airline) => (
+            {airlineCodeList.map((airline) => (
               <Dropdown.Option
                 key={airline.id}
                 value={airline}
@@ -61,6 +63,42 @@ export default function Filtros({ onChange }) {
             ))}
           </Dropdown.Options>
         </Dropdown>
+
+        <Dropdown
+            name="layoverAirports"
+            defaultValue={filtros.defaults.airlineCodes}
+            multiple
+        >
+          <Dropdown.Button>
+            {({ value }) => (
+                <div>
+                  Aeropuertos de conexión: {value.length > 0 ? ` (${value.length})` : "Todos"}
+                </div>
+            )}
+          </Dropdown.Button>
+
+          <Dropdown.Options>
+            {layoverAirports.map((airport) => (
+                <Dropdown.Option
+                    key={airport.id}
+                    value={airport}
+                >
+                  {({ selected }) => (
+                      <>
+                    <span
+                        class={`block truncate ${
+                            selected ? "font-medium" : "font-normal"
+                        }`}
+                    >
+                      {airport.name}
+                    </span>
+                      </>
+                  )}
+                </Dropdown.Option>
+            ))}
+          </Dropdown.Options>
+        </Dropdown>
+
         <Dropdown name="stops" defaultValue={filtros.defaults.escalas}>
           <Dropdown.Button>
             {({ value }) => `Escalas: ${value.name}`}
@@ -137,7 +175,7 @@ export default function Filtros({ onChange }) {
             name="maxhours"
             type="number"
             max={36}
-            class="shadow-md px-2 h-10 w-20 rounded-sm"
+            class={`shadow-md px-2 h-10 w-20 rounded-sm ${inputsStyle}`}
           />
         </div>
       </Collapsible>

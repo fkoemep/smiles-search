@@ -1,5 +1,6 @@
 import { Disclosure, Transition } from "@headlessui/react";
 import { ChevronDownIcon, ChevronUpIcon } from "icons";
+import { disclosureButtonStyle, chevronIcons, disclosurePanel } from "utils/styles.js";
 
 export default function Collapsible(
   { text, as, children, class: className, ...props },
@@ -8,11 +9,11 @@ export default function Collapsible(
     <Disclosure as={as} {...props}>
       {({ open }) => (
         <>
-          <Disclosure.Button class="flex w-full justify-between rounded-lg bg-blue-100 px-4 py-2 text-left text-sm font-medium text-black-900 hover:bg-blue-200 focus:outline-none focus-visible:ring focus-visible:ring-blue-500 focus-visible:ring-opacity-75">
+          <Disclosure.Button class={`flex w-full justify-between rounded-lg px-4 py-2 text-left text-sm font-medium focus:outline-none focus-visible:ring focus-visible:ring-opacity-75 ${disclosureButtonStyle}`}>
             <span>{text}</span>
             {open
-              ? <ChevronUpIcon class="h-5 w-5 text-black-500" />
-              : <ChevronDownIcon class="h-5 w-5 text-black-500" />}
+              ? <ChevronUpIcon class={`h-5 w-5 ${chevronIcons}`} />
+              : <ChevronDownIcon class={`h-5 w-5 ${chevronIcons}`} />}
           </Disclosure.Button>
           <Transition
             unmount={false}
@@ -25,7 +26,7 @@ export default function Collapsible(
           >
             <Disclosure.Panel
               unmount={false}
-              class={`p-4 gap-4 bg-blue-100 mt-2 whitespace-nowrap flex flex-col ${className}`}
+              class={`p-4 gap-4 mt-2 whitespace-nowrap flex flex-col ${className} ${disclosurePanel}`}
             >
               {children}
             </Disclosure.Panel>

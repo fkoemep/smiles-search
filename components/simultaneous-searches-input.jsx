@@ -1,5 +1,6 @@
 import { concurrencySignal } from "utils/signals.js";
 import { InformationCircleIcon } from "icons";
+import {inputsStyle} from "../utils/styles.js";
 
 export default function ConsultasEnSimultaneo({ class: className = "" }) {
   return (
@@ -19,7 +20,7 @@ export default function ConsultasEnSimultaneo({ class: className = "" }) {
           }
           concurrencySignal.value = newValue;
         }}
-        class="w-20 shadow-md px-2 rounded-sm h-10 invalid:border invalid:border-red-400"
+        class={`w-20 shadow-md px-2 rounded-sm h-10 invalid:border invalid:border-red-400 ${inputsStyle}`}
         max="40"
         min="1"
       />

@@ -15,9 +15,8 @@ function formatFlightDateLong(flightDate) {
     month: "short",
     hour: "numeric",
     minute: "numeric",
-    hour12: true,
-    timeZoneName: "short",
-  }).format(flightDate);
+    hour12: false,
+   }).format(flightDate);
 }
 
 function formatMonth(date) {
@@ -28,6 +27,9 @@ function formatMonth(date) {
 
 let months = [];
 const today = new Date();
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+
 for (let i = 0; i <= 12; i++) {
   const date = new Date(today);
   date.setMonth(date.getMonth() + i);
@@ -53,4 +55,5 @@ export {
   minDate,
   months,
   today,
+  tomorrow,
 };

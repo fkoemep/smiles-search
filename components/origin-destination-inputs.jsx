@@ -1,5 +1,6 @@
 import { filtros } from "utils/flight.js";
 import RegionsDropdown from "./regions-dropdown.jsx";
+import {inputsStyle} from "../utils/styles.js";
 
 export default function OriginDestinationInputs({ defaults, searchType }) {
   return (
@@ -19,7 +20,7 @@ export default function OriginDestinationInputs({ defaults, searchType }) {
             required
             type="text"
             pattern="[a-zA-Z]{3}"
-            class="shadow-md px-2 h-10 w-32 rounded-sm"
+            class={`shadow-md px-2 h-10 w-32 rounded-sm ${inputsStyle}`}
             placeholder="Desde"
             maxLength={3}
             onInput={(ev) => ev.target.value = ev.target.value.toUpperCase()}
@@ -42,7 +43,7 @@ export default function OriginDestinationInputs({ defaults, searchType }) {
             required
             type="text"
             pattern="[a-zA-Z]{3}"
-            class="shadow-md px-2 h-10 w-32 rounded-sm"
+            class={`shadow-md px-2 h-10 w-32 rounded-sm ${inputsStyle}`}
             placeholder="Hacia"
             maxLength={3}
             onInput={(ev) => ev.target.value = ev.target.value.toUpperCase()}

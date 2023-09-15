@@ -2,6 +2,7 @@ import { useRef } from "preact/hooks";
 import { Fragment } from "preact";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "icons";
+import {checkStyle, spanBgStyle} from "../utils/styles.js";
 
 function Dropdown(props) {
   const ref = useRef();
@@ -24,7 +25,7 @@ function Dropdown(props) {
 Dropdown.Button = function DropdownButton({ children, ...props }) {
   return (
     <Listbox.Button
-      class="relative w-full cursor-default rounded-sm bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300"
+      class={`relative w-full cursor-default rounded-sm py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 ${spanBgStyle}`}
       {...props}
     >
       {(childrenProps) => (
@@ -51,7 +52,7 @@ Dropdown.Options = function DropdownOptions(props) {
       leaveTo="opacity-0"
     >
       <Listbox.Options
-        class="absolute z-10 w-full mt-1 max-h-60 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+        class={`absolute z-10 w-full mt-1 max-h-60 overflow-auto rounded-md py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm ${spanBgStyle}`}
         {...props}
       />
     </Transition>
@@ -71,7 +72,7 @@ Dropdown.Option = function DropdownOption(
           {typeof children === "function" ? children(childrenProps) : children}
           {childrenProps.selected
             ? (
-              <span class="text-blue-600">
+              <span class={`${checkStyle}`}>
                 <CheckIcon class="h-5 w-5" aria-hidden="true" />
               </span>
             )
