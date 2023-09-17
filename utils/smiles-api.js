@@ -113,7 +113,12 @@ async function searchFlights(paramsObject) {
 
   const controller = new AbortController();
   abortControllersSignal.value = [...abortControllersSignal.value, controller];
+
+  let dolarOficial = paramsObject.dolarOficial;
+  delete paramsObject.dolarOficial;
+
   const params = new URLSearchParams({ ...defaultParams, ...paramsObject });
+
   const response = await fetch(
     "https://api-air-flightsearch-prd.smiles.com.br/v1/airlines/search?" +
       params.toString(),
@@ -161,7 +166,7 @@ async function searchFlights(paramsObject) {
 
             let airlineTax;
 
-            if(!(typeof paramsObject.dolarOficial === 'number')){
+            if(!(typeof dolarOficial === 'number')){
               airlineTax = Boolean(fare.g3) ? fare.g3.costTax * (passenger.children + passenger.adults) : (await _getTax({ flight: someFlight, fare: fare, passengers: passenger, paramsObject: paramsObjectCopy })).money;
             }
             else{
@@ -169,7 +174,7 @@ async function searchFlights(paramsObject) {
                 airlineTax = fare.g3.costTax;
               }
               else{
-                airlineTax = fare.legListCurrency === 'USD' ? fare.airlineTax * paramsObject.dolarOficial : fare.airlineTax;
+                airlineTax = fare.legListCurrency === 'USD' ? fare.airlineTax * dolarOficial : fare.airlineTax;
               }
               airlineTax = airlineTax * (passenger.children + passenger.adults);
             }
@@ -226,16 +231,16 @@ async function searchFlights(paramsObject) {
         let firstSegmentFareTax;
         let secondSegmentFareTax;
 
-        if(!(typeof paramsObject.dolarOficial === 'number')){
+        if(!(typeof dolarOficial === 'number')){
           firstSegmentFareTax = Boolean(firstSegmentFare.g3) ? firstSegmentFare.g3.costTax * (passenger.children + passenger.adults) : (await _getTax(
               { flight: firstSegmentFlight, fare: firstSegmentFare, flight2: secondSegmentFlight, fare2: secondSegmentFare, passengers: passenger, paramsObject: paramsObjectCopy }
           )).money;
           secondSegmentFareTax = Boolean(secondSegmentFare.g3) ? secondSegmentFare.g3.costTax * (passenger.children + passenger.adults) : 0;
         }
         else{
-          firstSegmentFareTax = firstSegmentFare.legListCurrency === 'USD' ? firstSegmentFare.airlineTax * paramsObject.dolarOficial : firstSegmentFare.airlineTax;
+          firstSegmentFareTax = firstSegmentFare.legListCurrency === 'USD' ? firstSegmentFare.airlineTax * dolarOficial : firstSegmentFare.airlineTax;
 
-          secondSegmentFareTax = secondSegmentFare.legListCurrency === 'USD' ? secondSegmentFare.airlineTax * paramsObject.dolarOficial : secondSegmentFare.airlineTax;
+          secondSegmentFareTax = secondSegmentFare.legListCurrency === 'USD' ? secondSegmentFare.airlineTax * dolarOficial : secondSegmentFare.airlineTax;
 
           firstSegmentFareTax = firstSegmentFareTax * (passenger.children + passenger.adults);
           secondSegmentFareTax = firstSegmentFareTax * (passenger.children + passenger.adults);

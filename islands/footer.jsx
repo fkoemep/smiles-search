@@ -1,6 +1,7 @@
 import { asset } from "$fresh/runtime.ts";
 import { effect, signal } from "@preact/signals";
 import ConfettiExplosion from "react-confetti-explosion";
+import { Switch } from "@headlessui/react";
 
 const showConfetti = signal("not initiated");
 
@@ -56,6 +57,7 @@ export default function Footer() {
             </>
           )}
         </div>
+        <Switch.Group as="div" class="flex items-center gap-2">
         <a
           href="https://github.com/mciparelli/smiles-search"
           target="_blank"
@@ -63,6 +65,14 @@ export default function Footer() {
         >
           <img width={36} src="/github-mark.svg" />
         </a>
+        <a
+            href="https://github.com/fkoemep/smiles-search"
+            target="_blank"
+            className="flex-shrink-0"
+        >
+          <img width={36} src="/github-mark.svg" />
+        </a>
+        </Switch.Group>
       </footer>
     </>
   );
