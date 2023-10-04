@@ -6,7 +6,7 @@ import Collapsible from "components/collapsible.jsx";
 import { apiPath } from "api";
 import {inputsStyle} from "../utils/styles.js";
 
-export default function Filtros({ onChange, airlineCodeList, layoverAirports }) {
+export default function Filtros({ onChange, airlineCodeList, layoverAirports, cabins }) {
 
   return (
     <form
@@ -132,13 +132,18 @@ export default function Filtros({ onChange, airlineCodeList, layoverAirports }) 
         </Dropdown>
         <Dropdown
           name="cabinType"
-          defaultValue={filtros.defaults.cabina}
+          defaultValue={filtros.defaults.cabinas}
+          multiple
         >
           <Dropdown.Button>
-            {({ value }) => `Cabina: ${value.name}`}
+            {({ value }) => (
+                <div>
+                  Cabina: {value.length > 0 ? ` (${value.length})` : "Todas"}
+                </div>
+            )}
           </Dropdown.Button>
           <Dropdown.Options>
-            {filtros.cabinas.map((option) => (
+            {cabins.map((option) => (
               <Dropdown.Option key={option.id} value={option}>
                 {option.name}
               </Dropdown.Option>

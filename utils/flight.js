@@ -180,7 +180,7 @@ const filtros = {
   tarifas,
   defaults: {
     originAirportCode: "EZE",
-    cabina: cabinas[0],
+    cabinas: [],
     airlineCodes: [],
     escalas: escalas[0],
     viajeFacil: viajeFacil[0],
@@ -200,6 +200,10 @@ function filterFlights({ allFlights, daySearch, filters }) {
   ).map(([_key, value]) => value);
 
 
+  const cabins = Object.entries(filters).filter(([key, _value]) =>
+      key.startsWith("cabinType") && key.endsWith("[id]")
+  ).map(([_key, value]) => value);
+
   const filterFunction = (someFlight) => {
     let cabinFilter = true,
       airlinesFilter = true,
@@ -212,11 +216,8 @@ function filterFlights({ allFlights, daySearch, filters }) {
     let layoverMatch = false;
     let layoverReturnMatch = false;
 
-    if (
-      filters["cabinType[id]"] &&
-      filters["cabinType[id]"] !== filtros.defaults.cabina.id
-    ) {
-      cabinFilter = someFlight.cabin === filters["cabinType[id]"] && (!Boolean(someFlight.returnCabin) || someFlight.returnCabin === filters["cabinType[id]"]);
+    if (cabins.length > 0) {
+      cabinFilter = cabins.includes(someFlight.cabin) && (!Boolean(someFlight.returnCabin) || cabins.includes(someFlight.returnCabin));
     }
     if (airlineCodes.length > 0) {
       airlinesFilter = airlineCodes.includes(someFlight.airline.code) || (Boolean(someFlight.returnAirline) && airlineCodes.includes(someFlight.returnAirline.code));
@@ -296,4 +297,5 @@ export {
   sortByMilesAndTaxes,
   tripTypes,
   airlineCodes,
+  cabinas,
 };

@@ -1,6 +1,6 @@
 import {useSignal} from "@preact/signals";
 import {formatFlightDateLong, formatFlightDateShort} from "utils/dates.js";
-import {airlineCodes, filterFlights, filtros, getLink, sortByMilesAndTaxes, tripTypes,} from "utils/flight.js";
+import {airlineCodes, filterFlights, filtros, getLink, sortByMilesAndTaxes, tripTypes, cabinas} from "utils/flight.js";
 import {abortControllersSignal, regionsSignal, requestsSignal, resultadosSignal,} from "utils/signals.js";
 import {findFlightsForDate, findFlightsInMonth, findFlightsInMonthRountrip} from "api";
 import MainForm from "./main-form.jsx";
@@ -166,6 +166,7 @@ export default function FormAndResults({ params }) {
   const oldFilter = requestsSignal.value.oldFilter;
   let airlineCodeList = Boolean(requestsSignal.value.airlineCodeList) ? requestsSignal.value.airlineCodeList : [];
   let layoverAirports = Boolean(requestsSignal.value.layoverAirports) ? requestsSignal.value.layoverAirports : [];
+  let cabins = Boolean(requestsSignal.value.cabins) ? requestsSignal.value.cabins : [];
 
   return (
     <div class="p-4 gap-4 flex flex-col flex-grow-[1]">
@@ -183,7 +184,8 @@ export default function FormAndResults({ params }) {
       />
 
       {requestsSignal.value.data?.length > 0 && (
-        <Filters airlineCodeList = {airlineCodeList} layoverAirports = {layoverAirports}
+
+        <Filters airlineCodeList = {airlineCodeList} layoverAirports = {layoverAirports} cabins={cabins}
           onChange={(newFilters) => {
 
             const airlineCodes = Object.entries(newFilters).filter(([key, _value]) =>
@@ -194,6 +196,7 @@ export default function FormAndResults({ params }) {
                 key.startsWith("airlines") && key.endsWith("[id]")
             ).map(([_key, value]) => value) : [];
 
+            let noChange = JSON.stringify(airlineCodes) === JSON.stringify(oldAirlineCodes);
 
             const layoverAirportCodes = Object.entries(newFilters).filter(([key, _value]) =>
                 key.startsWith("layoverAirports") && key.endsWith("[id]")
@@ -206,7 +209,8 @@ export default function FormAndResults({ params }) {
             requestsSignal.value = {
               ...requestsSignal.value,
               airlineCodeList: airlineCodeList,
-              layoverAirports: JSON.stringify(airlineCodes) === JSON.stringify(oldAirlineCodes) ? layoverAirports : [],
+              layoverAirports: noChange ? layoverAirports : [],
+              cabins: noChange ? cabins : [],
               oldFilter: newFilters,
               filtered: filterFlights({
                 allFlights: requestsSignal.value.data,
@@ -288,6 +292,15 @@ export default function FormAndResults({ params }) {
                   if(Boolean(flight.returnAirline) && !airlineCodeList.filter(airline => airline.id === flight.returnAirline.code).length > 0){
                     airlineCodeList.push({id: flight.returnAirline.code, name: airlineCodes.find((element) => element.id === flight.returnAirline.code).name});
                   }
+
+                  if(!cabins.filter(cabin => cabin.id === flight.cabin).length > 0){
+                    cabins.push({id: flight.cabin, name: cabinas.find((element) => element.id === flight.cabin).name});
+                  }
+
+                  if(Boolean(flight.returnAirline) && !cabins.filter(cabins => cabins.id === flight.returnCabin).length > 0){
+                    cabins.push({id: flight.returnCabin, name: cabinas.find((element) => element.id === flight.returnCabin).name});
+                  }
+
 
                   if(flight.stops > 0){
 
