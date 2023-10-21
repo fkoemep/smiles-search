@@ -4,7 +4,7 @@ import {notSelectedButtonStyle, selectedButtonStyle} from "../utils/styles.js";
 export default function GolSearch({ signal }) {
     return (
         <Switch.Group as="div" class="flex items-center gap-4">
-            <Switch.Label>Ocultar vuelos de Gol (útil en rutas internacionales donde vuela Gol)</Switch.Label>
+            <Switch.Label>Mostrar vuelos de otras aerolíneas aparte de Gol</Switch.Label>
             <Switch
                 checked={signal.value === true}
                 onChange={(newValue) => signal.value = newValue}
