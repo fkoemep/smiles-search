@@ -8,7 +8,7 @@ export default function GolSearch({ signal }) {
             <Switch
                 checked={signal.value === true}
                 onChange={(newValue) => signal.value = newValue}
-                class={`${
+                class={`${ 
                     signal.value ? selectedButtonStyle : notSelectedButtonStyle
                 } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2`}
             >
