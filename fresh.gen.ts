@@ -2,27 +2,28 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
-import * as $0 from "./routes/_404.tsx";
-import * as $1 from "./routes/_app.tsx";
-import * as $2 from "./routes/index.tsx";
-import * as $$0 from "./islands/filters.jsx";
-import * as $$1 from "./islands/footer.jsx";
-import * as $$2 from "./islands/form-and-results.jsx";
-import * as $$3 from "./islands/main-form.jsx";
+import * as $_404 from "./routes/_404.tsx";
+import * as $_app from "./routes/_app.tsx";
+import * as $index from "./routes/index.tsx";
+import * as $filters from "./islands/filters.jsx";
+import * as $footer from "./islands/footer.jsx";
+import * as $form_and_results from "./islands/form-and-results.jsx";
+import * as $main_form from "./islands/main-form.jsx";
+import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
   routes: {
-    "./routes/_404.tsx": $0,
-    "./routes/_app.tsx": $1,
-    "./routes/index.tsx": $2,
+    "./routes/_404.tsx": $_404,
+    "./routes/_app.tsx": $_app,
+    "./routes/index.tsx": $index,
   },
   islands: {
-    "./islands/filters.jsx": $$0,
-    "./islands/footer.jsx": $$1,
-    "./islands/form-and-results.jsx": $$2,
-    "./islands/main-form.jsx": $$3,
+    "./islands/filters.jsx": $filters,
+    "./islands/footer.jsx": $footer,
+    "./islands/form-and-results.jsx": $form_and_results,
+    "./islands/main-form.jsx": $main_form,
   },
   baseUrl: import.meta.url,
-};
+} satisfies Manifest;
 
 export default manifest;

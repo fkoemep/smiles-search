@@ -342,7 +342,7 @@ export default function FormAndResults({ params }) {
                   return (
 
                     <tr
-                      class="text-slate-500 whitespace-nowrap"
+                      class="whitespace-nowrap"
                       key={flight.uid}
                     >
 
