@@ -1,16 +1,17 @@
-# Fresh project
+# Better Smiles Search
 
-Your new Fresh project is ready to go. You can follow the Fresh "Getting
-Started" guide here: https://fresh.deno.dev/docs/getting-started
+An improved version of mciparelli's Smiles searcher.
 
-### Usage
 
-Make sure to install Deno: https://deno.land/manual/getting_started/installation
+This version includes the following improvements:
+- Ability to hide Gol flights on international routes departing from/arriving to Brazil
+- Adaptive dark mode
+- Roundtrip and flexible date flights search
+- Dynamic and dependant filters: cabin, airlines, and layover airports
+- Ability to decide whether to fetch accurate taxes or not (if not, the search will be faster)
+- Optimized performance 
+- Updated libraries
+- General UI improvements and bug fixes
 
-Then start the project:
 
-```
-deno task start
-```
-
-This will watch the project directory and restart as necessary.
+https://better-smiles-search.deno.dev
