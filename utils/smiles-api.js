@@ -94,7 +94,7 @@ async function _getTax({ flight, fare, flight2, fare2, passengers, paramsObject 
   };
 
   const response = await fetch(
-    "https://api-airlines-boarding-tax-prd.smiles.com.br/v1/airlines/flight/boardingtax?" +
+    "https://api-airlines-boarding-tax-blue.smiles.com.br/v1/airlines/flight/boardingtax?" +
       params.toString(),
     {
       headers,
@@ -120,7 +120,7 @@ async function searchFlights(paramsObject) {
   const params = new URLSearchParams({ ...defaultParams, ...paramsObject });
 
   const response = await fetch(
-    "https://api-air-flightsearch-prd.smiles.com.br/v1/airlines/search?" +
+    "https://api-air-flightsearch-blue.smiles.com.br/v1/airlines/search?" +
       params.toString(),
     {
       signal: controller.signal,
