@@ -34,7 +34,6 @@
     "@headlessui/react": "https://esm.sh/@headlessui/react@1.7.17?alias=react:preact/compat,react-dom:preact/compat,@types/react:preact/compat&external=preact",
     "icons": "https://esm.sh/@heroicons/react@2.0.18/24/solid?alias=react:preact/compat",
     "react-confetti-explosion": "https://esm.sh/react-confetti-explosion@2.1.2?alias=react:preact/compat,react-dom:preact/compat,@types/react:preact/compat&external=preact",
-    "fetch-retry": "https://esm.sh/fetch-retry",
     "bottleneck": "https://esm.sh/bottleneck",
     "swr": "https://esm.sh/swr?alias=react:preact/compat&external=preact",
     "components/": "./components/",

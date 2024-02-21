@@ -6,7 +6,7 @@ import defaultRegionsObject from "juani/data/regions.js";
 const requestsSignal = signal({});
 const abortControllersSignal = signal([]);
 const resultadosSignal = persistedSignal(10, "smiles:resultados");
-const concurrencySignal = persistedSignal(20, "smiles:concurrency");
+const concurrencySignal = persistedSignal(13, "smiles:concurrency");
 
 const defaultRegions = Object.entries(defaultRegionsObject).map((
   [name, airports],

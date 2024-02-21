@@ -1,57 +1,56 @@
-import FetchRetry from "fetch-retry";
 import Bottleneck from "bottleneck";
-import { effect } from "@preact/signals";
-import { fares, tripTypes } from "./flight.js";
+// import { effect } from "@preact/signals";
+import { fares } from "./flight.js";
 import {
   abortControllersSignal,
-  concurrencySignal,
+  // concurrencySignal,
   requestsSignal,
 } from "./signals.js";
 
-const limiter = new Bottleneck({
-  maxConcurrent: concurrencySignal.value,
+const refreshIntervalSeconds = 72;//62
+const maxConcurrency = 12;//11
+
+let lastJobTime;
+
+//limit to 5 requests every 10 s
+let limiter = new Bottleneck({
+  reservoir: maxConcurrency, // initial value
+  reservoirRefreshAmount: maxConcurrency,
+  reservoirRefreshInterval: refreshIntervalSeconds * 1000, // must be divisible by 250
+
+  // also use maxConcurrent and/or minTime for safety
+  maxConcurrent: maxConcurrency, //concurrencySignal.value,
+  minTime: 10,
+  // strategy: Bottleneck.strategy.BLOCK,
 });
 
-effect(() => {
-  limiter.updateSettings({
-    maxConcurrent: concurrencySignal.value,
-  });
+const fetchFunction = (url, headers) => {
+  lastJobTime = Date.now();
+
+  return fetch(url, headers).then(response => {
+    if (response === undefined){
+      throw new Error('result === undefined');
+    }
+
+    return response;
+  }
+  );
+};
+const wrappedSearch = limiter.wrap(fetchFunction);
+
+limiter.on("failed", async (error, jobInfo) => {
+  const id = jobInfo.options.id;
+  console.warn(`Job ${id} failed: ${error}`);
+
+  //3 total attempts, counting the original request
+  if (jobInfo.retryCount <= 1) {
+    console.log(`Retrying job ${id} in 30s! Attempt number: ${jobInfo.retryCount}`);
+    return refreshIntervalSeconds * 1000;
+  }
 });
 
-const fetch = limiter.wrap(FetchRetry(globalThis.fetch, {
-  retryDelay: function (attempt, _error, _response) {
-    return Math.pow(2, attempt) * 1000;
-  },
-  retryOn: async function (attempt, error, response) {
-    if (attempt > 3) {
-      return false;
-    }
-    const status = response?.status;
-    if (status === 452) {
-      const { error: errorMessage, code: code} = await response.json();
-
-      if (Boolean(errorMessage) && !errorMessage.startsWith("TypeError")) {
-        throw new Error(errorMessage);
-      }
-
-      if (Boolean (code) && code === '113') {
-        return false;
-      }
-
-      console.log(`retrying, attempt number ${attempt + 1}`);
-      return true;
-    }
-    // retry on any network error, or 5xx status codes
-    if (error !== null || status >= 500) {
-      if (error?.name === "AbortError"){
-        return false;
-      }
-      console.log(`retrying, attempt number ${attempt + 1}`);
-      console.log({ error, status });
-      return true;
-    }
-  },
-}));
+// Listen to the "retry" event
+limiter.on("retry", (error, jobInfo) => console.log(`Now retrying ${jobInfo.options.id}, Attempt number: ${jobInfo.retryCount}`));
 
 const defaultParams = {
   currencyCode: "ARS",
@@ -60,12 +59,13 @@ const defaultParams = {
 };
 
 const headers = {
-  authorization:
-    "Bearer Ghlpz2Fv1P5k9zGSUz2Z3l5jdVmy0aNECen0CV5v1sevBwTX9cA9kc",
+  'authorization': "Bearer 5Qh8c6RGZ95iaRxoXNUq6nTL8d3en9xo4vwbRyPByrc1x2kVA847rp",
   "x-api-key": "aJqPU7xNHl9qN3NVZnPaJ208aPo2Bh2p2ZV844tw",
-  "Content-Type": "application/json",
-  Accept: "application/json",
-  region: "ARGENTINA",
+  // "Content-Type": "application/json",
+  // 'Accept': "application/json",
+  'Region': "ARGENTINA",
+  'Origin': "https://www.smiles.com.ar",
+  'Referer': "https://www.smiles.com.ar/",
 };
 
 async function _getTax({ flight, fare, flight2, fare2, passengers, paramsObject }) {
@@ -93,13 +93,14 @@ async function _getTax({ flight, fare, flight2, fare2, passengers, paramsObject 
         `tasas para el vuelo: ${paramsObject.originAirportCode}-${paramsObject.destinationAirportCode} ${paramsObject.departureDate.toLocaleDateString('es-AR')}${paramsObject.returnDateString}`,
   };
 
-  const response = await fetch(
+  const response = await wrappedSearch(
     "https://api-airlines-boarding-tax-blue.smiles.com.br/v1/airlines/flight/boardingtax?" +
       params.toString(),
     {
       headers,
     },
   );
+
   if (!response.ok) {
     return { money: 0 };
   }
@@ -119,14 +120,16 @@ async function searchFlights(paramsObject) {
 
   const params = new URLSearchParams({ ...defaultParams, ...paramsObject });
 
-  const response = await fetch(
-    "https://api-air-flightsearch-blue.smiles.com.br/v1/airlines/search?" +
+
+  const response = await wrappedSearch(
+      "https://api-air-flightsearch-blue.smiles.com.br/v1/airlines/search?" +
       params.toString(),
-    {
-      signal: controller.signal,
-      headers,
-    },
-  );
+      {
+        signal: controller.signal,
+        headers,
+      },
+      );
+
   const { passenger: passenger, requestedFlightSegmentList: requestedFlightSegmentList } = await response.json();
 
   if (requestedFlightSegmentList.length === 0) {
@@ -156,25 +159,25 @@ async function searchFlights(paramsObject) {
   const FARE_TYPE = fares.club;
 
 
-  const transformedFlights= requestedFlightSegmentList.length === 1 ?
+  return requestedFlightSegmentList.length === 1 ?
 
       await Promise.all(
           requestedFlightSegmentList[0]['flightList'].map(async (someFlight) => {
-            const fare = someFlight.fareList.find((someFare) =>
+            const fare = someFlight['fareList'].find((someFare) =>
                 someFare.type === FARE_TYPE
             );
 
             let airlineTax;
 
             if(!(typeof dolarOficial === 'number')){
-              airlineTax = Boolean(fare.g3) ? fare.g3.costTax * (passenger.children + passenger.adults) : (await _getTax({ flight: someFlight, fare: fare, passengers: passenger, paramsObject: paramsObjectCopy })).money;
+              airlineTax = Boolean(fare['g3']) ? fare['g3']['costTax'] * (passenger.children + passenger.adults) : (await _getTax({ flight: someFlight, fare: fare, passengers: passenger, paramsObject: paramsObjectCopy })).money;
             }
             else{
-              if(Boolean(fare.g3)){
-                airlineTax = fare.g3.costTax;
+              if(Boolean(fare['g3'])){
+                airlineTax = fare['g3']['costTax'];
               }
               else{
-                airlineTax = fare.legListCurrency === 'USD' ? fare.airlineTax * dolarOficial : fare.airlineTax;
+                airlineTax = fare['legListCurrency'] === 'USD' ? fare.airlineTax * dolarOficial : fare.airlineTax;
               }
               airlineTax = airlineTax * (passenger.children + passenger.adults);
             }
@@ -187,18 +190,18 @@ async function searchFlights(paramsObject) {
 
             return {
               uid: someFlight.uid,
-              origin: someFlight.departure.airport.code,
-              destination: someFlight.arrival.airport.code,
+              origin: someFlight['departure']['airport']['code'],
+              destination: someFlight['arrival']['airport']['code'],
               originForURL: paramsObject.originAirportCode,
               destinationForURL: paramsObject.destinationAirportCode,
-              viajeFacil: someFlight.codeContext === "FFY",
+              viajeFacil: someFlight['codeContext'] === "FFY",
               fare: {
                 airlineTax: airlineTax * (passenger.children + passenger.adults),
                 miles: fare.miles * (passenger.children + passenger.adults),
                 money: fare.money * (passenger.children + passenger.adults),
-                type: someFlight.sourceFare,
+                type: someFlight['sourceFare'],
               },
-              departureDate: new Date(someFlight.departure.date),
+              departureDate: new Date(someFlight['departure']['date']),
               stops: someFlight.stops,
               durationInHours: someFlight.duration.hours,
               airline: someFlight.airline,
@@ -214,17 +217,17 @@ async function searchFlights(paramsObject) {
         let firstSegment = requestedFlightSegmentList[0];
         let secondSegment = requestedFlightSegmentList[1];
 
-        const firstSegmentFlight = firstSegment.flightList.find(flightListElement => flightListElement.fareList.some(fare => fare.miles === firstSegment.bestPricing.miles && fare.type === FARE_TYPE));
-        const secondSegmentFlight = secondSegment.flightList.find(flightListElement => flightListElement.fareList.some(fare => fare.miles === secondSegment.bestPricing.miles && fare.type === FARE_TYPE));
+        const firstSegmentFlight = firstSegment['flightList'].find(flightListElement => flightListElement['fareList'].some(fare => fare.miles === firstSegment['bestPricing'].miles && fare.type === FARE_TYPE));
+        const secondSegmentFlight = secondSegment['flightList'].find(flightListElement => flightListElement['fareList'].some(fare => fare.miles === secondSegment['bestPricing'].miles && fare.type === FARE_TYPE));
 
         if (!Boolean(firstSegmentFlight) || !Boolean(secondSegmentFlight)){
           return null;
         }
 
-        const firstSegmentFare = firstSegmentFlight.fareList.find((someFare) =>
+        const firstSegmentFare = firstSegmentFlight['fareList'].find((someFare) =>
             someFare.type === FARE_TYPE
         );
-        const secondSegmentFare = secondSegmentFlight.fareList.find((someFare) =>
+        const secondSegmentFare = secondSegmentFlight['fareList'].find((someFare) =>
             someFare.type === FARE_TYPE
         );
 
@@ -232,15 +235,15 @@ async function searchFlights(paramsObject) {
         let secondSegmentFareTax;
 
         if(!(typeof dolarOficial === 'number')){
-          firstSegmentFareTax = Boolean(firstSegmentFare.g3) ? firstSegmentFare.g3.costTax * (passenger.children + passenger.adults) : (await _getTax(
+          firstSegmentFareTax = Boolean(firstSegmentFare['g3']) ? firstSegmentFare['g3']['costTax'] * (passenger.children + passenger.adults) : (await _getTax(
               { flight: firstSegmentFlight, fare: firstSegmentFare, flight2: secondSegmentFlight, fare2: secondSegmentFare, passengers: passenger, paramsObject: paramsObjectCopy }
           )).money;
-          secondSegmentFareTax = Boolean(secondSegmentFare.g3) ? secondSegmentFare.g3.costTax * (passenger.children + passenger.adults) : 0;
+          secondSegmentFareTax = Boolean(secondSegmentFare['g3']) ? secondSegmentFare['g3']['costTax'] * (passenger.children + passenger.adults) : 0;
         }
         else{
-          firstSegmentFareTax = firstSegmentFare.legListCurrency === 'USD' ? firstSegmentFare.airlineTax * dolarOficial : firstSegmentFare.airlineTax;
+          firstSegmentFareTax = firstSegmentFare['legListCurrency'] === 'USD' ? firstSegmentFare.airlineTax * dolarOficial : firstSegmentFare.airlineTax;
 
-          secondSegmentFareTax = secondSegmentFare.legListCurrency === 'USD' ? secondSegmentFare.airlineTax * dolarOficial : secondSegmentFare.airlineTax;
+          secondSegmentFareTax = secondSegmentFare['legListCurrency'] === 'USD' ? secondSegmentFare.airlineTax * dolarOficial : secondSegmentFare.airlineTax;
 
           firstSegmentFareTax = firstSegmentFareTax * (passenger.children + passenger.adults);
           secondSegmentFareTax = firstSegmentFareTax * (passenger.children + passenger.adults);
@@ -252,26 +255,26 @@ async function searchFlights(paramsObject) {
 
         return {
           uid: firstSegmentFlight.uid + secondSegmentFlight.uid,
-          origin: firstSegmentFlight.departure.airport.code,
+          origin: firstSegmentFlight['departure']['airport']['code'],
           originForURL: paramsObject.originAirportCode,
           destinationForURL: paramsObject.destinationAirportCode,
-          destination: firstSegmentFlight.arrival.airport.code,
-          viajeFacil: firstSegmentFlight.codeContext === "FFY",
-          returnViajeFacil: secondSegmentFlight.codeContext === "FFY",
+          destination: firstSegmentFlight['arrival']['airport']['code'],
+          viajeFacil: firstSegmentFlight['codeContext'] === "FFY",
+          returnViajeFacil: secondSegmentFlight['codeContext'] === "FFY",
           fare: {
             airlineTax: firstSegmentFareTax,
             miles: firstSegmentFare.miles,
             money: firstSegmentFare.money,
-            type: firstSegmentFlight.sourceFare,
+            type: firstSegmentFlight['sourceFare'],
           },
           returnFare: {
             airlineTax: secondSegmentFareTax,
             miles: secondSegmentFare.miles,
             money: secondSegmentFare.money,
-            type: secondSegmentFare.sourceFare,
+            type: secondSegmentFare['sourceFare'],
           },
-          departureDate: new Date(firstSegmentFlight.departure.date),
-          returnDate: new Date(secondSegmentFlight.departure.date),
+          departureDate: new Date(firstSegmentFlight['departure']['date']),
+          returnDate: new Date(secondSegmentFlight['departure']['date']),
           stops: firstSegmentFlight.stops,
           stopsReturnFlight: secondSegmentFlight.stops,
           durationInHours: firstSegmentFlight.duration.hours,
@@ -292,8 +295,6 @@ async function searchFlights(paramsObject) {
           returnLegList: secondSegmentFlight.legList,
         };
       })()
-
-  return transformedFlights;
 }
 
 export { searchFlights };

@@ -8,9 +8,5 @@
 
 # Fresh build directory
 _fresh/
-/.idea/.gitignore
-/.idea/compiler.xml
-/.idea/deno.xml
-/.idea/modules.xml
-/.idea/smiles-search.iml
-/.idea/vcs.xml
+/.idea/
+/node_modules/

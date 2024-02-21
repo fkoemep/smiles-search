@@ -13,5 +13,7 @@ This version includes the following improvements:
 - Updated libraries
 - General UI improvements and bug fixes
 
+Please keep in mind that due to recent changes in Smiles API, the search may take longer than usual. This is not a bug, but a consequence of the new API.
+
 
 https://better-smiles-search.deno.dev

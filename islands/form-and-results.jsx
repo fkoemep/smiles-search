@@ -6,7 +6,7 @@ import {findFlightsForDate, findFlightsInMonth, findFlightsInMonthRountrip} from
 import MainForm from "./main-form.jsx";
 import Filters from "./filters.jsx";
 import Spinner from "components/spinner.jsx";
-import ConsultasEnSimultaneo from "components/simultaneous-searches-input.jsx";
+// import ConsultasEnSimultaneo from "components/simultaneous-searches-input.jsx";
 import Regions from "components/regions.jsx";
 import {linkStyle, row1Style, row2Style, thStyle} from "../utils/styles.js";
 import {findFlightsInRange, findFlightsInRangeRountrip} from "../utils/api.js";
@@ -158,7 +158,7 @@ export default function FormAndResults({ params }) {
   const flights = requestsSignal.value.filtered;
   const isLoading = requestsSignal.value.status === "loading";
   const monthSearchSignal = useSignal(!params.departureDate);
-  const golSearchSignal = useSignal(false); //set button to false by default
+  const golSearchSignal = useSignal(true); //set button to false by default
   const fastSearchSignal = useSignal(true);
   const roundtripMonthSearchSignal = useSignal(false); //set button to false by default
   const roundtripSearchSignal = useSignal(false); //set button to false by default
@@ -170,7 +170,7 @@ export default function FormAndResults({ params }) {
 
   return (
     <div class="p-4 gap-4 flex flex-col flex-grow-[1]">
-      <ConsultasEnSimultaneo />
+      {/*<ConsultasEnSimultaneo />*/}
       <Regions />
       <MainForm
         params={params}
