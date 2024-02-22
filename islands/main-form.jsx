@@ -23,6 +23,7 @@ import ClassTypeDropdown from "components/class-search-dropdown.jsx";
 import { useSignal } from "@preact/signals";
 import { filtros } from "utils/flight.js";
 import {buttonStyle, dateInputStyle, inputsStyle} from "utils/styles.js";
+import {requestsSignal} from "../utils/signals.js";
 
 export default function MainForm({ params, monthSearchSignal, golSearchSignal, roundtripSearchSignal, roundtripMonthSearchSignal, expandedSearchSignal, onSubmit, fastSearchSignal }) {
   const searchTypeSignal = useSignal(
@@ -241,6 +242,7 @@ export default function MainForm({ params, monthSearchSignal, golSearchSignal, r
       <button
         type="submit"
         class={`h-10 shadow-md disabled:opacity-25 rounded-sm px-4 ${buttonStyle}`}
+        disabled={requestsSignal.value.status === "loading"}
       >
         Buscar
       </button>
