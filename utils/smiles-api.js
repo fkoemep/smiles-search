@@ -16,7 +16,7 @@ let lastJobTime;
 let limiter = new Bottleneck({
   reservoir: maxConcurrency, // initial value
   reservoirRefreshAmount: maxConcurrency,
-  reservoirRefreshInterval: refreshIntervalSeconds * 1000, // must be divisible by 250
+  reservoirRefreshInterval: (refreshIntervalSeconds + 2) * 1000, // must be divisible by 250
 
   // also use maxConcurrent and/or minTime for safety
   maxConcurrent: maxConcurrency, //concurrencySignal.value,
