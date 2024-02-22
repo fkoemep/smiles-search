@@ -10,6 +10,7 @@ import Spinner from "components/spinner.jsx";
 import Regions from "components/regions.jsx";
 import {linkStyle, row1Style, row2Style, thStyle} from "../utils/styles.js";
 import {findFlightsInRange, findFlightsInRangeRountrip} from "../utils/api.js";
+import {refreshIntervalSeconds, maxConcurrency} from "../utils/smiles-api.js";
 
 let dolarOficial = 1;
 
@@ -72,6 +73,19 @@ async function onSubmit(searchParams) {
     const dateRangeHighestValue = searchParams.dateRangeHighestValue;
     let daySearch = false;
 
+    const searchHistoryArray = JSON.parse(localStorage.getItem("searchHistory")) || [];
+
+    const now = new Date();
+    const limiterMoment = new Date(now.getTime() - (refreshIntervalSeconds * 1000));
+
+    const filteredList = searchHistoryArray.filter(function (date) {
+      const parsedDate = new Date(date);
+      return (parsedDate >= limiterMoment && parsedDate <= now);
+    });
+
+    if(filteredList.length >= maxConcurrency || (filteredList.length > 0 && (rangeSearch || monthSearch || roundtripMonthSearch || roundtripRangeSearch))){
+      throw new Error('Se ha alcanzado el límite en este período de tiempo, por favor espere unos momentos y vuelva a intentar.');
+    }
 
     for (const controller of abortControllersSignal.value) {
       controller.abort();

@@ -7,7 +7,7 @@ import {
   requestsSignal,
 } from "./signals.js";
 
-const refreshIntervalSeconds = 72;//62
+const refreshIntervalSeconds = 75;//62
 const maxConcurrency = 12;//11
 
 let lastJobTime;
@@ -24,8 +24,28 @@ let limiter = new Bottleneck({
   // strategy: Bottleneck.strategy.BLOCK,
 });
 
-const fetchFunction = (url, headers) => {
-  lastJobTime = Date.now();
+function addEntrytoSearchHistory() {
+  return new Promise((resolve, reject) => {
+    let searchHistoryArray = JSON.parse(localStorage.getItem("searchHistory")) || [];
+    searchHistoryArray.push(Date.now());
+
+    while (searchHistoryArray.length > maxConcurrency) {
+      searchHistoryArray.sort(function(a,b){
+        // Turn your strings into dates, and then subtract them
+        // to get a value that is either negative, positive, or zero.
+        return Date.parse(b['date']) - Date.parse(a['date']);
+      });
+      searchHistoryArray.shift();
+    }
+    localStorage.setItem("searchHistory", JSON.stringify(searchHistoryArray));
+
+    resolve(true);
+  });
+}
+
+
+const fetchFunction = async (url, headers) => {
+  await addEntrytoSearchHistory();
 
   return fetch(url, headers).then(response => {
     if (response === undefined){
@@ -297,4 +317,4 @@ async function searchFlights(paramsObject) {
       })()
 }
 
-export { searchFlights };
+export { searchFlights, refreshIntervalSeconds, maxConcurrency };

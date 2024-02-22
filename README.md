@@ -15,5 +15,6 @@ This version includes the following improvements:
 
 Please keep in mind that due to recent changes in Smiles API, the search may take longer than usual. This is not a bug, but a consequence of the new API.
 
+Coming soon: retries for failed requests that respect bottleneck's rate limits instead of bypassing them.
 
 https://better-smiles-search.deno.dev
