@@ -48,7 +48,7 @@ const fetchFunction = async (url, headers) => {
   await addEntrytoSearchHistory();
 
   return fetch(url, headers).then(response => {
-    if (response === undefined){
+    if (!response.ok && response.status !== 406) {
       throw new Error('result === undefined');
     }
 
@@ -148,7 +148,13 @@ async function searchFlights(paramsObject) {
         signal: controller.signal,
         headers,
       },
-      );
+      ).then(response => {
+        if (!response.ok && response.status !== 406) {
+          return { requestedFlightSegmentList: [] }
+        }
+        return response;
+  });
+
 
   const { passenger: passenger, requestedFlightSegmentList: requestedFlightSegmentList } = await response.json();
 
