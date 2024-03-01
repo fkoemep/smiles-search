@@ -28,17 +28,17 @@ export default function MainForm({ params, monthSearchSignal, golSearchSignal, r
     params["search_type[id]"] ?? filtros.defaults.searchTypes.id,
   );
 
-  const classTypeSignal = useSignal(
-      params["class_type[id]"] ?? filtros.defaults.classTypes.id,
-  );
+  // const classTypeSignal = useSignal(
+  //     params["class_type[id]"] ?? filtros.defaults.classTypes.id,
+  // );
 
   const searchType = filtros.searchTypes.find((someSearchType) =>
     someSearchType.id === searchTypeSignal.value
   );
 
-  const classType = filtros.classTypes.find((someClassType) =>
-      someClassType.id === classTypeSignal.value
-  );
+  // const classType = filtros.classTypes.find((someClassType) =>
+  //     someClassType.id === classTypeSignal.value
+  // );
 
   params.originAirportCode = useSignal(params.originAirportCode ?? filtros.defaults.originAirportCode);
 
@@ -57,197 +57,112 @@ export default function MainForm({ params, monthSearchSignal, golSearchSignal, r
       }}
     >
 
-      <fieldset className="flex flex-col gap-2 my-2">
-      <SearchTypeDropdown
-        class="w-64"
-        value={searchType}
-        onChange={(selected) => searchTypeSignal.value = selected.id}
-      />
-      {/*<ClassTypeDropdown*/}
-      {/*  class="w-64"*/}
-      {/*  value={classType}*/}
-      {/*  onChange={(selected) => classTypeSignal.value = selected.id}*/}
-      {/*/>*/}
+    <fieldset className="flex flex-col gap-2 my-2">
+    <SearchTypeDropdown class="w-64" value={searchType} onChange={(selected) => searchTypeSignal.value = selected.id}/>
+    {/*<ClassTypeDropdown*/}
+    {/*  class="w-64"*/}
+    {/*  value={classType}*/}
+    {/*  onChange={(selected) => classTypeSignal.value = selected.id}*/}
+    {/*/>*/}
+    <OriginDestinationInputs defaults={params} searchType={searchTypeSignal.value}/>
+    </fieldset>
 
-      <OriginDestinationInputs
-        defaults={params}
-        searchType={searchTypeSignal.value}
-      />
+    <fieldset class="flex flex-col gap-2 my-2">
+      <ExpandedSearchSwitch signal={expandedSearchSignal} roundtripSearchSignal={roundtripSearchSignal}/>
 
-      </fieldset>
+      {expandedSearchSignal.value && <MonthSearchSwitch signal={monthSearchSignal}/>}
 
-      <fieldset class="flex flex-col gap-2 my-2">
-        <ExpandedSearchSwitch signal={expandedSearchSignal} roundtripSearchSignal={roundtripSearchSignal} />
+      {expandedSearchSignal.value && monthSearchSignal.value && <MonthsDropdown class="w-64" defaultValue={params["month[id]"]}/>}
 
-        {expandedSearchSignal.value
-          ? <MonthSearchSwitch signal={monthSearchSignal} /> :
-            !expandedSearchSignal.value && !roundtripSearchSignal.value ? (
-              <input
-                name="departureDate"
-                required
-                type="date"
-                style={dateInputStyle}
-                className={`dark:color-scheme:dark w-36 shadow-md px-2 inline-flex items-center rounded-sm group-valid:border-green-400 group-invalid:border-red-400 h-10 ${inputsStyle}`}
-                value={departureDate}
-                min={formatDateWithTimezone(minDate)}
-                max={formatDateWithTimezone(maxDate)}
-              />
-            ) : <></>}
+      {((!expandedSearchSignal.value) || (expandedSearchSignal.value && !monthSearchSignal.value)) &&
+                  <Switch.Group as="div" class="flex items-center gap-4">
 
-        {roundtripSearchSignal.value && !expandedSearchSignal.value
-            ? (
-                <Switch.Group as="div" class="flex items-center gap-4">
-                  <Switch.Label>Ida</Switch.Label>
-                  <input
-                      name="departureDate"
-                      id="departureDate"
-                      required
-                      type="date"
-                      className={`dark:color-scheme:dark w-36 shadow-md px-2 inline-flex items-center rounded-sm group-valid:border-green-400 group-invalid:border-red-400 h-10 ${inputsStyle}`}
-                      style={dateInputStyle}
-                      value={departureDate}
-                      min={formatDateWithTimezone(minDate)}
-                      max={formatDateWithTimezone(maxDate)}
-                      onChange={function(ev) {
-                        let returnDate = document.getElementById("returnDate");
-                        if( new Date(ev.target.value) > new Date(returnDate.value) ){
-                          ev.target.setCustomValidity('La fecha de salida debe ser menor que la de vuelta');
+                    {roundtripSearchSignal.value && !expandedSearchSignal.value && <Switch.Label>Ida</Switch.Label>}
+
+                    <input
+                        {...(expandedSearchSignal.value && !monthSearchSignal.value ?
+                            {name: 'dateRangeLowestValue', id: 'dateRangeLowestValue'} :
+                            {name: 'departureDate', id: 'departureDate'})}
+                        required
+                        type="date"
+                        className={`dark:color-scheme:dark w-36 shadow-md px-2 inline-flex items-center rounded-sm group-valid:border-green-400 group-invalid:border-red-400 h-10 ${inputsStyle}`}
+                        min={formatDateWithTimezone(minDate)}
+                        max={formatDateWithTimezone(maxDate)}
+                        style={dateInputStyle}
+                        value={departureDate}
+                        onChange={function (ev) {
+                          if((roundtripSearchSignal.value && !expandedSearchSignal.value) || (expandedSearchSignal.value && !monthSearchSignal.value)){
+                            const isRangeSearch = expandedSearchSignal.value && !monthSearchSignal.value;
+
+                            let returnDateOrRangeHigherBound = document.getElementById( isRangeSearch ? 'dateRangeHighestValue' : 'returnDate');
+                            if (new Date(ev.target.value) > new Date(returnDateOrRangeHigherBound.value)) {
+                              ev.target.setCustomValidity(isRangeSearch ? 'Inicio del rango debe ser menor que el fin del rango' : 'La fecha de salida debe ser menor que la de vuelta');
+                            } else {
+                              ev.target.setCustomValidity('');
+                              returnDateOrRangeHigherBound.setCustomValidity('');
+                            }
+                            ev.target.reportValidity();
+                              }
+                            }
+                          }
+                    />
+
+                    {roundtripSearchSignal.value && !expandedSearchSignal.value && <Switch.Label>Vuelta</Switch.Label>}
+
+                    {((roundtripSearchSignal.value && !expandedSearchSignal.value) || (expandedSearchSignal.value && !monthSearchSignal.value)) &&
+                    <input
+                        {...(expandedSearchSignal.value && !monthSearchSignal.value ?
+                            {name: 'dateRangeHighestValue', id: 'dateRangeHighestValue'} :
+                            {name: 'returnDate', id: 'returnDate'})}
+                        required
+                        type="date"
+                        className={`dark:color-scheme:dark w-36 shadow-md px-2 inline-flex items-center rounded-sm group-valid:border-green-400 group-invalid:border-red-400 h-10 ${inputsStyle}`}
+                        min={formatDateWithTimezone(minDate)}
+                        max={formatDateWithTimezone(maxDate)}
+                        style={dateInputStyle}
+                        onChange={function (ev) {
+                          const isRangeSearch = expandedSearchSignal.value && !monthSearchSignal.value;
+
+                          let departureDateOrRangeLowerBound = document.getElementById( isRangeSearch ? 'dateRangeLowestValue' : 'departureDate');
+                          if (new Date(ev.target.value) < new Date(departureDateOrRangeLowerBound.value)) {
+                            ev.target.setCustomValidity(isRangeSearch ? 'Fin del rango debe ser mayor que el inicio del rango' : 'La fecha de vuelta debe ser mayor que la de salida');
+                          } else {
+                            ev.target.setCustomValidity('');
+                            departureDateOrRangeLowerBound.setCustomValidity('');
+                          }
+                          ev.target.reportValidity();
                         }
-                        else{
-                          ev.target.setCustomValidity('');
-                          returnDate.setCustomValidity('');
                         }
-                        ev.target.reportValidity();
-                      }}
-                  />
-
-                  <Switch.Label>Vuelta</Switch.Label>
-                  <input
-                    name="returnDate"
-                    id="returnDate"
-                    required
-                    type="date"
-                    className={`dark:color-scheme:dark w-36 shadow-md px-2 inline-flex items-center rounded-sm group-valid:border-green-400 group-invalid:border-red-400 h-10 ${inputsStyle}`}
-                    min={formatDateWithTimezone(minDate)}
-                    max={formatDateWithTimezone(maxDate)}
-                    style={dateInputStyle}
-                    onChange={function(ev) {
-                      let departureDate = document.getElementById("departureDate");
-                      if( new Date(ev.target.value) < new Date(departureDate.value) ){
-                        ev.target.setCustomValidity('La fecha de vuelta debe ser mayor que la de salida');
-                      }
-                      else{
-                        ev.target.setCustomValidity('');
-                        departureDate.setCustomValidity('');
-                      }
-                      ev.target.reportValidity();
+                    />
                     }
-                  }
-                />
-                </Switch.Group>
+                  </Switch.Group>
+      }
 
-            ): <></>}
+      {expandedSearchSignal.value && <RountripSearchSwitch signal={roundtripMonthSearchSignal}/>}
 
+      {roundtripMonthSearchSignal.value && expandedSearchSignal.value && <RountripSearchSlider/>}
+    </fieldset>
 
-        {expandedSearchSignal.value && monthSearchSignal.value
-            ? <MonthsDropdown class="w-64" defaultValue={params["month[id]"]} /> : <></>
-        }
+    <fieldset className="flex flex-col gap-2 my-2">
+    <GolSearchSwitch signal={golSearchSignal}/>
+    </fieldset>
 
-        {expandedSearchSignal.value && !monthSearchSignal.value ?
-            <Switch.Group as="div" class="flex items-center gap-4">
+    <fieldset className="flex flex-col gap-2 my-2">
+    <FastSearchSwitch signal={fastSearchSignal}/>
+    </fieldset>
 
-              {/*<Switch.Label>Ida</Switch.Label>*/}
-              <input
-                  name="dateRangeLowestValue"
-                  id="dateRangeLowestValue"
-                  required
-                  type="date"
-                  className={`dark:color-scheme:dark w-36 shadow-md px-2 inline-flex items-center rounded-sm group-valid:border-green-400 group-invalid:border-red-400 h-10 ${inputsStyle}`}
-                  style={dateInputStyle}
-                  value={departureDate}
-                  min={formatDateWithTimezone(minDate)}
-                  max={formatDateWithTimezone(maxDate)}
-                  onChange={function(ev) {
-                    let dateRangeHighestValue = document.getElementById("dateRangeHighestValue");
-                    if( new Date(ev.target.value) > new Date(dateRangeHighestValue.value) ){
-                      ev.target.setCustomValidity('Inicio del rango debe ser menor que el fin del rango');
-                    }
-                    else{
-                      ev.target.setCustomValidity('');
-                      dateRangeHighestValue.setCustomValidity('');
-                    }
-                    ev.target.reportValidity();
-                  }}
-              />
+    <fieldset className="flex flex-col gap-2 my-2">
+    <PassengerInputs/>
+      <Switch.Group as="div" class="flex items-center gap-2">
+        <label >Adultos (12+ años)</label>
+        <label >Niños (2-12 años)</label>
+        <label >Bebes (0-2 años)</label>
+      </Switch.Group>
+    </fieldset>
 
-              {/*<Switch.Label>Vuelta</Switch.Label>*/}
-              <input
-                  name="dateRangeHighestValue"
-                  id="dateRangeHighestValue"
-                  required
-                  type="date"
-                  className={`dark:color-scheme:dark w-36 shadow-md px-2 inline-flex items-center rounded-sm group-valid:border-green-400 group-invalid:border-red-400 h-10 ${inputsStyle}`}
-                  min={formatDateWithTimezone(minDate)}
-                  max={formatDateWithTimezone(maxDate)}
-                  style={dateInputStyle}
-                  onChange={function(ev) {
-                    let dateRangeLowestValue = document.getElementById("dateRangeLowestValue");
-                    if( new Date(ev.target.value) < new Date(dateRangeLowestValue.value) ){
-                      ev.target.setCustomValidity('Fin del rango debe ser mayor que el inicio del rango');
-                    }
-                    else{
-                      ev.target.setCustomValidity('');
-                      dateRangeLowestValue.setCustomValidity('');
-                    }
-                    ev.target.reportValidity();
-                  }}
-              />
-            </Switch.Group> : <></>
-        }
-
-        {
-          expandedSearchSignal.value ? <RountripSearchSwitch signal={roundtripMonthSearchSignal} /> : <></>
-
-        }
-
-
-        {
-          roundtripMonthSearchSignal.value && expandedSearchSignal.value ? <RountripSearchSlider/> : <></>
-
-        }
-
-      </fieldset>
-
-      <fieldset className="flex flex-col gap-2 my-2">
-
-      <GolSearchSwitch signal={golSearchSignal}/>
-
-      </fieldset>
-
-      <fieldset className="flex flex-col gap-2 my-2">
-      <FastSearchSwitch signal={fastSearchSignal}/>
-      </fieldset>
-
-
-      <fieldset className="flex flex-col gap-2 my-2">
-
-      <PassengerInputs/>
-        <Switch.Group as="div" class="flex items-center gap-2">
-          <label >Adultos (12+ años)</label>
-          <label >Niños (2-12 años)</label>
-          <label >Bebes (0-2 años)</label>
-        </Switch.Group>
-
-
-      </fieldset>
-
-      <button
-          type="submit"
-          className={`h-10 shadow-md disabled:opacity-25 rounded-sm px-4 ${buttonStyle}`}
-          disabled = {isLoading}
-      >
-        Buscar
-      </button>
+    <button type="submit" className={`h-10 shadow-md disabled:opacity-25 rounded-sm px-4 ${buttonStyle}`} disabled = {isLoading}>
+      Buscar
+    </button>
 
     </form>
   );

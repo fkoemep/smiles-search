@@ -7,7 +7,7 @@ const isDenoDeploy = Deno.env.get("DENO_DEPLOYMENT_ID") !== undefined;
 export default function App({ Component }: AppProps) {
     return (
 
-    <html class="dark h-full">
+    <html class="dark h-full" lang="es-419">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
