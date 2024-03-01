@@ -19,10 +19,10 @@ export default function ExpandedSearch({ signal, roundtripSearchSignal }) {
         />
       </Switch>
 
-        {!signal.value ? <Switch.Label>Ida y Vuelta</Switch.Label> : <></>}
+        {!signal.value && <Switch.Label>Ida y Vuelta</Switch.Label>}
 
 
-        {!signal.value ?
+        {!signal.value &&
             <Switch
             checked={roundtripSearchSignal.value === true}
             onChange={(newValue) => roundtripSearchSignal.value = newValue}
@@ -35,7 +35,7 @@ export default function ExpandedSearch({ signal, roundtripSearchSignal }) {
                 roundtripSearchSignal.value ? "translate-x-6" : "translate-x-1"
             }`}
         />
-        </Switch> : <></>}
+        </Switch>}
     </Switch.Group>
   );
 }

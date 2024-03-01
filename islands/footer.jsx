@@ -2,7 +2,6 @@ import { Switch } from "@headlessui/react";
 
 export default function Footer() {
   return (
-    <>
       <footer class="px-4 py-2 gap-4 w-full text-xs italic flex justify-between items-end">
         <Switch.Group as="div" class="flex items-center gap-2">
         <a
@@ -14,6 +13,5 @@ export default function Footer() {
         </a>
         </Switch.Group>
       </footer>
-    </>
   );
 }

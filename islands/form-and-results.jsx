@@ -268,32 +268,32 @@ export default function FormAndResults({ params }) {
                   <th className={`py-4 px-2 ${thStyle}`}>{Boolean(flights[0].returnDate) ? "Ruta" : "Tramo"}</th>
 
                   <th className={`px-2 ${thStyle}`}>{Boolean(flights[0].returnDate) ? "Ida" : "Fecha y hora"}</th>
-                  {Boolean(flights[0].returnDate) ? <th className={`px-2 ${thStyle}`}> Vuelta </th> : <></>}
+                  {Boolean(flights[0].returnDate) && <th className={`px-2 ${thStyle}`}> Vuelta </th>}
 
                   <th className={`px-2 lg:hidden ${thStyle}`}>Millas</th>
 
                   <th className={`px-2 ${thStyle}`}>{Boolean(flights[0].returnDate) ? "Aerolínea ida" : "Aerolínea"}</th>
-                  {Boolean(flights[0].returnDate) ? <th className={`px-2 ${thStyle}`}> Aerolinea vuelta </th> : <></>}
+                  {Boolean(flights[0].returnDate) && <th className={`px-2 ${thStyle}`}> Aerolinea vuelta </th>}
 
                   <th className={`px-2 ${thStyle}`}>{Boolean(flights[0].returnDate) ? "Cabina ida" : "Cabina"}</th>
-                  {Boolean(flights[0].returnDate) ? <th className={`px-2 ${thStyle}`}> Cabina vuelta </th> : <></>}
+                  {Boolean(flights[0].returnDate) && <th className={`px-2 ${thStyle}`}> Cabina vuelta </th>}
 
                   <th className={`px-2 ${thStyle}`}>{Boolean(flights[0].returnDate) ? "Escalas ida" : "Escalas"}</th>
-                  {Boolean(flights[0].returnDate) ? <th className={`px-2 ${thStyle}`}> Escalas vuelta </th> : <></>}
+                  {Boolean(flights[0].returnDate) && <th className={`px-2 ${thStyle}`}> Escalas vuelta </th>}
 
                   <th className={`px-2 ${thStyle}`}>{Boolean(flights[0].returnDate) ? "Duración ida" : "Duración"}</th>
-                  {Boolean(flights[0].returnDate) ? <th className={`px-2 ${thStyle}`}> Duración vuelta </th> : <></>}
+                  {Boolean(flights[0].returnDate) && <th className={`px-2 ${thStyle}`}> Duración vuelta </th>}
 
                   <th className={`px-2 ${thStyle}`}>{Boolean(flights[0].returnDate) ? "Asientos ida" : "Asientos"}</th>
-                  {Boolean(flights[0].returnDate) ? <th className={`px-2 ${thStyle}`}> Asientos vuelta </th> : <></>}
+                  {Boolean(flights[0].returnDate) && <th className={`px-2 ${thStyle}`}> Asientos vuelta </th>}
 
-                  {Boolean(flights[0].returnDate) ? <th className={`hidden lg:table-cell px-2 ${thStyle}`}> Total Millas </th> : <></>}
-                  {Boolean(flights[0].returnDate) ? <th className={`px-2 ${thStyle}`}> Total Tasas </th> : <></>}
+                  {Boolean(flights[0].returnDate) && <th className={`hidden lg:table-cell px-2 ${thStyle}`}> Total Millas </th>}
+                  {Boolean(flights[0].returnDate) && <th className={`px-2 ${thStyle}`}> Total Tasas </th>}
 
 
-                  {!Boolean(flights[0].returnDate) ? <th className={`hidden lg:table-cell px-2 ${thStyle}`}> Millas </th> : <></>}
+                  {!Boolean(flights[0].returnDate) && <th className={`hidden lg:table-cell px-2 ${thStyle}`}> Millas </th>}
 
-                  {!Boolean(flights[0].returnDate) ? <th className={`px-2 ${thStyle}`}> Tasas </th> : <></>}
+                  {!Boolean(flights[0].returnDate) && <th className={`px-2 ${thStyle}`}> Tasas </th>}
 
                 </tr>
               </thead>
@@ -379,16 +379,14 @@ export default function FormAndResults({ params }) {
                         {formatFlightDateLong(flight.departureDate)}
                       </td>
 
-                      {Boolean(flights[0].returnDate) ?
+                      {Boolean(flights[0].returnDate) &&
                           <td className={`${bgColor} py-px-2 md:hidden`}>
                             {formatFlightDateShort(flight.returnDate)}
-                          </td>
-                          : <></>}
-                      {Boolean(flights[0].returnDate) ?
+                          </td>}
+                      {Boolean(flights[0].returnDate) &&
                           <td className={`${bgColor} py-px-2 hidden md:table-cell`}>
                             {formatFlightDateLong(flight.returnDate)}
-                          </td>
-                          : <></>}
+                          </td>}
 
 
                       <td class={`${bgColor} px-2 lg:hidden`}>
@@ -398,9 +396,8 @@ export default function FormAndResults({ params }) {
                       </td>
 
                       <td class={`${bgColor} px-2`}>{airlineCodes.find((element) => element.id === flight.airline.code).name}</td>
-                      {Boolean(flights[0].returnDate) ?
-                          <td class={`${bgColor} px-2`}>{airlineCodes.find((element) => element.id === flight.returnAirline.code).name}</td>
-                          : <></>}
+                      {Boolean(flights[0].returnDate) &&
+                          <td class={`${bgColor} px-2`}>{airlineCodes.find((element) => element.id === flight.returnAirline.code).name}</td>}
 
 
                       <td className={`${bgColor} px-2`}>
@@ -408,49 +405,44 @@ export default function FormAndResults({ params }) {
                           someCabina.id === flight.cabin
                         ).name}
                       </td>
-                      {Boolean(flights[0].returnDate) ?
+                      {Boolean(flights[0].returnDate) &&
                           <td className={`${bgColor} px-2`}>
                             {filtros.cabinas.find((someCabina) =>
                                 someCabina.id === flight.returnCabin
                             ).name}
-                          </td>
-                          : <></>}
+                          </td>}
 
 
                       <td class={`${bgColor} px-2`}>
                         {flight.stops || "Directo"}
                       </td>
-                      {Boolean(flights[0].returnDate) ?
+                      {Boolean(flights[0].returnDate) &&
                           <td class={`${bgColor} px-2`}>
                             {flight.stopsReturnFlight || "Directo"}
-                          </td>
-                          : <></>}
+                          </td>}
 
 
                       <td className={`${bgColor} px-2`}>
                         {flight.durationInHours}hs
                       </td>
-                      {Boolean(flights[0].returnDate) ?
+                      {Boolean(flights[0].returnDate) &&
                           <td className={`${bgColor} px-2`}>
                             {flight.returnDurationInHours}hs
-                          </td>
-                          : <></>}
+                          </td>}
 
 
                       <td className={`${bgColor} px-2`}>{flight.availableSeats}</td>
-                      {Boolean(flights[0].returnDate) ?
-                          <td className={`${bgColor} px-2`}>{flight.returnAvailableSeats}</td>
-                          : <></>}
+                      {Boolean(flights[0].returnDate) &&
+                          <td className={`${bgColor} px-2`}>{flight.returnAvailableSeats}</td>}
 
-                      {Boolean(flights[0].returnDate) ?
+                      {Boolean(flights[0].returnDate) &&
                           <td className={`${bgColor} px-2 hidden lg:table-cell`}>
                             {new Intl.NumberFormat("es-AR").format(
                                 flight.totalFare.miles,
                             )}
-                          </td>
-                          : <></>}
+                          </td>}
 
-                      {Boolean(flights[0].returnDate) ?
+                      {Boolean(flights[0].returnDate) &&
                           <td className={`${bgColor} px-2`}>
                             {flight.totalFare.airlineTax ? `${new Intl.NumberFormat('es-AR', {
                               style: 'currency',
@@ -458,19 +450,17 @@ export default function FormAndResults({ params }) {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
                             }).format(flight.totalFare.airlineTax)}`: "?"}
-                          </td>
-                          : <></>}
+                          </td>}
 
 
-                      {!Boolean(flights[0].returnDate) ?
+                      {!Boolean(flights[0].returnDate) &&
                           <td class={`${bgColor} px-2 hidden lg:table-cell`}>
                             {new Intl.NumberFormat("es-AR").format(
                                 flight.fare.miles,
                             )}
-                          </td>
-                          : <></>}
+                          </td>}
 
-                      {!Boolean(flights[0].returnDate) ?
+                      {!Boolean(flights[0].returnDate) &&
                           <td className={`${bgColor} px-2`}>
                             {flight.fare.airlineTax ? `${new Intl.NumberFormat('es-AR', {
                               style: 'currency',
@@ -478,8 +468,7 @@ export default function FormAndResults({ params }) {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
                             }).format(flight.fare.airlineTax)}`: "?"}
-                          </td>
-                          : <></>}
+                          </td>}
 
 
 
