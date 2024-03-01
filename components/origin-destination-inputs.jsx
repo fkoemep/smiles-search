@@ -24,8 +24,7 @@ export default function OriginDestinationInputs({ defaults, searchType }) {
             placeholder="Desde"
             maxLength={3}
             onInput={(ev) => ev.target.value = ev.target.value.toUpperCase()}
-            value={defaults.originAirportCode ??
-              filtros.defaults.originAirportCode}
+            value={defaults.originAirportCode}
           />
         )}
       {["from-airport-to-region", "from-region-to-region"].includes(searchType)

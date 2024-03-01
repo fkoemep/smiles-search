@@ -179,7 +179,7 @@ const filtros = {
   classTypes,
   tarifas,
   defaults: {
-    originAirportCode: "EZE",
+    originAirportCode: "BUE",
     cabinas: [],
     airlineCodes: [],
     escalas: escalas[0],

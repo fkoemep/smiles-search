@@ -1,4 +1,3 @@
-import { ChevronUpIcon } from "icons";
 import { filtros } from "utils/flight.js";
 import { resultadosSignal } from "utils/signals.js";
 import Dropdown from "components/dropdown.jsx";

@@ -1,6 +1,4 @@
-import { asset } from "$fresh/runtime.ts";
 import { effect, signal } from "@preact/signals";
-import ConfettiExplosion from "react-confetti-explosion";
 import { Switch } from "@headlessui/react";
 
 const showConfetti = signal("not initiated");

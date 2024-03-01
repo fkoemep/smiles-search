@@ -1,7 +1,7 @@
 import {useSignal} from "@preact/signals";
 import {formatFlightDateLong, formatFlightDateShort} from "utils/dates.js";
 import {airlineCodes, filterFlights, filtros, getLink, sortByMilesAndTaxes, tripTypes, cabinas} from "utils/flight.js";
-import {abortControllersSignal, regionsSignal, requestsSignal, resultadosSignal,} from "utils/signals.js";
+import {abortControllersSignal, regionsSignal, requestsSignal, resultadosSignal} from "utils/signals.js";
 import {findFlightsForDate, findFlightsInMonth, findFlightsInMonthRountrip} from "api";
 import MainForm from "./main-form.jsx";
 import Filters from "./filters.jsx";
@@ -194,6 +194,7 @@ export default function FormAndResults({ params }) {
         roundtripSearchSignal={roundtripSearchSignal}
         roundtripMonthSearchSignal={roundtripMonthSearchSignal}
         fastSearchSignal={fastSearchSignal}
+        requestsSignal={requestsSignal}
         onSubmit={onSubmit}
       />
 

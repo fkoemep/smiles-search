@@ -1,13 +1,10 @@
 
 import { Switch } from "@headlessui/react";
-import Dropdown from "components/dropdown.jsx";
 import {
-  formatDate,
-  formatMonth,
+  formatDateWithTimezone,
   maxDate,
   minDate,
-  months,
-  today, tomorrow,
+  today,
 } from "utils/dates.js";
 import ExpandedSearchSwitch from "components/expanded-search-switch.jsx";
 import MonthSearchSwitch from "components/month-search-switch.jsx";
@@ -19,13 +16,14 @@ import MonthsDropdown from "components/months-dropdown.jsx";
 import SearchTypeDropdown from "components/search-type-dropdown.jsx";
 import OriginDestinationInputs from "components/origin-destination-inputs.jsx";
 import FastSearchSwitch from "components/fast-search-switch.jsx";
-import ClassTypeDropdown from "components/class-search-dropdown.jsx";
-import { useSignal } from "@preact/signals";
+import { useComputed , useSignal } from "@preact/signals";
 import { filtros } from "utils/flight.js";
 import {buttonStyle, dateInputStyle, inputsStyle} from "utils/styles.js";
-import {requestsSignal} from "../utils/signals.js";
 
-export default function MainForm({ params, monthSearchSignal, golSearchSignal, roundtripSearchSignal, roundtripMonthSearchSignal, expandedSearchSignal, onSubmit, fastSearchSignal }) {
+export default function MainForm({ params, monthSearchSignal, golSearchSignal, roundtripSearchSignal, roundtripMonthSearchSignal, expandedSearchSignal, onSubmit, fastSearchSignal, requestsSignal }) {
+
+  let isLoading = useComputed(() => requestsSignal.value.status === "loading")
+
   const searchTypeSignal = useSignal(
     params["search_type[id]"] ?? filtros.defaults.searchTypes.id,
   );
@@ -41,6 +39,10 @@ export default function MainForm({ params, monthSearchSignal, golSearchSignal, r
   const classType = filtros.classTypes.find((someClassType) =>
       someClassType.id === classTypeSignal.value
   );
+
+  params.originAirportCode = useSignal(params.originAirportCode ?? filtros.defaults.originAirportCode);
+
+  const departureDate = useSignal(params.departureDate ?? formatDateWithTimezone(today));
 
   return (
     <form
@@ -86,9 +88,9 @@ export default function MainForm({ params, monthSearchSignal, golSearchSignal, r
                 type="date"
                 style={dateInputStyle}
                 className={`dark:color-scheme:dark w-64 shadow-md px-2 inline-flex items-center rounded-sm group-valid:border-green-400 group-invalid:border-red-400 h-10 ${inputsStyle}`}
-                value={params.departureDate ?? formatDate(today)}
-                min={formatDate(minDate)}
-                max={formatDate(maxDate)}
+                value={departureDate}
+                min={formatDateWithTimezone(minDate)}
+                max={formatDateWithTimezone(maxDate)}
               />
             ) : <></>}
 
@@ -103,9 +105,9 @@ export default function MainForm({ params, monthSearchSignal, golSearchSignal, r
                       type="date"
                       className={`dark:color-scheme:dark w-64 shadow-md px-2 inline-flex items-center rounded-sm group-valid:border-green-400 group-invalid:border-red-400 h-10 ${inputsStyle}`}
                       style={dateInputStyle}
-                      value={params.departureDate ?? formatDate(today)}
-                      min={formatDate(minDate)}
-                      max={formatDate(maxDate)}
+                      value={departureDate}
+                      min={formatDateWithTimezone(minDate)}
+                      max={formatDateWithTimezone(maxDate)}
                       onChange={function(ev) {
                         let returnDate = document.getElementById("returnDate");
                         if( new Date(ev.target.value) > new Date(returnDate.value) ){
@@ -126,8 +128,8 @@ export default function MainForm({ params, monthSearchSignal, golSearchSignal, r
                     required
                     type="date"
                     className={`dark:color-scheme:dark w-64 shadow-md px-2 inline-flex items-center rounded-sm group-valid:border-green-400 group-invalid:border-red-400 h-10 ${inputsStyle}`}
-                    min={formatDate(minDate)}
-                    max={formatDate(maxDate)}
+                    min={formatDateWithTimezone(minDate)}
+                    max={formatDateWithTimezone(maxDate)}
                     style={dateInputStyle}
                     onChange={function(ev) {
                       let departureDate = document.getElementById("departureDate");
@@ -162,9 +164,9 @@ export default function MainForm({ params, monthSearchSignal, golSearchSignal, r
                   type="date"
                   className={`dark:color-scheme:dark w-64 shadow-md px-2 inline-flex items-center rounded-sm group-valid:border-green-400 group-invalid:border-red-400 h-10 ${inputsStyle}`}
                   style={dateInputStyle}
-                  value={params.departureDate ?? formatDate(today)}
-                  min={formatDate(minDate)}
-                  max={formatDate(maxDate)}
+                  value={departureDate}
+                  min={formatDateWithTimezone(minDate)}
+                  max={formatDateWithTimezone(maxDate)}
                   onChange={function(ev) {
                     let dateRangeHighestValue = document.getElementById("dateRangeHighestValue");
                     if( new Date(ev.target.value) > new Date(dateRangeHighestValue.value) ){
@@ -185,8 +187,8 @@ export default function MainForm({ params, monthSearchSignal, golSearchSignal, r
                   required
                   type="date"
                   className={`dark:color-scheme:dark w-64 shadow-md px-2 inline-flex items-center rounded-sm group-valid:border-green-400 group-invalid:border-red-400 h-10 ${inputsStyle}`}
-                  min={formatDate(minDate)}
-                  max={formatDate(maxDate)}
+                  min={formatDateWithTimezone(minDate)}
+                  max={formatDateWithTimezone(maxDate)}
                   style={dateInputStyle}
                   onChange={function(ev) {
                     let dateRangeLowestValue = document.getElementById("dateRangeLowestValue");
@@ -240,12 +242,13 @@ export default function MainForm({ params, monthSearchSignal, golSearchSignal, r
       </fieldset>
 
       <button
-        type="submit"
-        class={`h-10 shadow-md disabled:opacity-25 rounded-sm px-4 ${buttonStyle}`}
-        disabled={requestsSignal.value.status === "loading"}
+          type="submit"
+          className={`h-10 shadow-md disabled:opacity-25 rounded-sm px-4 ${buttonStyle}`}
+          disabled = {isLoading}
       >
         Buscar
       </button>
+
     </form>
   );
 }

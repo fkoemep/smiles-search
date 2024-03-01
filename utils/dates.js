@@ -2,6 +2,12 @@ function formatDate(date) {
   return date.toISOString().split("T")[0];
 }
 
+function formatDateWithTimezone(date) {
+  const tzoffset = (date).getTimezoneOffset() * 60000; //offset in milliseconds
+  return (new Date(date.getTime() - tzoffset)).toISOString().slice(0, -1).split("T")[0];
+}
+
+
 function formatFlightDateShort(flightDate) {
   return new Intl.DateTimeFormat("es-AR", {
     day: "numeric",
@@ -48,6 +54,7 @@ maxDate.setDate(maxDate.getDate() + 361);
 
 export {
   formatDate,
+  formatDateWithTimezone,
   formatFlightDateLong,
   formatFlightDateShort,
   formatMonth,
