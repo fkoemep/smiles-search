@@ -87,7 +87,7 @@ export default function MainForm({ params, monthSearchSignal, golSearchSignal, r
                 required
                 type="date"
                 style={dateInputStyle}
-                className={`dark:color-scheme:dark w-40 shadow-md px-2 inline-flex items-center rounded-sm group-valid:border-green-400 group-invalid:border-red-400 h-10 ${inputsStyle}`}
+                className={`dark:color-scheme:dark w-36 shadow-md px-2 inline-flex items-center rounded-sm group-valid:border-green-400 group-invalid:border-red-400 h-10 ${inputsStyle}`}
                 value={departureDate}
                 min={formatDateWithTimezone(minDate)}
                 max={formatDateWithTimezone(maxDate)}
@@ -103,7 +103,7 @@ export default function MainForm({ params, monthSearchSignal, golSearchSignal, r
                       id="departureDate"
                       required
                       type="date"
-                      className={`dark:color-scheme:dark w-40 shadow-md px-2 inline-flex items-center rounded-sm group-valid:border-green-400 group-invalid:border-red-400 h-10 ${inputsStyle}`}
+                      className={`dark:color-scheme:dark w-36 shadow-md px-2 inline-flex items-center rounded-sm group-valid:border-green-400 group-invalid:border-red-400 h-10 ${inputsStyle}`}
                       style={dateInputStyle}
                       value={departureDate}
                       min={formatDateWithTimezone(minDate)}
@@ -127,7 +127,7 @@ export default function MainForm({ params, monthSearchSignal, golSearchSignal, r
                     id="returnDate"
                     required
                     type="date"
-                    className={`dark:color-scheme:dark w-40 shadow-md px-2 inline-flex items-center rounded-sm group-valid:border-green-400 group-invalid:border-red-400 h-10 ${inputsStyle}`}
+                    className={`dark:color-scheme:dark w-36 shadow-md px-2 inline-flex items-center rounded-sm group-valid:border-green-400 group-invalid:border-red-400 h-10 ${inputsStyle}`}
                     min={formatDateWithTimezone(minDate)}
                     max={formatDateWithTimezone(maxDate)}
                     style={dateInputStyle}
@@ -162,7 +162,7 @@ export default function MainForm({ params, monthSearchSignal, golSearchSignal, r
                   id="dateRangeLowestValue"
                   required
                   type="date"
-                  className={`dark:color-scheme:dark w-40 shadow-md px-2 inline-flex items-center rounded-sm group-valid:border-green-400 group-invalid:border-red-400 h-10 ${inputsStyle}`}
+                  className={`dark:color-scheme:dark w-36 shadow-md px-2 inline-flex items-center rounded-sm group-valid:border-green-400 group-invalid:border-red-400 h-10 ${inputsStyle}`}
                   style={dateInputStyle}
                   value={departureDate}
                   min={formatDateWithTimezone(minDate)}
@@ -186,7 +186,7 @@ export default function MainForm({ params, monthSearchSignal, golSearchSignal, r
                   id="dateRangeHighestValue"
                   required
                   type="date"
-                  className={`dark:color-scheme:dark w-40 shadow-md px-2 inline-flex items-center rounded-sm group-valid:border-green-400 group-invalid:border-red-400 h-10 ${inputsStyle}`}
+                  className={`dark:color-scheme:dark w-36 shadow-md px-2 inline-flex items-center rounded-sm group-valid:border-green-400 group-invalid:border-red-400 h-10 ${inputsStyle}`}
                   min={formatDateWithTimezone(minDate)}
                   max={formatDateWithTimezone(maxDate)}
                   style={dateInputStyle}
