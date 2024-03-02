@@ -6,11 +6,11 @@ import {findFlightsForDate, findFlightsInMonth, findFlightsInMonthRountrip} from
 import MainForm from "./main-form.jsx";
 import Filters from "./filters.jsx";
 import Spinner from "components/spinner.jsx";
-// import ConsultasEnSimultaneo from "components/simultaneous-searches-input.jsx";
 import Regions from "components/regions.jsx";
 import {linkStyle, row1Style, row2Style, thStyle} from "../utils/styles.js";
 import {findFlightsInRange, findFlightsInRangeRountrip} from "../utils/api.js";
-import {refreshIntervalSeconds, maxConcurrency} from "../utils/smiles-api.js";
+import {refreshIntervalSeconds, maxConcurrency, limiter, initializeBottleneck} from "../utils/smiles-api.js";
+// import ConsultasEnSimultaneo from "components/simultaneous-searches-input.jsx";
 
 let dolarOficial = 1;
 
@@ -85,6 +85,9 @@ async function onSubmit(searchParams) {
 
     if(filteredList.length >= maxConcurrency || (filteredList.length > 0 && (rangeSearch || monthSearch || roundtripMonthSearch || roundtripRangeSearch))){
       throw new Error('Se ha alcanzado el límite en este período de tiempo, por favor espere unos momentos y vuelva a intentar.');
+    }
+    if(limiter === undefined){
+      initializeBottleneck();
     }
 
     for (const controller of abortControllersSignal.value) {

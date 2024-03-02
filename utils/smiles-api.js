@@ -11,18 +11,9 @@ const refreshIntervalSeconds = 75;//62
 const maxConcurrency = 12;//11
 
 let lastJobTime;
+let limiter;
+let wrappedSearch;
 
-//limit to 5 requests every 10 s
-let limiter = new Bottleneck({
-  reservoir: maxConcurrency, // initial value
-  reservoirRefreshAmount: maxConcurrency,
-  reservoirRefreshInterval: (refreshIntervalSeconds + 2) * 1000, // must be divisible by 250
-
-  // also use maxConcurrent and/or minTime for safety
-  maxConcurrent: maxConcurrency, //concurrencySignal.value,
-  minTime: 10,
-  // strategy: Bottleneck.strategy.BLOCK,
-});
 
 function addEntrytoSearchHistory() {
   return new Promise((resolve, reject) => {
@@ -56,21 +47,38 @@ const fetchFunction = async (url, headers) => {
   }
   );
 };
-const wrappedSearch = limiter.wrap(fetchFunction);
 
-limiter.on("failed", async (error, jobInfo) => {
-  const id = jobInfo.options.id;
-  console.warn(`Job ${id} failed: ${error}`);
+//had to add this function because otherwise deploy fails
+function initializeBottleneck() {
+//limit to 5 requests every 10 s
+  limiter = new Bottleneck({
+    reservoir: maxConcurrency, // initial value
+    reservoirRefreshAmount: maxConcurrency,
+    reservoirRefreshInterval: (refreshIntervalSeconds + 2) * 1000, // must be divisible by 250
 
-  //3 total attempts, counting the original request
-  if (jobInfo.retryCount <= 1) {
-    console.log(`Retrying job ${id} in 30s! Attempt number: ${jobInfo.retryCount}`);
-    return refreshIntervalSeconds * 1000;
-  }
-});
+    // also use maxConcurrent and/or minTime for safety
+    maxConcurrent: maxConcurrency, //concurrencySignal.value,
+    minTime: 10,
+    // strategy: Bottleneck.strategy.BLOCK,
+  });
 
-// Listen to the "retry" event
-limiter.on("retry", (error, jobInfo) => console.log(`Now retrying ${jobInfo.options.id}, Attempt number: ${jobInfo.retryCount}`));
+  wrappedSearch = limiter.wrap(fetchFunction);
+
+  limiter.on("failed", async (error, jobInfo) => {
+    const id = jobInfo.options.id;
+    console.warn(`Job ${id} failed: ${error}`);
+
+    //3 total attempts, counting the original request
+    if (jobInfo.retryCount <= 1) {
+      console.log(`Retrying job ${id} in 30s! Attempt number: ${jobInfo.retryCount}`);
+      return refreshIntervalSeconds * 1000;
+    }
+  });
+
+  // Listen to the "retry" event
+  limiter.on("retry", (error, jobInfo) => console.log(`Now retrying ${jobInfo.options.id}, Attempt number: ${jobInfo.retryCount}`));
+}
+
 
 const defaultParams = {
   currencyCode: "ARS",
@@ -131,7 +139,6 @@ async function _getTax({ flight, fare, flight2, fare2, passengers, paramsObject 
 }
 
 async function searchFlights(paramsObject) {
-
   const controller = new AbortController();
   abortControllersSignal.value = [...abortControllersSignal.value, controller];
 
@@ -323,4 +330,4 @@ async function searchFlights(paramsObject) {
       })()
 }
 
-export { searchFlights, refreshIntervalSeconds, maxConcurrency };
+export { searchFlights, refreshIntervalSeconds, maxConcurrency, limiter, initializeBottleneck }
