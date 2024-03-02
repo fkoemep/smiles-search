@@ -1,8 +1,10 @@
+// @ts-nocheck
+
 import { useRef } from "preact/hooks";
 import { Fragment } from "preact";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "icons";
-import {checkStyle, spanBgStyle} from "../utils/styles.js";
+import {checkStyle, spanBgStyle} from "../utils/styles.ts";
 
 function Dropdown(props) {
   const ref = useRef();

@@ -1,7 +1,7 @@
-import Collapsible from "components/collapsible.jsx";
-import { regionsSignal } from "utils/signals.js";
-import { AIRPORTS_SIZE, EMPTY_REGION, MAX_REGIONS } from "utils/constants.js";
-import {inputsStyle} from "../utils/styles.js";
+import Collapsible from "components/collapsible.tsx";
+import { regionsSignal } from "utils/signals.ts";
+import { AIRPORTS_SIZE, EMPTY_REGION, MAX_REGIONS } from "utils/constants.ts";
+import {inputsStyle} from "../utils/styles.ts";
 
 let airports = new Array(AIRPORTS_SIZE);
 airports.fill(undefined);

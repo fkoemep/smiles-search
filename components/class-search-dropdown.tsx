@@ -1,5 +1,5 @@
-import Dropdown from "components/dropdown.jsx";
-import { filtros } from "utils/flight.js";
+import Dropdown from "components/dropdown.tsx";
+import { filtros } from "utils/flight.ts";
 
 export default function ClassTypeDropdown(
   { value, onChange },

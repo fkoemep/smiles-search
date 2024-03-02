@@ -1,4 +1,6 @@
-import { concurrencySignal } from "utils/signals.js";
+// @ts-nocheck until the components are transformed to TS
+
+import { concurrencySignal } from "utils/signals.ts";
 import { InformationCircleIcon } from "icons";
 import {inputsStyle} from "../utils/styles.js";
 

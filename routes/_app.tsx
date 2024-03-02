@@ -1,6 +1,6 @@
 import { AppProps } from "$fresh/server.ts";
-import Footer from "islands/footer.jsx";
-import { bodyStyle } from "utils/styles.js";
+import Footer from "islands/footer.tsx";
+import { bodyStyle } from "utils/styles.ts";
 
 
 export default function App({ Component }: AppProps) {
@@ -11,9 +11,9 @@ export default function App({ Component }: AppProps) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Smiles Search</title>
+        <link rel="stylesheet" href="/styles.css"/>
       </head>
-      {/*<body class="bg-gray-200 h-full flex flex-col"*/}
-      <body class={bodyStyle}>
+      <body className={bodyStyle}>
         <Component />
         <Footer />
       </body>

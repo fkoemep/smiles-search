@@ -1,6 +1,7 @@
-import { searchFlights } from "./smiles-api.js";
-import { formatDate, maxDate, minDate } from "./dates.js";
-import {sortByMilesAndTaxes, tripTypes} from "./flight.js";
+// @ts-nocheck until the components are transformed to TS
+import { searchFlights } from "./smiles-api.ts";
+import { formatDate, maxDate, minDate } from "./dates.ts";
+import {sortByMilesAndTaxes, tripTypes} from "./flight.ts";
 
 async function findFlightsForDate({ searchParams }) {
   let flightPromises = [];

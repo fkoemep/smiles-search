@@ -1,5 +1,6 @@
+// @ts-nocheck until the components are transformed to TS
 import { Switch } from "@headlessui/react";
-import { selectedButtonStyle, notSelectedButtonStyle } from "utils/styles.js";
+import { selectedButtonStyle, notSelectedButtonStyle } from "utils/styles.ts";
 
 
 export default function RountripSearch({ signal }) {

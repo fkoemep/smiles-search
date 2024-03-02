@@ -1,4 +1,6 @@
-import {inputsStyle} from "../utils/styles.js";
+// @ts-nocheck until the components are transformed to TS
+
+import {inputsStyle} from "../utils/styles.ts";
 
 export default function RountripSearchSlider() {
 

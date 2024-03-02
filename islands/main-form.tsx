@@ -1,24 +1,23 @@
-
 import { Switch } from "@headlessui/react";
 import {
   formatDateWithTimezone,
   maxDate,
   minDate,
   today,
-} from "utils/dates.js";
-import ExpandedSearchSwitch from "components/expanded-search-switch.jsx";
-import MonthSearchSwitch from "components/month-search-switch.jsx";
-import RountripSearchSwitch from "components/roundtrip-search-switch.jsx";
-import RountripSearchSlider from "components/roundtrip-search-slider.jsx";
-import PassengerInputs from "components/passengers-inputs.jsx";
-import GolSearchSwitch from "components/gol-search-switch.jsx";
-import MonthsDropdown from "components/months-dropdown.jsx";
-import SearchTypeDropdown from "components/search-type-dropdown.jsx";
-import OriginDestinationInputs from "components/origin-destination-inputs.jsx";
-import FastSearchSwitch from "components/fast-search-switch.jsx";
+} from "utils/dates.ts";
+import ExpandedSearchSwitch from "components/expanded-search-switch.tsx";
+import MonthSearchSwitch from "components/month-search-switch.tsx";
+import RountripSearchSwitch from "components/roundtrip-search-switch.tsx";
+import RountripSearchSlider from "components/roundtrip-search-slider.tsx";
+import PassengerInputs from "components/passengers-inputs.tsx";
+import GolSearchSwitch from "components/gol-search-switch.tsx";
+import MonthsDropdown from "components/months-dropdown.tsx";
+import SearchTypeDropdown from "components/search-type-dropdown.tsx";
+import OriginDestinationInputs from "components/origin-destination-inputs.tsx";
+import FastSearchSwitch from "components/fast-search-switch.tsx";
 import { useComputed , useSignal } from "@preact/signals";
-import { filtros } from "utils/flight.js";
-import {buttonStyle, dateInputStyle, inputsStyle} from "utils/styles.js";
+import { filtros } from "utils/flight.ts";
+import {buttonStyle, dateInputStyle, inputsStyle} from "utils/styles.ts";
 
 export default function MainForm({ params, monthSearchSignal, golSearchSignal, roundtripSearchSignal, roundtripMonthSearchSignal, expandedSearchSignal, onSubmit, fastSearchSignal, requestsSignal }) {
 
@@ -153,14 +152,14 @@ export default function MainForm({ params, monthSearchSignal, golSearchSignal, r
 
     <fieldset className="flex flex-col gap-2 my-2">
     <PassengerInputs/>
-      <Switch.Group as="div" class="flex items-center gap-2">
-        <label >Adultos (12+ años)</label>
-        <label >Niños (2-12 años)</label>
-        <label >Bebes (0-2 años)</label>
-      </Switch.Group>
+      <fieldset className="group flex gap-1.5 w-full">
+        <label>Adultos (12+ años)</label>
+        <label>Niños (2-12 años)</label>
+        <label>Bebes (0-2 años)</label>
+      </fieldset>
     </fieldset>
 
-    <button type="submit" className={`h-10 shadow-md disabled:opacity-25 rounded-sm px-4 ${buttonStyle}`} disabled = {isLoading}>
+      <button type="submit" className={`h-10 shadow-md disabled:opacity-25 rounded-sm px-4 ${buttonStyle}`} disabled = {isLoading}>
       Buscar
     </button>
 

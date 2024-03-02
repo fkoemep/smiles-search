@@ -1,11 +1,11 @@
 import Bottleneck from "bottleneck";
 // import { effect } from "@preact/signals";
-import { fares } from "./flight.js";
+import { fares } from "./flight.ts";
 import {
   abortControllersSignal,
   // concurrencySignal,
   requestsSignal,
-} from "./signals.js";
+} from "./signals.ts";
 
 const refreshIntervalSeconds = 75;//62
 const maxConcurrency = 12;//11

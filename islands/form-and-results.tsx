@@ -1,16 +1,16 @@
 import {useSignal} from "@preact/signals";
-import {formatFlightDateLong, formatFlightDateShort} from "utils/dates.js";
-import {airlineCodes, filterFlights, filtros, getLink, sortByMilesAndTaxes, tripTypes, cabinas} from "utils/flight.js";
-import {abortControllersSignal, regionsSignal, requestsSignal, resultadosSignal} from "utils/signals.js";
-import {findFlightsForDate, findFlightsInMonth, findFlightsInMonthRountrip} from "api";
-import MainForm from "./main-form.jsx";
-import Filters from "./filters.jsx";
-import Spinner from "components/spinner.jsx";
-import Regions from "components/regions.jsx";
-import {linkStyle, row1Style, row2Style, thStyle} from "../utils/styles.js";
-import {findFlightsInRange, findFlightsInRangeRountrip} from "../utils/api.js";
-import {refreshIntervalSeconds, maxConcurrency, limiter, initializeBottleneck} from "../utils/smiles-api.js";
-// import ConsultasEnSimultaneo from "components/simultaneous-searches-input.jsx";
+import {formatFlightDateLong, formatFlightDateShort} from "utils/dates.ts";
+import {airlineCodes, filterFlights, filtros, getLink, sortByMilesAndTaxes, tripTypes, cabinas} from "utils/flight.ts";
+import {abortControllersSignal, regionsSignal, requestsSignal, resultadosSignal} from "utils/signals.ts";
+import {findFlightsForDate, findFlightsInMonth, findFlightsInMonthRountrip} from "../utils/api.ts";
+import MainForm from "./main-form.tsx";
+import Filters from "./filters.tsx";
+import Spinner from "components/spinner.tsx";
+import Regions from "components/regions.tsx";
+import {linkStyle, row1Style, row2Style, thStyle} from "../utils/styles.ts";
+import {findFlightsInRange, findFlightsInRangeRountrip} from "../utils/api.ts";
+import {refreshIntervalSeconds, maxConcurrency, limiter, initializeBottleneck} from "../utils/smiles-api.ts";
+// import ConsultasEnSimultaneo from "components/simultaneous-searches-input.tsx";
 
 let dolarOficial = 1;
 

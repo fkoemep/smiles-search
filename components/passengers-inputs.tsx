@@ -1,6 +1,8 @@
-import { filtros } from "utils/flight.js";
-import RegionsDropdown from "./regions-dropdown.jsx";
-import {inputsStyle} from "../utils/styles.js";
+// @ts-nocheck until the components are transformed to TS
+
+import { filtros } from "utils/flight.ts";
+import RegionsDropdown from "./regions-dropdown.tsx";
+import {inputsStyle} from "../utils/styles.ts";
 import { Switch } from "@headlessui/react";
 
 export default function PassengerInputs({  }) {
@@ -8,8 +10,6 @@ export default function PassengerInputs({  }) {
 
 
       <fieldset className="group flex gap-2 w-full">
-
-          <Switch.Group as="div" class="flex items-center gap-4">
 
           <input
             id="numberOfAdults"
@@ -64,7 +64,6 @@ export default function PassengerInputs({  }) {
             min={0}
             max={9}
         />
-          </Switch.Group>
 
       </fieldset>
 

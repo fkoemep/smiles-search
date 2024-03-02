@@ -1,6 +1,8 @@
-import { filtros } from "utils/flight.js";
-import RegionsDropdown from "./regions-dropdown.jsx";
-import {inputsStyle} from "../utils/styles.js";
+// @ts-nocheck until the components are transformed to TS
+
+import { filtros } from "utils/flight.ts";
+import RegionsDropdown from "./regions-dropdown.tsx";
+import {inputsStyle} from "../utils/styles.ts";
 
 export default function OriginDestinationInputs({ defaults, searchType }) {
   return (

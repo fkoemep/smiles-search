@@ -14,7 +14,7 @@ const spanBgStyle = 'bg-white dark:bg-gray-600'
 
 const checkStyle = 'text-blue-600 dark:text-blue-400 dark:font-weight:bolder'
 
-const bodyStyle = 'bg(gray-100 dark:gray-900) dark:text-gray-100 h-full flex flex-col'
+const bodyStyle = 'bg-gray-100 dark:bg-gray-900 dark:text-gray-100 h-full flex flex-col'
 
 const inputsStyle = 'bg-white dark:bg-gray-600'
 

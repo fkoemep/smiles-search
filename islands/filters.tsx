@@ -1,9 +1,9 @@
-import { filtros } from "utils/flight.js";
-import { resultadosSignal } from "utils/signals.js";
-import Dropdown from "components/dropdown.jsx";
-import Collapsible from "components/collapsible.jsx";
-import { apiPath } from "api";
-import {inputsStyle} from "../utils/styles.js";
+import { filtros } from "utils/flight.ts";
+import { resultadosSignal } from "utils/signals.ts";
+import Dropdown from "components/dropdown.tsx";
+import Collapsible from "components/collapsible.tsx";
+import { apiPath } from "../utils/api.ts";
+import {inputsStyle} from "../utils/styles.ts";
 
 export default function Filtros({ onChange, airlineCodeList, layoverAirports, cabins }) {
 
