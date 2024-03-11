@@ -190,19 +190,7 @@ const filtros = {
   },
 };
 
-function filterFlights({ allFlights, daySearch, filters }) {
-  const airlineCodes = Object.entries(filters).filter(([key, _value]) =>
-    key.startsWith("airlines") && key.endsWith("[id]")
-  ).map(([_key, value]) => value);
-
-  const layoverAirportCodes = Object.entries(filters).filter(([key, _value]) =>
-      key.startsWith("layoverAirports") && key.endsWith("[id]")
-  ).map(([_key, value]) => value);
-
-
-  const cabins = Object.entries(filters).filter(([key, _value]) =>
-      key.startsWith("cabinType") && key.endsWith("[id]")
-  ).map(([_key, value]) => value);
+function filterFlights({ allFlights, daySearch, filters, airlineCodes, layoverAirportCodes, cabins }) {
 
   const filterFunction = (someFlight) => {
     let cabinFilter = true,

@@ -214,7 +214,6 @@ export default function FormAndResults({ params }) {
                 key.startsWith("airlines") && key.endsWith("[id]")
             ).map(([_key, value]) => value) : [];
 
-            let noChange = JSON.stringify(airlineCodes) === JSON.stringify(oldAirlineCodes);
 
             const layoverAirportCodes = Object.entries(newFilters).filter(([key, _value]) =>
                 key.startsWith("layoverAirports") && key.endsWith("[id]")
@@ -224,16 +223,32 @@ export default function FormAndResults({ params }) {
                 key.startsWith("layoverAirports") && key.endsWith("[id]")
             ).map(([_key, value]) => value) : [];
 
+
+            const cabinCodes = Object.entries(newFilters).filter(([key, _value]) =>
+                key.startsWith("cabinType") && key.endsWith("[id]")
+            ).map(([_key, value]) => value);
+
+            const oldCabinCodes = Boolean(oldFilter) ? Object.entries(oldFilter).filter(([key, _value]) =>
+                key.startsWith("cabinType") && key.endsWith("[id]")
+            ).map(([_key, value]) => value) : [];
+
+            const noAirlineChange = JSON.stringify(airlineCodes) === JSON.stringify(oldAirlineCodes);
+            const noLayoverChange = JSON.stringify(layoverAirportCodes) === JSON.stringify(oldLayoverAirportCodes);
+            const noCabinChange = JSON.stringify(cabinCodes) === JSON.stringify(oldCabinCodes);
+
             requestsSignal.value = {
               ...requestsSignal.value,
-              airlineCodeList: airlineCodeList,
-              layoverAirports: noChange ? layoverAirports : [],
-              cabins: noChange ? cabins : [],
+              airlineCodeList: noCabinChange && noLayoverChange ? airlineCodeList: [],
+              layoverAirports: noAirlineChange && noCabinChange ? layoverAirports : [],
+              cabins: noAirlineChange && noLayoverChange ? cabins : [],
               oldFilter: newFilters,
               filtered: filterFlights({
                 allFlights: requestsSignal.value.data,
                 daySearch: requestsSignal.value.daySearch,
                 filters: newFilters,
+                airlineCodes: airlineCodes,
+                layoverAirportCodes: layoverAirportCodes,
+                cabins: cabinCodes,
               }),
             };
           }}

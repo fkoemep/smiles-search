@@ -32,6 +32,7 @@ export default function Filtros({ onChange, airlineCodeList, layoverAirports, ca
           name="airlines"
           defaultValue={filtros.defaults.airlineCodes}
           multiple
+          by="id"
         >
           <Dropdown.Button>
             {({ value }) => (
@@ -67,6 +68,7 @@ export default function Filtros({ onChange, airlineCodeList, layoverAirports, ca
             name="layoverAirports"
             defaultValue={filtros.defaults.airlineCodes}
             multiple
+            by="id"
         >
           <Dropdown.Button>
             {({ value }) => (
@@ -93,6 +95,28 @@ export default function Filtros({ onChange, airlineCodeList, layoverAirports, ca
                     </span>
                       </>
                   )}
+                </Dropdown.Option>
+            ))}
+          </Dropdown.Options>
+        </Dropdown>
+
+        <Dropdown
+            name="cabinType"
+            defaultValue={filtros.defaults.cabinas}
+            multiple
+            by="id"
+        >
+          <Dropdown.Button>
+            {({ value }) => (
+                <div>
+                  Cabina: {value.length > 0 ? ` (${ value.length})` : "Todas"}
+                </div>
+            )}
+          </Dropdown.Button>
+          <Dropdown.Options>
+            {cabins.map((option) => (
+                <Dropdown.Option key={option.id} value={option}>
+                  {option.name}
                 </Dropdown.Option>
             ))}
           </Dropdown.Options>
@@ -125,26 +149,6 @@ export default function Filtros({ onChange, airlineCodeList, layoverAirports, ca
             {filtros.viajeFacil.map((vf) => (
               <Dropdown.Option key={vf.id} value={vf}>
                 {vf.name}
-              </Dropdown.Option>
-            ))}
-          </Dropdown.Options>
-        </Dropdown>
-        <Dropdown
-          name="cabinType"
-          defaultValue={filtros.defaults.cabinas}
-          multiple
-        >
-          <Dropdown.Button>
-            {({ value }) => (
-                <div>
-                  Cabina: {value.length > 0 ? ` (${value.length})` : "Todas"}
-                </div>
-            )}
-          </Dropdown.Button>
-          <Dropdown.Options>
-            {cabins.map((option) => (
-              <Dropdown.Option key={option.id} value={option}>
-                {option.name}
               </Dropdown.Option>
             ))}
           </Dropdown.Options>
