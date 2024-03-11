@@ -215,7 +215,7 @@ async function searchFlights(paramsObject) {
               airlineTax = airlineTax * (passenger.children + passenger.adults);
             }
 
-            if (airlineTax === 0)
+            if (airlineTax === 0 && !(typeof dolarOficial === 'number'))
             {
               return null;
             }
@@ -229,7 +229,7 @@ async function searchFlights(paramsObject) {
               destinationForURL: paramsObject.destinationAirportCode,
               viajeFacil: someFlight['codeContext'] === "FFY",
               fare: {
-                airlineTax: airlineTax * (passenger.children + passenger.adults),
+                airlineTax: airlineTax,
                 miles: fare.miles * (passenger.children + passenger.adults),
                 money: fare.money * (passenger.children + passenger.adults),
                 type: someFlight['sourceFare'],
@@ -282,7 +282,7 @@ async function searchFlights(paramsObject) {
           secondSegmentFareTax = firstSegmentFareTax * (passenger.children + passenger.adults);
         }
 
-        if (firstSegmentFareTax === 0) {
+        if (firstSegmentFareTax === 0 && !(typeof dolarOficial === 'number')) {
           return null;
         }
 
