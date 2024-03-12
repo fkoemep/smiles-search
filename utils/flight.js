@@ -132,13 +132,13 @@ const airlineCodes = {
   "H2": "SKY Airline",
 };
 
+const escalas = {
+  "": "Cualquier número de escalas",
+  "0": "Solo vuelos directos",
+  "1": "1 escala o menos",
+  "2": "2 escalas o menos",
+};
 
-const escalas = [
-  { id: "", name: "Indistinto" },
-  { id: 0, name: "Ninguna" },
-  { id: 1, name: "Una o ninguna" },
-  { id: 2, name: "Dos o menos" },
-];
 const viajeFacil = [{ id: "", name: "Indistinto" }, {
   id: "1",
   name: "Sólo viaje fácil",
@@ -182,7 +182,7 @@ const filtros = {
     originAirportCode: "BUE",
     cabinas: [],
     airlineCodes: [],
-    escalas: escalas[0],
+    escalas: escalas[''],
     viajeFacil: viajeFacil[0],
     tarifas: tarifas[0],
     searchTypes: searchTypes[0],

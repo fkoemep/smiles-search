@@ -180,6 +180,7 @@ export default function FormAndResults({ params }) {
   let airlineCodeList = Boolean(requestsSignal.value.airlineCodeList) ? requestsSignal.value.airlineCodeList : new Set();
   let layoverAirports = Boolean(requestsSignal.value.layoverAirports) ? requestsSignal.value.layoverAirports : new Set();
   let cabins = Boolean(requestsSignal.value.cabins) ? requestsSignal.value.cabins : new Set();
+  let stops = Boolean(requestsSignal.value.stops) ? requestsSignal.value.stops : new Set(['']);
 
   return (
     <div class="p-4 gap-4 flex flex-col flex-grow-[1]">
@@ -198,7 +199,7 @@ export default function FormAndResults({ params }) {
 
       {requestsSignal.value.data?.length > 0 && (
 
-        <Filters airlineCodeList = {airlineCodeList} layoverAirports = {layoverAirports} cabins={cabins}
+        <Filters airlineCodeList = {airlineCodeList} layoverAirports = {layoverAirports} cabins={cabins} stops={stops}
           onChange={(newFilters) => {
 
             const airlineCodes = Object.entries(newFilters).filter(([key, _value]) =>
@@ -228,12 +229,15 @@ export default function FormAndResults({ params }) {
             const noAirlineChange = JSON.stringify(airlineCodes) === JSON.stringify(oldAirlineCodes);
             const noLayoverChange = JSON.stringify(layoverAirportCodes) === JSON.stringify(oldLayoverAirportCodes);
             const noCabinChange = JSON.stringify(cabinCodes) === JSON.stringify(oldCabinCodes);
+            const noStopsChange = newFilters['stops[id]'] === (Boolean(oldFilter) ? oldFilter['stops[id]'] : '');
+
 
             requestsSignal.value = {
               ...requestsSignal.value,
-              airlineCodeList: noCabinChange && noLayoverChange ? airlineCodeList: new Set(),
-              layoverAirports: noAirlineChange && noCabinChange ? layoverAirports : new Set(),
-              cabins: noAirlineChange && noLayoverChange ? cabins : new Set(),
+              airlineCodeList: noCabinChange && noLayoverChange && noStopsChange ? airlineCodeList: new Set(),
+              layoverAirports: noAirlineChange && noCabinChange && noStopsChange ? layoverAirports : new Set(),
+              cabins: noAirlineChange && noLayoverChange && noStopsChange ? cabins : new Set(),
+              stops: noAirlineChange && noLayoverChange && noCabinChange ? stops : new Set(['']),
               oldFilter: newFilters,
               filtered: filterFlights({
                 allFlights: requestsSignal.value.data,
@@ -242,6 +246,7 @@ export default function FormAndResults({ params }) {
                 airlineCodes: airlineCodes,
                 layoverAirportCodes: layoverAirportCodes,
                 cabins: cabinCodes,
+                stops: stops,
               }),
             };
           }}
@@ -313,6 +318,8 @@ export default function FormAndResults({ params }) {
 
                   airlineCodeList.add(JSON.stringify({id: flight.airline.code, name: airlineCodes[flight.airline.code]}));
                   cabins.add(JSON.stringify({id: flight.cabin, name: cabinas[flight.cabin]}));
+                  stops.add(flight.stops <= 2 ? String(flight.stops) : "2");
+
                   if(flight.stops > 0){
 
                     flight.legList.map(function(leg) {
@@ -331,6 +338,8 @@ export default function FormAndResults({ params }) {
                   if(Boolean(flight.returnAirline)){
                     airlineCodeList.add(JSON.stringify({id: flight.returnAirline.code, name: airlineCodes[flight.returnAirline.code]}));
                     cabins.add(JSON.stringify({id: flight.returnCabin, name:cabinas[flight.returnCabin]}));
+                    stops.add(flight.stopsReturnFlight <= 2 ? String(flight.stopsReturnFlight) : "2");
+
                     if(flight.stopsReturnFlight > 0){
                       flight.returnLegList.map(function(leg) {
 

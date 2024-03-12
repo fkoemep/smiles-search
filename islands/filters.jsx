@@ -5,11 +5,12 @@ import Collapsible from "components/collapsible.jsx";
 import { apiPath } from "../utils/api.js";
 import {inputsStyle} from "../utils/styles.js";
 
-export default function Filtros({ onChange, airlineCodeList, layoverAirports, cabins }) {
+export default function Filtros({ onChange, airlineCodeList, layoverAirports, cabins, stops }) {
 
   airlineCodeList = [...airlineCodeList].map(JSON.parse);
   cabins = [...cabins].map(JSON.parse);
   layoverAirports = [...layoverAirports].map(JSON.parse);
+  stops = [...stops];
 
 
   return (
@@ -115,17 +116,17 @@ export default function Filtros({ onChange, airlineCodeList, layoverAirports, ca
           </Dropdown.Options>
         </Dropdown>
 
-        <Dropdown name="stops" defaultValue={filtros.defaults.escalas}>
+        <Dropdown name="stops" defaultValue={{id: '', name: filtros.defaults.escalas}} by="id">
           <Dropdown.Button>
             {({ value }) => `Escalas: ${value.name}`}
           </Dropdown.Button>
           <Dropdown.Options>
-            {filtros.escalas.map((escala) => (
+            {stops.map((escala) => (
               <Dropdown.Option
-                key={escala.id}
-                value={escala}
+                key={escala}
+                value={{id: escala, name: filtros.escalas[escala]}}
               >
-                {escala.name}
+                {filtros.escalas[escala]}
               </Dropdown.Option>
             ))}
           </Dropdown.Options>
