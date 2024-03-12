@@ -1,7 +1,5 @@
-// @ts-nocheck until the components are transformed to TS
-
 import { Switch } from "@headlessui/react";
-import {selectedButtonStyle, notSelectedButtonStyle, thStyle} from "utils/styles.ts";
+import {selectedButtonStyle, notSelectedButtonStyle, thStyle} from "utils/styles.js";
 
 export default function MonthSearch({ signal }) {
   return (

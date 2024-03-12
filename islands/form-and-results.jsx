@@ -1,16 +1,15 @@
 import {useSignal} from "@preact/signals";
-import {formatFlightDateLong, formatFlightDateShort} from "utils/dates.ts";
-import {airlineCodes, filterFlights, filtros, getLink, sortByMilesAndTaxes, tripTypes, cabinas} from "utils/flight.ts";
-import {abortControllersSignal, regionsSignal, requestsSignal, resultadosSignal} from "utils/signals.ts";
-import {findFlightsForDate, findFlightsInMonth, findFlightsInMonthRountrip} from "../utils/api.ts";
-import MainForm from "./main-form.tsx";
-import Filters from "./filters.tsx";
-import Spinner from "components/spinner.tsx";
-import Regions from "components/regions.tsx";
-import {linkStyle, row1Style, row2Style, thStyle} from "../utils/styles.ts";
-import {findFlightsInRange, findFlightsInRangeRountrip} from "../utils/api.ts";
-import {refreshIntervalSeconds, maxConcurrency, limiter, initializeBottleneck} from "../utils/smiles-api.ts";
-// import ConsultasEnSimultaneo from "components/simultaneous-searches-input.tsx";
+import {formatFlightDateLong, formatFlightDateShort} from "utils/dates.js";
+import {airlineCodes, filterFlights, filtros, getLink, sortByMilesAndTaxes, tripTypes, cabinas} from "utils/flight.js";
+import {abortControllersSignal, regionsSignal, requestsSignal, resultadosSignal} from "utils/signals.js";
+import {findFlightsForDate, findFlightsInMonth, findFlightsInMonthRountrip} from "../utils/api.js";
+import MainForm from "./main-form.jsx";
+import Filters from "./filters.jsx";
+import Spinner from "components/spinner.jsx";
+import Regions from "components/regions.jsx";
+import {linkStyle, row1Style, row2Style, thStyle} from "../utils/styles.js";
+import {findFlightsInRange, findFlightsInRangeRountrip} from "../utils/api.js";
+import {refreshIntervalSeconds, maxConcurrency, limiter, initializeBottleneck} from "../utils/smiles-api.js";
 
 let dolarOficial = 1;
 
@@ -52,8 +51,6 @@ async function onSubmit(searchParams) {
       shouldFetch = searchParams["region_to"] && regionTo?.airports[0] &&
         searchParams["region_from"] && regionFrom?.airports[0];
     }
-
-    console.log(searchParams, shouldFetch)
 
     if (!shouldFetch){
       return null;
@@ -150,12 +147,11 @@ async function onSubmit(searchParams) {
 
     if (filtered) {
       filtered = sortByMilesAndTaxes(filtered);
-      // filtered = filtered.slice(0, resultadosSignal.value);
     }
 
     requestsSignal.value = {
       status: "finished",
-      data: filtered, //flights,
+      data: filtered,
       daySearch: daySearch,
       filtered,
     };
@@ -187,7 +183,6 @@ export default function FormAndResults({ params }) {
 
   return (
     <div class="p-4 gap-4 flex flex-col flex-grow-[1]">
-      {/*<ConsultasEnSimultaneo />*/}
       <Regions />
       <MainForm
         params={params}
@@ -210,27 +205,25 @@ export default function FormAndResults({ params }) {
                 key.startsWith("airlines") && key.endsWith("[id]")
             ).map(([_key, value]) => value);
 
-            const oldAirlineCodes = Boolean(oldFilter) ? Object.entries(oldFilter).filter(([key, _value]) =>
-                key.startsWith("airlines") && key.endsWith("[id]")
-            ).map(([_key, value]) => value) : [];
+            newFilters['airlines'] = airlineCodes;
 
+            const oldAirlineCodes = Boolean(oldFilter) ? oldFilter['airlines'] : [];
 
             const layoverAirportCodes = Object.entries(newFilters).filter(([key, _value]) =>
                 key.startsWith("layoverAirports") && key.endsWith("[id]")
             ).map(([_key, value]) => value);
 
-            const oldLayoverAirportCodes = Boolean(oldFilter) ? Object.entries(oldFilter).filter(([key, _value]) =>
-                key.startsWith("layoverAirports") && key.endsWith("[id]")
-            ).map(([_key, value]) => value) : [];
+            newFilters['layoverAirports'] = layoverAirportCodes;
 
+            const oldLayoverAirportCodes = Boolean(oldFilter) ? oldFilter['layoverAirports'] : [];
 
             const cabinCodes = Object.entries(newFilters).filter(([key, _value]) =>
                 key.startsWith("cabinType") && key.endsWith("[id]")
             ).map(([_key, value]) => value);
 
-            const oldCabinCodes = Boolean(oldFilter) ? Object.entries(oldFilter).filter(([key, _value]) =>
-                key.startsWith("cabinType") && key.endsWith("[id]")
-            ).map(([_key, value]) => value) : [];
+            newFilters['cabins'] = cabinCodes;
+
+            const oldCabinCodes = Boolean(oldFilter) ? oldFilter['cabins'] : [];
 
             const noAirlineChange = JSON.stringify(airlineCodes) === JSON.stringify(oldAirlineCodes);
             const noLayoverChange = JSON.stringify(layoverAirportCodes) === JSON.stringify(oldLayoverAirportCodes);

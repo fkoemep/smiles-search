@@ -1,6 +1,6 @@
 import { AppProps } from "$fresh/server.ts";
-import Footer from "islands/footer.tsx";
-import { bodyStyle } from "utils/styles.ts";
+import Footer from "islands/footer.jsx";
+import { bodyStyle } from "utils/styles.js";
 
 
 export default function App({ Component }: AppProps) {

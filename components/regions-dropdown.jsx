@@ -1,5 +1,5 @@
-import Dropdown from "components/dropdown.tsx";
-import { regionsSignal } from "utils/signals.ts";
+import Dropdown from "components/dropdown.jsx";
+import { regionsSignal } from "utils/signals.js";
 
 export default function RegionsDropdown(
   { class: className, name, defaultValue, placeholder = "Elija una región" },

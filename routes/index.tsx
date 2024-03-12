@@ -1,4 +1,4 @@
-import FormAndResults from "islands/form-and-results.tsx";
+import FormAndResults from "islands/form-and-results.jsx";
 
 export default function Home({ url }) {
   return (

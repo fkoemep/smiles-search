@@ -4,7 +4,7 @@ import { useRef } from "preact/hooks";
 import { Fragment } from "preact";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "icons";
-import {checkStyle, spanBgStyle} from "../utils/styles.ts";
+import {checkStyle, spanBgStyle} from "../utils/styles.js";
 
 function Dropdown(props) {
   const ref = useRef();

@@ -4,20 +4,20 @@ import {
   maxDate,
   minDate,
   today,
-} from "utils/dates.ts";
-import ExpandedSearchSwitch from "components/expanded-search-switch.tsx";
-import MonthSearchSwitch from "components/month-search-switch.tsx";
-import RountripSearchSwitch from "components/roundtrip-search-switch.tsx";
-import RountripSearchSlider from "components/roundtrip-search-slider.tsx";
-import PassengerInputs from "components/passengers-inputs.tsx";
-import GolSearchSwitch from "components/gol-search-switch.tsx";
-import MonthsDropdown from "components/months-dropdown.tsx";
-import SearchTypeDropdown from "components/search-type-dropdown.tsx";
-import OriginDestinationInputs from "components/origin-destination-inputs.tsx";
-import FastSearchSwitch from "components/fast-search-switch.tsx";
+} from "utils/dates.js";
+import ExpandedSearchSwitch from "components/expanded-search-switch.jsx";
+import MonthSearchSwitch from "components/month-search-switch.jsx";
+import RountripSearchSwitch from "components/roundtrip-search-switch.jsx";
+import RountripSearchSlider from "components/roundtrip-search-slider.jsx";
+import PassengerInputs from "components/passengers-inputs.jsx";
+import GolSearchSwitch from "components/gol-search-switch.jsx";
+import MonthsDropdown from "components/months-dropdown.jsx";
+import SearchTypeDropdown from "components/search-type-dropdown.jsx";
+import OriginDestinationInputs from "components/origin-destination-inputs.jsx";
+import FastSearchSwitch from "components/fast-search-switch.jsx";
 import { useComputed , useSignal } from "@preact/signals";
-import { filtros } from "utils/flight.ts";
-import {buttonStyle, dateInputStyle, inputsStyle} from "utils/styles.ts";
+import { filtros } from "utils/flight.js";
+import {buttonStyle, dateInputStyle, inputsStyle} from "utils/styles.js";
 
 export default function MainForm({ params, monthSearchSignal, golSearchSignal, roundtripSearchSignal, roundtripMonthSearchSignal, expandedSearchSignal, onSubmit, fastSearchSignal, requestsSignal }) {
 

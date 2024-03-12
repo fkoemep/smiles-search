@@ -5,10 +5,10 @@
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $index from "./routes/index.tsx";
-import * as $filters from "./islands/filters.tsx";
-import * as $footer from "./islands/footer.tsx";
-import * as $form_and_results from "./islands/form-and-results.tsx";
-import * as $main_form from "./islands/main-form.tsx";
+import * as $filters from "./islands/filters.jsx";
+import * as $footer from "./islands/footer.jsx";
+import * as $form_and_results from "./islands/form-and-results.jsx";
+import * as $main_form from "./islands/main-form.jsx";
 import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -18,10 +18,10 @@ const manifest = {
     "./routes/index.tsx": $index,
   },
   islands: {
-    "./islands/filters.tsx": $filters,
-    "./islands/footer.tsx": $footer,
-    "./islands/form-and-results.tsx": $form_and_results,
-    "./islands/main-form.tsx": $main_form,
+    "./islands/filters.jsx": $filters,
+    "./islands/footer.jsx": $footer,
+    "./islands/form-and-results.jsx": $form_and_results,
+    "./islands/main-form.jsx": $main_form,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

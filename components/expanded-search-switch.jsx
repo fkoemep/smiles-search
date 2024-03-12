@@ -1,5 +1,5 @@
 import { Switch } from "@headlessui/react";
-import { selectedButtonStyle, notSelectedButtonStyle } from "utils/styles.ts";
+import { selectedButtonStyle, notSelectedButtonStyle } from "utils/styles.js";
 
 export default function ExpandedSearch({ signal, roundtripSearchSignal }) {
   return (

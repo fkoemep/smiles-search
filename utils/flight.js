@@ -1,4 +1,4 @@
-import { resultadosSignal } from "./signals.ts";
+import { resultadosSignal } from "./signals.js";
 
 const fares = {
   moneyClub: "SMILES_MONEY_CLUB",

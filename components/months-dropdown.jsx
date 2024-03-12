@@ -1,5 +1,5 @@
-import Dropdown from "components/dropdown.tsx";
-import { months } from "utils/dates.ts";
+import Dropdown from "components/dropdown.jsx";
+import { months } from "utils/dates.js";
 
 export default function MonthsDropdown(
   { defaultValue = months[0].id, ...props },

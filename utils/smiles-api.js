@@ -1,16 +1,16 @@
 import Bottleneck from "bottleneck";
 // import { effect } from "@preact/signals";
-import { fares } from "./flight.ts";
+import { fares } from "./flight.js";
 import {
   abortControllersSignal,
   // concurrencySignal,
   requestsSignal,
-} from "./signals.ts";
+} from "./signals.js";
 
 const refreshIntervalSeconds = 75;//62
 const maxConcurrency = 12;//11
+const milisecondsBetweenRequests = 333;
 
-let lastJobTime;
 let limiter;
 let wrappedSearch;
 
@@ -50,16 +50,13 @@ const fetchFunction = async (url, headers) => {
 
 //had to add this function because otherwise deploy fails
 function initializeBottleneck() {
-//limit to 5 requests every 10 s
   limiter = new Bottleneck({
     reservoir: maxConcurrency, // initial value
     reservoirRefreshAmount: maxConcurrency,
     reservoirRefreshInterval: (refreshIntervalSeconds + 2) * 1000, // must be divisible by 250
 
-    // also use maxConcurrent and/or minTime for safety
     maxConcurrent: maxConcurrency, //concurrencySignal.value,
-    minTime: 333,
-    // strategy: Bottleneck.strategy.BLOCK,
+    minTime: milisecondsBetweenRequests,
   });
 
   wrappedSearch = limiter.wrap(fetchFunction);
@@ -75,7 +72,6 @@ function initializeBottleneck() {
     }
   });
 
-  // Listen to the "retry" event
   limiter.on("retry", (error, jobInfo) => console.log(`Now retrying ${jobInfo.options.id}, Attempt number: ${jobInfo.retryCount}`));
 }
 

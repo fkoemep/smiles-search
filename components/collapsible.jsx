@@ -1,6 +1,6 @@
 import { Disclosure, Transition } from "@headlessui/react";
 import { ChevronDownIcon, ChevronUpIcon } from "icons";
-import { disclosureButtonStyle, chevronIcons, disclosurePanel } from "utils/styles.ts";
+import { disclosureButtonStyle, chevronIcons, disclosurePanel } from "utils/styles.js";
 
 export default function Collapsible(
   { text, as, children, class: className, ...props },
