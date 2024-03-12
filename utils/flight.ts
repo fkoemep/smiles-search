@@ -258,21 +258,12 @@ function filterFlights({ allFlights, daySearch, filters, airlineCodes, layoverAi
     if (filters["maxhours"]) {
       hoursFilter = someFlight.durationInHours <= Number(filters["maxhours"]) && (!Boolean(someFlight.returnDurationInHours) || someFlight.returnDurationInHours <= Number(filters["maxhours"]));
     }
-    return [
-      cabinFilter,
-      airlinesFilter,
-      stopsFilter,
-      viajeFacilFilter,
-      tarifaFilter,
-      hoursFilter,
-      layoverAirportsFilter,
-    ].every((filter) => filter);
+    return cabinFilter && airlinesFilter && stopsFilter && viajeFacilFilter && tarifaFilter && hoursFilter && layoverAirportsFilter;
   };
 
   let filtered = allFlights.filter(filterFunction);
 
-  // filtered = sortByMilesAndTaxes(filtered);
-  return filtered //.slice(0, resultadosSignal.value);
+  return filtered;
 }
 
 export {
