@@ -24,16 +24,10 @@ async function findFlightsForDate({ searchParams }) {
         if (Boolean(searchParams.returnDate)) {parameters.returnDate =  searchParams.returnDate}
         if(Boolean(searchParams.dolarOficial)){parameters.dolarOficial = searchParams.dolarOficial}
 
-      flightPromises = [
-        ...flightPromises,
-        searchFlights(
-            parameters,
-        ),
-      ];
+      flightPromises = [...flightPromises, searchFlights(parameters)];
     }
   }
-  const allFlightsArray = await Promise.all(flightPromises);
-  return allFlightsArray.flat().filter(Boolean);
+  return await Promise.all(flightPromises);
 }
 
 function findFlightsInMonth({ searchParams, month }) {

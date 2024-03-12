@@ -7,6 +7,11 @@ import {inputsStyle} from "../utils/styles.ts";
 
 export default function Filtros({ onChange, airlineCodeList, layoverAirports, cabins }) {
 
+  airlineCodeList = [...airlineCodeList].map(JSON.parse);
+  cabins = [...cabins].map(JSON.parse);
+  layoverAirports = [...layoverAirports].map(JSON.parse);
+
+
   return (
     <form
       onChange={(event) => {
@@ -15,18 +20,6 @@ export default function Filtros({ onChange, airlineCodeList, layoverAirports, ca
         onChange(filters);
       }}
     >
-      <label>
-        Resultados<input
-          type="number"
-          name="results"
-          max={100}
-          value={resultadosSignal.value}
-          onChange={(ev) => {
-            resultadosSignal.value = Number(ev.target.value);
-          }}
-          class={`h-10 ml-2 mb-2 rounded-sm px-2 w-16 ${inputsStyle}`}
-        />
-      </label>
       <Collapsible text="Filtros" class="sm:grid sm:grid-cols-2 lg:grid-cols-3">
         <Dropdown
           name="airlines"

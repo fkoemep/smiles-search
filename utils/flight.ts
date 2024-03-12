@@ -65,73 +65,73 @@ function sortByMilesAndTaxes(flightList) {
 
 
 
-const cabinas = [
-  { id: "all", name: "Todas" },
-  { id: "ECONOMIC", name: "Económica" },
-  { id: "PREMIUM_ECONOMIC", name: "Premium Economy" },
-  { id: "COMFORT", name: "Confort (GOL)" },
-  { id: "BUSINESS", name: "Ejecutiva" },
-];
+const cabinas = {
+  "all": "Todas",
+  "ECONOMIC": "Económica",
+  "PREMIUM_ECONOMIC": "Premium Economy",
+  "COMFORT": "Confort (GOL)",
+  "BUSINESS": "Ejecutiva",
+};
 
+const airlineCodes = {
+  "AA": "American Airlines",
+  "AR": "Aerolíneas Argentinas",
+  "UX": "Air Europa",
+  "AM": "AeroMéxico",
+  "AV": "Avianca",
+  "CM": "Copa Airlines",
+  "AF": "Air France",
+  "KL": "KLM",
+  "AC": "Air Canadá",
+  "IB": "Iberia",
+  "EK": "Emirates",
+  "TK": "Turkish Airlines",
+  "TP": "TAP Portugal",
+  "SA": "SouthAfrican Airways",
+  "ET": "Ethiopian Airways",
+  "AT": "Royal Air Maroc",
+  "KE": "Korean Air",
+  "2Z": "Voe Pass",
+  "G3": "Gol",
+  "VH": "Viva Air",
+  "A3": "Aegean",
+  "MS": "Egyptair",
+  "AS": "Alaska Airlines",
+  "EI": "Aer Lingus",
+  "VA": "Virgin Australia",
+  "V7": "Volotea",
+  "NH": "Ana",
+  "XW": "Sky Express",
+  "AI": "Air India",
+  "4O": "Interjet",
+  "OU": "Croatia Airlines",
+  "UP": "Bahamas Air",
+  "HA": "Hawaiian Airlines",
+  "OB": "Boliviana de Aviación",
+  "TR": "Scoot",
+  "OK": "Czech Airlines",
+  "JQ": "Jetstar",
+  "MN": "Kulula",
+  "PG": "Bangkok Airways",
+  "WM": "Winair",
+  "KQ": "Kenya Airways",
+  "BT": "Air Baltic",
+  "MU": "China Estern",
+  "ZP": "Paranair",
+  "ME": "MEA",
+  "GA": "Garuda Indonesia",
+  "HO": "Juneyao Airlines",
+  "SG": "SpiceJet",
+  "PY": "Surinam Airways",
+  "PS": "UIA",
+  "CX": "Cathay Pacific",
+  "TG": "THAI",
+  "JL": "Japan Airlines",
+  "S7": "S7 Airlines",
+  "FA": "FlySafair",
+  "H2": "SKY Airline",
+};
 
-const airlineCodes = [
-  { id: "AA", name: "American Airlines" },
-  { id: "AR", name: "Aerolíneas Argentinas" },
-  { id: "UX", name: "Air Europa" },
-  { id: "AM", name: "AeroMéxico" },
-  { id: "AV", name: "Avianca" },
-  { id: "CM", name: "Copa Airlines" },
-  { id: "AF", name: "Air France" },
-  { id: "KL", name: "KLM" },
-  { id: "AC", name: "Air Canadá" },
-  { id: "IB", name: "Iberia" },
-  { id: "EK", name: "Emirates" },
-  { id: "TK", name: "Turkish Airlines" },
-  { id: "TP", name: "TAP Portugal" },
-  { id: "SA", name: "SouthAfrican Airways" },
-  { id: "ET", name: "Ethiopian Airways" },
-  { id: "AT", name: "Royal Air Maroc" },
-  { id: "KE", name: "Korean Air" },
-  { id: "2Z", name: "Voe Pass" },
-  { id: "G3", name: "Gol" },
-  { id: "VH", name: "Viva Air" },
-  { id: "A3", name: "Aegean" },
-  { id: "MS", name: "Egyptair" },
-  { id: "AS", name: "Alaska Airlines" },
-  { id: "EI", name: "Aer Lingus" },
-  { id: "VA", name: "Virgin Australia" },
-  { id: "V7", name: "Volotea" },
-  { id: "NH", name: "Ana" },
-  { id: "XW", name: "Sky Express" },
-  { id: "AI", name: "Air India" },
-  { id: "4O", name: "Interjet" },
-  { id: "OU", name: "Croatia Airlines" },
-  { id: "UP", name: "Bahamas Air" },
-  { id: "HA", name: "Hawaiian Airlines" },
-  { id: "OB", name: "Boliviana de Aviación" },
-  { id: "TR", name: "Scoot" },
-  { id: "OK", name: "Czech Airlines" },
-  { id: "JQ", name: "Jetstar" },
-  { id: "MN", name: "Kulula" },
-  { id: "PG", name: "Bangkok Airways" },
-  { id: "WM", name: "Winair" },
-  { id: "KQ", name: "Kenya Airways" },
-  { id: "BT", name: "Air Baltic" },
-  { id: "MU", name: "China Estern" },
-  { id: "ZP", name: "Paranair" },
-  { id: "ME", name: "MEA" },
-  { id: "GA", name: "Garuda Indonesia" },
-  { id: "HO", name: "Juneyao Airlines" },
-  { id: "SG", name: "SpiceJet" },
-  { id: "PY", name: "Surinam Airways" },
-  { id: "PS", name: "UIA" },
-  { id: "CX", name: "Cathay Pacific" },
-  { id: "TG", name: "THAI" },
-  { id: "JL", name: "Japan Airlines" },
-  { id: "S7", name: "S7 Airlines" },
-  { id: "FA", name: "FlySafair" },
-  { id: "H2", name: "SKY Airline" },
-].sort((a, b) => a.name.localeCompare(b.name));
 
 const escalas = [
   { id: "", name: "Indistinto" },
@@ -240,8 +240,6 @@ function filterFlights({ allFlights, daySearch, filters, airlineCodes, layoverAi
       layoverAirportsFilter = (layoverMatch || layoverReturnMatch) && !(((!Boolean(someFlight.stopsReturnFlight) && someFlight.stops === 0) || (Boolean(someFlight.stopsReturnFlight) && someFlight.stopsReturnFlight === 0 && someFlight.stops === 0)));
     }
 
-
-
     if (
       filters["stops[id]"] &&
       filters["stops[id]"] !== filtros.defaults.escalas.id
@@ -271,10 +269,10 @@ function filterFlights({ allFlights, daySearch, filters, airlineCodes, layoverAi
     ].every((filter) => filter);
   };
 
-  let filtered = !daySearch || (daySearch && allFlights.length > 0 && Array.isArray(allFlights[0])) ? allFlights.flat().filter(filterFunction) : allFlights.filter(filterFunction);
+  let filtered = allFlights.filter(filterFunction);
 
-  filtered = sortByMilesAndTaxes(filtered);
-  return filtered.slice(0, resultadosSignal.value);
+  // filtered = sortByMilesAndTaxes(filtered);
+  return filtered //.slice(0, resultadosSignal.value);
 }
 
 export {

@@ -58,7 +58,7 @@ function initializeBottleneck() {
 
     // also use maxConcurrent and/or minTime for safety
     maxConcurrent: maxConcurrency, //concurrencySignal.value,
-    minTime: 10,
+    minTime: 333,
     // strategy: Bottleneck.strategy.BLOCK,
   });
 
@@ -70,7 +70,7 @@ function initializeBottleneck() {
 
     //3 total attempts, counting the original request
     if (jobInfo.retryCount <= 1) {
-      console.log(`Retrying job ${id} in 30s! Attempt number: ${jobInfo.retryCount}`);
+      console.log(`Retrying job ${id} in ${refreshIntervalSeconds}s! Attempt number: ${jobInfo.retryCount}`);
       return refreshIntervalSeconds * 1000;
     }
   });

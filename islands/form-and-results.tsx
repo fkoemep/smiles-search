@@ -146,16 +146,16 @@ async function onSubmit(searchParams) {
       daySearch = true;
     }
 
-    let filtered = !daySearch || (daySearch && flights.length > 0 && Array.isArray(flights[0])) ? flights.flat() : flights;
+    let filtered = !daySearch || (daySearch && flights.length > 0 && Array.isArray(flights[0])) ? flights.flat(2) : flights;
 
     if (filtered) {
       filtered = sortByMilesAndTaxes(filtered);
-      filtered = filtered.slice(0, resultadosSignal.value);
+      // filtered = filtered.slice(0, resultadosSignal.value);
     }
 
     requestsSignal.value = {
       status: "finished",
-      data: flights,
+      data: filtered, //flights,
       daySearch: daySearch,
       filtered,
     };
@@ -181,9 +181,9 @@ export default function FormAndResults({ params }) {
   const roundtripSearchSignal = useSignal(false); //set button to false by default
   const expandedSearchSignal = useSignal(!params.departureDate);
   const oldFilter = requestsSignal.value.oldFilter;
-  let airlineCodeList = Boolean(requestsSignal.value.airlineCodeList) ? requestsSignal.value.airlineCodeList : [];
-  let layoverAirports = Boolean(requestsSignal.value.layoverAirports) ? requestsSignal.value.layoverAirports : [];
-  let cabins = Boolean(requestsSignal.value.cabins) ? requestsSignal.value.cabins : [];
+  let airlineCodeList = Boolean(requestsSignal.value.airlineCodeList) ? requestsSignal.value.airlineCodeList : new Set();
+  let layoverAirports = Boolean(requestsSignal.value.layoverAirports) ? requestsSignal.value.layoverAirports : new Set();
+  let cabins = Boolean(requestsSignal.value.cabins) ? requestsSignal.value.cabins : new Set();
 
   return (
     <div class="p-4 gap-4 flex flex-col flex-grow-[1]">
@@ -238,9 +238,9 @@ export default function FormAndResults({ params }) {
 
             requestsSignal.value = {
               ...requestsSignal.value,
-              airlineCodeList: noCabinChange && noLayoverChange ? airlineCodeList: [],
-              layoverAirports: noAirlineChange && noCabinChange ? layoverAirports : [],
-              cabins: noAirlineChange && noLayoverChange ? cabins : [],
+              airlineCodeList: noCabinChange && noLayoverChange ? airlineCodeList: new Set(),
+              layoverAirports: noAirlineChange && noCabinChange ? layoverAirports : new Set(),
+              cabins: noAirlineChange && noLayoverChange ? cabins : new Set(),
               oldFilter: newFilters,
               filtered: filterFlights({
                 allFlights: requestsSignal.value.data,
@@ -318,58 +318,40 @@ export default function FormAndResults({ params }) {
               <tbody>
                 {flights.map((flight, i) => {
 
-                  if(!airlineCodeList.filter(airline => airline.id === flight.airline.code).length > 0){
-                    airlineCodeList.push({id: flight.airline.code, name: airlineCodes.find((element) => element.id === flight.airline.code).name});
-                  }
-
-                  if(Boolean(flight.returnAirline) && !airlineCodeList.filter(airline => airline.id === flight.returnAirline.code).length > 0){
-                    airlineCodeList.push({id: flight.returnAirline.code, name: airlineCodes.find((element) => element.id === flight.returnAirline.code).name});
-                  }
-
-                  if(!cabins.filter(cabin => cabin.id === flight.cabin).length > 0){
-                    cabins.push({id: flight.cabin, name: cabinas.find((element) => element.id === flight.cabin).name});
-                  }
-
-                  if(Boolean(flight.returnAirline) && !cabins.filter(cabins => cabins.id === flight.returnCabin).length > 0){
-                    cabins.push({id: flight.returnCabin, name: cabinas.find((element) => element.id === flight.returnCabin).name});
-                  }
-
-
+                  airlineCodeList.add(JSON.stringify({id: flight.airline.code, name: airlineCodes[flight.airline.code]}));
+                  cabins.add(JSON.stringify({id: flight.cabin, name: cabinas[flight.cabin]}));
                   if(flight.stops > 0){
 
                     flight.legList.map(function(leg) {
 
-                      if (leg.departure.airport.city !== flight.legList[0].departure.airport.city &&
-                          !layoverAirports.filter(airport => airport.id === leg.departure.airport.code).length > 0) {
-                        layoverAirports.push({id: leg.departure.airport.code, name: leg.departure.airport.city + " (" + leg.departure.airport.code + ")"});
+                      if (leg.departure.airport.city !== flight.legList[0].departure.airport.city) {
+                        layoverAirports.add(JSON.stringify({id: leg.departure.airport.code, name: leg.departure.airport.city + " (" + leg.departure.airport.code + ")"}));
                       }
 
-                      if (leg.arrival.airport.city !== flight.legList.slice(-1)[0].arrival.airport.city &&
-                          !layoverAirports.filter(airport => airport.id === leg.arrival.airport.code).length > 0) {
-                        layoverAirports.push({id: leg.arrival.airport.code, name: leg.arrival.airport.city + " (" + leg.arrival.airport.code + ")"});
-                      }
-
-                    }, []);
-
-                  }
-
-                  if(Boolean(flight.returnLegList) && flight.stopsReturnFlight > 0){
-                    flight.returnLegList.map(function(leg) {
-
-                      if (leg.departure.airport.city !== flight.legList.slice(-1)[0].arrival.airport.city &&
-                          !layoverAirports.filter(airport => airport.id === leg.departure.airport.code).length > 0) {
-                        layoverAirports.push({id: leg.departure.airport.code, name: leg.departure.airport.city + " (" + leg.departure.airport.code + ")"});
-                      }
-
-                      if (leg.arrival.airport.city !== flight.legList[0].departure.airport.city &&
-                          !layoverAirports.filter(airport => airport.id === leg.arrival.airport.code).length > 0) {
-                        layoverAirports.push({id: leg.arrival.airport.code, name: leg.arrival.airport.city + " (" + leg.arrival.airport.code + ")"});
+                      if (leg.arrival.airport.city !== flight.legList.slice(-1)[0].arrival.airport.city) {
+                        layoverAirports.add(JSON.stringify({id: leg.arrival.airport.code, name: leg.arrival.airport.city + " (" + leg.arrival.airport.code + ")"}));
                       }
 
                     }, []);
                   }
 
+                  if(Boolean(flight.returnAirline)){
+                    airlineCodeList.add(JSON.stringify({id: flight.returnAirline.code, name: airlineCodes[flight.returnAirline.code]}));
+                    cabins.add(JSON.stringify({id: flight.returnCabin, name:cabinas[flight.returnCabin]}));
+                    if(flight.stopsReturnFlight > 0){
+                      flight.returnLegList.map(function(leg) {
 
+                        if (leg.departure.airport.city !== flight.legList.slice(-1)[0].arrival.airport.city) {
+                          layoverAirports.add(JSON.stringify({id: leg.departure.airport.code, name: leg.departure.airport.city + " (" + leg.departure.airport.code + ")"}));
+                        }
+
+                        if (leg.arrival.airport.city !== flight.legList[0].departure.airport.city) {
+                          layoverAirports.add(JSON.stringify({id: leg.arrival.airport.code, name: leg.arrival.airport.city + " (" + leg.arrival.airport.code + ")"}));
+                        }
+
+                      }, []);
+                    }
+                  }
 
                   const bgColor = i % 2 === 0 ? row1Style : row2Style;
                   return (
@@ -413,21 +395,17 @@ export default function FormAndResults({ params }) {
                         )}
                       </td>
 
-                      <td class={`${bgColor} px-2`}>{airlineCodes.find((element) => element.id === flight.airline.code).name}</td>
+                      <td class={`${bgColor} px-2`}>{airlineCodes[flight.airline.code]}</td>
                       {Boolean(flights[0].returnDate) &&
-                          <td class={`${bgColor} px-2`}>{airlineCodes.find((element) => element.id === flight.returnAirline.code).name}</td>}
+                          <td class={`${bgColor} px-2`}>{airlineCodes[flight.returnAirline.code]}</td>}
 
 
                       <td className={`${bgColor} px-2`}>
-                        {filtros.cabinas.find((someCabina) =>
-                          someCabina.id === flight.cabin
-                        ).name}
+                        {filtros.cabinas[flight.cabin]}
                       </td>
                       {Boolean(flights[0].returnDate) &&
                           <td className={`${bgColor} px-2`}>
-                            {filtros.cabinas.find((someCabina) =>
-                                someCabina.id === flight.returnCabin
-                            ).name}
+                            {filtros.cabinas[flight.returnCabin]}
                           </td>}
 
 
