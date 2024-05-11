@@ -1,16 +1,18 @@
 import Dropdown from "components/dropdown.jsx";
 import { filtros } from "utils/flight.js";
+import {dropdownStyle} from "../utils/styles.js";
 
 export default function SearchTypeDropdown(
-  { value, onChange },
+  { value, signal },
 ) {
   return (
     <Dropdown
       name="search_type"
       value={value}
-      onChange={onChange}
+      onChange={(selected) => signal.value = selected.id}
+      class={ `flex flex-col self-start ${dropdownStyle} pb-4`}
     >
-      <Dropdown.Button>
+      <Dropdown.Button class={'!pl-0 !py-0'}>
         {({ value }) => `Tipo de búsqueda: ${value.name}`}
       </Dropdown.Button>
       <Dropdown.Options>

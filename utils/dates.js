@@ -15,6 +15,23 @@ function formatFlightDateShort(flightDate) {
   }).format(flightDate);
 }
 
+function formatFlightTimeShort(flightDate) {
+  return new Intl.DateTimeFormat("es-AR", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: false,
+  }).format(flightDate);
+}
+
+function formatFlightDateWeekDay(flightDate) {
+  return new Intl.DateTimeFormat("es-AR", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    ...(flightDate.getFullYear() !== new Date().getFullYear()) && {year: "numeric"},
+  }).format(flightDate);
+}
+
 function formatFlightDateLong(flightDate) {
   return new Intl.DateTimeFormat("es-AR", {
     day: "numeric",
@@ -39,12 +56,13 @@ tomorrow.setDate(tomorrow.getDate() + 1);
 for (let i = 0; i <= 12; i++) {
   const date = new Date(today);
   date.setMonth(date.getMonth() + i);
+  let dateString = date.toLocaleString("es-AR", {
+    year: date.getFullYear() !== today.getFullYear() ? "numeric" : undefined,
+    month: "long",
+  })
   months = [...months, {
     id: formatMonth(date),
-    name: date.toLocaleString("es-AR", {
-      year: date.getFullYear() !== today.getFullYear() ? "numeric" : undefined,
-      month: "long",
-    }),
+    name: dateString.charAt(0).toUpperCase() + dateString.slice(1),
   }];
 }
 
@@ -58,6 +76,8 @@ export {
   formatFlightDateLong,
   formatFlightDateShort,
   formatMonth,
+  formatFlightTimeShort,
+  formatFlightDateWeekDay,
   maxDate,
   minDate,
   months,

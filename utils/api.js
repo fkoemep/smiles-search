@@ -18,6 +18,8 @@ async function findFlightsForDate({ searchParams }) {
             adults: searchParams.numberOfAdults,
             children: searchParams.numberOfKids,
             infants: searchParams.numberOfBabies,
+            searchRegion: searchParams.searchRegion,
+            fastSearch: searchParams.fastSearch,
         }
 
         if (Boolean(searchParams.returnDate)) {parameters.returnDate =  searchParams.returnDate}

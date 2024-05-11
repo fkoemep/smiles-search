@@ -37,44 +37,44 @@ function Region({ name, selectedAirports }) {
 
 export default function Regions() {
   return (
-    <form
-      name="region"
-      onChange={(event) => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        let newRegions = [];
-        const allNewAirports = formData.getAll("airport_name");
-        let i = 0;
-        for (const regionName of formData.getAll("region_name")) {
-          const newIndex = i + AIRPORTS_SIZE;
-          const selectedAirports = Array.from(
-            new Set(allNewAirports.slice(i, newIndex).filter(Boolean)),
-          );
-          i = newIndex;
-          newRegions = [...newRegions, {
-            name: regionName,
-            airports: selectedAirports,
-          }];
-        }
-        if (
-          newRegions.length < MAX_REGIONS &&
-          newRegions[newRegions.length - 1].name !== ""
-        ) {
-          regionsSignal.value = [...newRegions, EMPTY_REGION];
-        } else {
-          regionsSignal.value = newRegions;
-        }
-      }}
-    >
-      <Collapsible text="Regiones" class="gap-8">
-        {regionsSignal.value?.map((someRegion, idx) => (
-          <Region
-            key={idx}
-            name={someRegion.name}
-            selectedAirports={someRegion.airports}
-          />
-        ))}
-      </Collapsible>
-    </form>
+        <form
+          name="region"
+          onChange={(event) => {
+            event.preventDefault();
+            const formData = new FormData(event.currentTarget);
+            let newRegions = [];
+            const allNewAirports = formData.getAll("airport_name");
+            let i = 0;
+            for (const regionName of formData.getAll("region_name")) {
+              const newIndex = i + AIRPORTS_SIZE;
+              const selectedAirports = Array.from(
+                new Set(allNewAirports.slice(i, newIndex).filter(Boolean)),
+              );
+              i = newIndex;
+              newRegions = [...newRegions, {
+                name: regionName,
+                airports: selectedAirports,
+              }];
+            }
+            if (
+              newRegions.length < MAX_REGIONS &&
+              newRegions[newRegions.length - 1].name !== ""
+            ) {
+              regionsSignal.value = [...newRegions, EMPTY_REGION];
+            } else {
+              regionsSignal.value = newRegions;
+            }
+          }}
+        >
+          <Collapsible text="Regiones" class="gap-8">
+            {regionsSignal.value?.map((someRegion, idx) => (
+              <Region
+                key={idx}
+                name={someRegion.name}
+                selectedAirports={someRegion.airports}
+              />
+            ))}
+          </Collapsible>
+        </form>
   );
 }

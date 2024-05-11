@@ -3,30 +3,31 @@ import { ChevronDownIcon, ChevronUpIcon } from "icons";
 import { disclosureButtonStyle, chevronIcons, disclosurePanel } from "utils/styles.js";
 
 export default function Collapsible(
-  { text, as, children, class: className, ...props },
+  { text, as, children, class: className, buttonClass, ...props },
 ) {
   return (
     <Disclosure as={as} {...props}>
       {({ open }) => (
         <>
-          <Disclosure.Button class={`flex w-full justify-between rounded-lg px-4 py-2 text-left text-sm font-medium focus:outline-none focus-visible:ring focus-visible:ring-opacity-75 ${disclosureButtonStyle}`}>
-            <span>{text}</span>
+          <Disclosure.Button as='div' class={`flex flex-row justify-between items-center rounded-lg p-2 text-left text-sm font-normal focus:outline-none focus-visible:ring focus-visible:ring-opacity-75 shadow-lg ring-1 ring-black ring-opacity-5 ${disclosureButtonStyle} shrink ${buttonClass ? buttonClass : ''}`}>
+            <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'>{text}</span>
             {open
-              ? <ChevronUpIcon class={`h-5 w-5 ${chevronIcons}`} />
-              : <ChevronDownIcon class={`h-5 w-5 ${chevronIcons}`} />}
+              ? <ChevronUpIcon class={`h-5 w-5 flex shrink min-w-0 ${chevronIcons}`} />
+              : <ChevronDownIcon class={`h-5 w-5 flex shrink min-w-0 ${chevronIcons}`} />}
           </Disclosure.Button>
           <Transition
+            class={`flex flex-col items-center`}
             unmount={false}
-            enter="transition duration-100 linear origin-top"
-            enterFrom="transform scale-y-0 opacity-0"
-            enterTo="transform scale-y-100 opacity-100"
-            leave="transition duration-100 linear origin-top"
-            leaveFrom="transform scale-y-100 opacity-100"
-            leaveTo="transform scale-y-0 opacity-0"
+            enter="transition ease-in-out duration-150"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition ease-in-out duration-150"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
           >
             <Disclosure.Panel
               unmount={false}
-              class={`p-4 gap-4 mt-2 whitespace-nowrap flex flex-col ${className} ${disclosurePanel}`}
+              class={`p-4 gap-4 mt-2 whitespace-nowrap flex flex-col shadow-lg ring-1 ring-black ring-opacity-5 rounded ${className} ${disclosurePanel}`}
             >
               {children}
             </Disclosure.Panel>

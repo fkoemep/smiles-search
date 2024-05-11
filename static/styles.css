@@ -1,3 +1,78 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    vertical-align: middle;
+}
+
+
+.range_container {
+    @apply flex flex-col w-4/5 mx-auto my-[100px];
+}
+.sliders_control {
+    @apply relative min-h-[50px];
+}
+.form_control {
+    @apply relative flex justify-between text-2xl text-[#635a5a];
+}
+input[type="range"]::-webkit-slider-thumb {
+    @apply w-6 h-6 bg-white shadow-[0_0_0_1px_#C6C6C6] cursor-pointer rounded-[50%];
+    -webkit-appearance: none;
+    pointer-events: all;
+}
+input[type="range"]::-moz-range-thumb {
+    @apply w-6 h-6 bg-white shadow-[0_0_0_1px_#C6C6C6] cursor-pointer rounded-[50%];
+    -webkit-appearance: none;
+    pointer-events: all;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+    background: #f7f7f7;
+}
+input[type="range"]::-webkit-slider-thumb:active {
+    @apply shadow-[inset_0_0_3px_#387bbe,0_0_9px_#387bbe];
+    -webkit-box-shadow: inset 0 0 3px #387bbe, 0 0 9px #387bbe;
+}
+#fromInput, #toInput {
+    @apply text-[#8a8383] w-[50px] h-[30px] text-xl border-[none];
+}
+#fromInput::-webkit-inner-spin-button,
+#toInput::-webkit-inner-spin-button,
+#fromInput::-webkit-outer-spin-button,
+#toInput::-webkit-outer-spin-button {
+    @apply opacity-100;
+}
+input[type="range"] {
+    @apply appearance-none h-0.5 w-full absolute bg-[#C6C6C6] pointer-events-none;
+    -webkit-appearance: none;
+}
+#fromSlider {
+    @apply h-0 z-[1];
+}
+
+@layer base {
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type="number"] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+    }
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        opacity: 1;
+        display: none;
+        width: 1.25rem;
+        height: 1.25rem;
+        border-width: thick;
+        position: absolute;
+        left: 0;
+    }
+    /*input::-webkit-datetime-edit-fields-wrapper {*/
+    /*    position: relative;*/
+    /*    left: 1.7rem;*/
+    /*}*/
+}
