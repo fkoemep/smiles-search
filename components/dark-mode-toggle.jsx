@@ -2,24 +2,32 @@ import CustomPopover from "./custom-popover.jsx";
 import { Popover } from "@headlessui/react";
 import { Cog6ToothIcon, SunIcon, MoonIcon  } from "icons";
 
-const switchTheme = (theme) => {
+const switchTheme = ({signal, theme}) => {
     let htmlClasses = document
         .querySelector('html')
         .classList;
     if (theme === 'dark') {
-        localStorage.theme = 'dark';
+        if(!signal) {
+            localStorage.setItem('theme', JSON.stringify('dark'));
+        }
         htmlClasses.add('dark');
         htmlClasses.remove('light');
     } else if (theme === 'light') {
-        localStorage.theme = 'light';
+        if(!signal) {
+            localStorage.setItem('theme', JSON.stringify('light'));
+        }
         htmlClasses.add('light');
         htmlClasses.remove('dark');
     } else if (theme === 'systemDark') {
-        localStorage.theme = 'system';
+        if(!signal) {
+            localStorage.setItem('theme', JSON.stringify('system'));
+        }
         htmlClasses.add('dark');
         htmlClasses.remove('light');
     } else {
-        localStorage.theme = 'system';
+        if(!signal) {
+            localStorage.setItem('theme', JSON.stringify('system'));
+        }
         htmlClasses.add('light');
         htmlClasses.remove('dark');
     }
@@ -30,8 +38,8 @@ globalThis.addEventListener("DOMContentLoaded", () => {
         .matchMedia('(prefers-color-scheme: dark)')
         .addListener((e) => {
             console.log('called dark');
-            if (e.matches && (!localStorage.theme || localStorage.theme === 'system')) {
-                switchTheme('systemDark');
+            if (e.matches && (!localStorage.getItem('theme') || JSON.parse(localStorage.getItem('theme')) === 'system')) {
+                switchTheme({theme: 'systemDark'});
             }
         });
 
@@ -39,44 +47,43 @@ globalThis.addEventListener("DOMContentLoaded", () => {
         .matchMedia('(prefers-color-scheme: light)')
         .addListener((e) => {
             console.log('called light');
-            if (e.matches && (!localStorage.theme || localStorage.theme === 'system')) {
-                switchTheme('systemLight');
+            if (e.matches && (!localStorage.getItem('theme') || JSON.parse(localStorage.getItem('theme')) === 'system')) {
+                switchTheme({theme: 'systemLight'});
             }
         });
 
-    const dark = document.getElementById('dark');
-    const light = document.getElementById('light');
-    const system = document.getElementById('system');
-
-
-    if (localStorage.theme === 'dark') {
-        switchTheme('dark');
-    } else if (localStorage.theme === 'light') {
-        switchTheme('light');
+    if (JSON.parse(localStorage.getItem('theme')) === 'dark') {
+        switchTheme({theme: 'dark'});
+    } else if (JSON.parse(localStorage.getItem('theme')) === 'light') {
+        switchTheme({theme: 'light'});
     } else {
         if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            switchTheme('systemDark');
+            switchTheme({theme: 'systemDark'});
         } else {
-            switchTheme('systemLight');
+            switchTheme({theme: 'systemLight'});
         }
     }
 
-    dark.addEventListener('click', () => {
-        switchTheme('dark');
-    });
+    // const dark = document.getElementById('dark');
+    // const light = document.getElementById('light');
+    // const system = document.getElementById('system');
 
-    light.addEventListener('click', () => {
-        switchTheme('light');
-    });
-
-    system.addEventListener('click', () => {
-        localStorage.theme = 'system';
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            switchTheme('systemDark');
-        } else {
-            switchTheme('systemLight');
-        }
-    });
+    // dark.addEventListener('click', () => {
+    //     switchTheme('dark');
+    // });
+    //
+    // light.addEventListener('click', () => {
+    //     switchTheme('light');
+    // });
+    //
+    // system.addEventListener('click', () => {
+    //     localStorage.setItem('theme', 'system');
+    //     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    //         switchTheme('systemDark');
+    //     } else {
+    //         switchTheme('systemLight');
+    //     }
+    // });
 });
 
 
@@ -88,7 +95,7 @@ function DarkToggle({onlyDisplay, signal}){
             {...(signal.value === 'dark' && onlyDisplay && {className: 'text-blue-600 rounded-lg pr-1 flex shrink min-w-0'})}
             {...(signal.value !== 'dark' && !onlyDisplay && {className: 'text-blue-600 hover:bg-blue-900 hover:text-white rounded-lg p-3', id: 'dark'})}
             {...(!onlyDisplay && {onClick: function () {
-                switchTheme('dark');
+                switchTheme({signal: signal, theme:'dark'});
                 signal.value = 'dark';
             }})}
 
@@ -106,7 +113,7 @@ function LightToggle({onlyDisplay, signal}) {
             {...(signal.value === 'light' && onlyDisplay && {className: 'text-yellow-500 rounded-lg pr-1 flex shrink min-w-0'})}
             {...(signal.value !== 'light' && !onlyDisplay && {className: 'text-yellow-500 hover:bg-yellow-500 hover:text-white rounded-lg p-3', id: 'light'})}
             {...(!onlyDisplay && {onClick: function () {
-                switchTheme('light');
+                switchTheme({signal: signal, theme:'light'});
                 signal.value = 'light';
             }})}
 
@@ -124,9 +131,9 @@ function SystemToggle({onlyDisplay, signal}) {
             {...(!(!signal.value || signal.value === 'system') && !onlyDisplay && {className: 'rounded-lg hover:bg-gray-700 p-3', id: 'system'})}
             {...(!onlyDisplay && {onClick: function () {
                         if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                            switchTheme('systemDark');
+                            switchTheme({signal: signal, theme:'systemDark'});
                         } else {
-                            switchTheme('systemLight');
+                            switchTheme({signal: signal, theme:'systemLight'});
                         }
                         signal.value = 'system';
                     } })}
@@ -159,9 +166,9 @@ export default function DarkModeToggle({signal}) {
 export function ThemeIcon({signal}) {
     return (
     <>
-        {(localStorage.theme === 'dark' || signal.value === 'dark') &&  <DarkToggle onlyDisplay={true} signal={signal}/>}
-        {(localStorage.theme === 'light' || signal.value === 'light') &&  <LightToggle onlyDisplay={true} signal={signal}/>}
-        {(localStorage.theme === 'system' || signal.value === 'system') &&  <SystemToggle onlyDisplay={true} signal={signal}/>}
+        {signal.value === 'dark' &&  <DarkToggle onlyDisplay={true} signal={signal}/>}
+        {signal.value === 'light' &&  <LightToggle onlyDisplay={true} signal={signal}/>}
+        {signal.value === 'system' &&  <SystemToggle onlyDisplay={true} signal={signal}/>}
     </>
     );
 }

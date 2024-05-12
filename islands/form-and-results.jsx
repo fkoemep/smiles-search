@@ -6,7 +6,7 @@ import {
   formatFlightTimeShort
 } from "utils/dates.js";
 import {airlineCodes, filterFlights, filtros, getLink, sortByMilesAndTaxes, tripTypes, cabinas} from "utils/flight.js";
-import {abortControllersSignal, regionsSignal, requestsSignal, resultadosSignal, countrySignal, languageSignal} from "utils/signals.js";
+import {abortControllersSignal, regionsSignal, requestsSignal, resultadosSignal, countrySignal, languageSignal, themeSignal} from "utils/signals.js";
 import {findFlightsForDate, findFlightsInMonth, findFlightsInMonthRountrip} from "../utils/api.js";
 import MainForm from "./main-form.jsx";
 import Filters from "components/filters.jsx";
@@ -156,8 +156,8 @@ export default function FormAndResults({ params }) {
   const roundtripSearchSignal = useSignal(params.returnDate !== undefined);
   const expandedSearchSignal = useSignal(!params.departureDate);
   const dateRangeSearchSignal = useSignal(!params.departureDate);
-  const themeSignal = useSignal(localStorage.theme);
-  const countrySignal = useSignal(Object.keys(filtros.searchRegions).includes(localStorage.country) ? localStorage.country : filtros.defaults.searchRegions);
+  // const themeSignal = useSignal(localStorage.getItem('theme'));
+  // const countrySignal = useSignal(Object.keys(filtros.searchRegions).includes(localStorage.getItem('country')) ? localStorage.getItem('country') : filtros.defaults.searchRegions);
   const languageSignal = useSignal('es');
   const oldFilter = requestsSignal.value.oldFilter;
   let airlineCodeList = Boolean(requestsSignal.value.airlineCodeList) ? requestsSignal.value.airlineCodeList : [];

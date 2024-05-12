@@ -16,16 +16,16 @@ export default function App({ Component }: AppProps) {
                     dangerouslySetInnerHTML={{
                     __html:
                     `
-                    if(localStorage.theme === undefined){
-                        localStorage.theme = 'dark';
-                        document.documentElement.className = localStorage.theme;
+                    if([undefined, null].includes(localStorage.getItem('theme'))){
+                        localStorage.setItem('theme', JSON.stringify('dark'));
+                        document.documentElement.className = JSON.parse(localStorage.getItem('theme'));
                     }
-                    else if (localStorage.theme === 'system') {                   
+                    else if (JSON.parse(localStorage.getItem('theme')) === 'system') {                   
                         window.matchMedia('(prefers-color-scheme: dark)').matches ? (document.documentElement.className = 'dark') : (document.documentElement.className = 'light');  
                     }
                     else{
-                        document.documentElement.className = localStorage.theme;
-                    }              
+                        document.documentElement.className = JSON.parse(localStorage.getItem('theme'));
+                    }
                     `,
                 }}
                 />

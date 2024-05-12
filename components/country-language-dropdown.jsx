@@ -11,7 +11,6 @@ export default function CountryLanguageDropdown({ signal, languageSignal }) {
                 value={signal.value}
                 onChange={(newValue) => {
                     signal.value = newValue;
-                    localStorage.country = newValue;
                 }}
                 class={`${dropdownStyle} text-left text-sm font-medium flex flex-col shrink min-w-0`}
             >
