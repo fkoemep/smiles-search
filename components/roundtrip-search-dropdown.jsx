@@ -15,7 +15,7 @@ export default function RountripSearch({ signal }) {
             }}
             class={`${dropdownStyle} text-left text-sm font-medium flex flex-col shrink min-w-0`}
         >
-            <Dropdown.Button customIcon={<TripTypeIcon signal={signal}/>} class={'gap-2'}>
+            <Dropdown.Button customIcon={<TripTypeIcon signal={signal}/>} class={'gap-2 portrait:gap-1 portrait:p-1'}>
                 {({ value }) => `${value ? "Ida y vuelta" : "Solo ida"}`}
             </Dropdown.Button>
             <Dropdown.Options>

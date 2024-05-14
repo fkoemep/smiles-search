@@ -267,81 +267,7 @@ export default function FormAndResults({ params }) {
           (
             <div class="flex flex-row justify-center overflow-y-auto overflow-x-hidden border-gray-900">
               <div class="flex flex-col min-w-0 shrink text-sm text-center whitespace-nowrap">
-
-                  {/*<div class='flex flex-row justify-center'>*/}
-                  {/*  <div className={`flex flex-col justify-center min-w-0 shrink py-4 px-2 ${thStyle}`}>*/}
-                  {/*    <span className='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {Boolean(flights?.[0].returnDate) ? "Ruta" : "Tramo"} </span>*/}
-                  {/*  </div>*/}
-
-                  {/*  <div className={`flex flex-col justify-center min-w-0 shrink px-2 ${thStyle}`}>*/}
-                  {/*    <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {Boolean(flights?.[0].returnDate) ? "Ida" : "Fecha y hora"} </span>*/}
-                  {/*  </div>*/}
-
-                  {/*  {Boolean(flights?.[0].returnDate) && <div className={`flex flex-col justify-center min-w-0 shrink px-2 ${thStyle}`}>*/}
-                  {/*    <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> Vuelta </span>*/}
-                  {/*  </div>}*/}
-
-                  {/*  <div className={`flex flex-col justify-center min-w-0 shrink px-2 lg:hidden ${thStyle}`}>*/}
-                  {/*    <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> Millas </span>*/}
-                  {/*  </div>*/}
-
-                  {/*  <div className={`flex flex-col justify-center min-w-0 shrink px-2 ${thStyle}`}>*/}
-                  {/*    <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {Boolean(flights?.[0].returnDate) ? "Aerolínea ida" : "Aerolínea"} </span>*/}
-                  {/*  </div>*/}
-
-                  {/*  {Boolean(flights?.[0].returnDate) && <div className={`flex flex-col justify-center min-w-0 shrink px-2 ${thStyle}`}>*/}
-                  {/*    <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> Aerolinea vuelta </span>*/}
-                  {/*  </div>}*/}
-
-                  {/*  <div className={`flex flex-col justify-center min-w-0 shrink px-2 ${thStyle}`}>*/}
-                  {/*    <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {Boolean(flights?.[0].returnDate) ? "Cabina ida" : "Cabina"} </span>*/}
-                  {/*  </div>*/}
-
-                  {/*  {Boolean(flights?.[0].returnDate) && <div className={`flex flex-col justify-center min-w-0 shrink px-2 ${thStyle}`}>*/}
-                  {/*    <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> Cabina vuelta </span>*/}
-                  {/*  </div>}*/}
-
-                  {/*  <div className={`flex flex-col justify-center min-w-0 shrink px-2 ${thStyle}`}>*/}
-                  {/*    <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {Boolean(flights?.[0].returnDate) ? "Escalas ida" : "Escalas"} </span>*/}
-                  {/*  </div>*/}
-
-                  {/*  {Boolean(flights?.[0].returnDate) && <div className={`flex flex-col justify-center min-w-0 shrink px-2 ${thStyle}`}>*/}
-                  {/*    <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> Escalas vuelta </span>*/}
-                  {/*  </div>}*/}
-
-                  {/*  <div className={`flex flex-col justify-center min-w-0 shrink px-2 ${thStyle}`}>*/}
-                  {/*    <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {Boolean(flights?.[0].returnDate) ? "Duración ida" : "Duración"} </span>*/}
-                  {/*  </div>*/}
-
-                  {/*  {Boolean(flights?.[0].returnDate) && <div className={`flex flex-col justify-center min-w-0 shrink px-2 ${thStyle}`}>*/}
-                  {/*      <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> Duración vuelta</span>*/}
-                  {/*  </div>}*/}
-
-                  {/*  <div className={`flex flex-col justify-center min-w-0 shrink px-2 ${thStyle}`}>*/}
-                  {/*    <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {Boolean(flights?.[0].returnDate) ? "Asientos ida" : "Asientos"} </span>*/}
-                  {/*  </div>*/}
-
-                  {/*  {Boolean(flights?.[0].returnDate) && <div className={`flex flex-col justify-center min-w-0 shrink px-2 ${thStyle}`}>*/}
-                  {/*    <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> Asientos vuelta </span>*/}
-                  {/*  </div>}*/}
-
-                  {/*  {Boolean(flights?.[0].returnDate) && <div className={`flex flex-col justify-center min-w-0 shrink hidden px-2 ${thStyle}`}>*/}
-                  {/*    <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> Total Millas </span>*/}
-                  {/*  </div>}*/}
-
-                  {/*  {Boolean(flights?.[0].returnDate) && <div className={`flex flex-col justify-center min-w-0 shrink px-2 ${thStyle}`}>*/}
-                  {/*    <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> Total Tasas </span>*/}
-                  {/*  </div>}*/}
-
-                  {/*  {!Boolean(flights?.[0].returnDate) && <div className={`flex flex-col justify-center min-w-0 shrink hidden px-2 ${thStyle}`}>*/}
-                  {/*    <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> Millas </span>*/}
-                  {/*  </div>}*/}
-
-                  {/*  {!Boolean(flights?.[0].returnDate) && <div className={`flex flex-col justify-center min-w-0 shrink px-2 ${thStyle}`}>*/}
-                  {/*    <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> Tasas </span>*/}
-                  {/*  </div>}*/}
-                  {/*</div>*/}
-                  {flights?.map((flight, i) => {
+                 {flights?.map((flight, i) => {
                     airlineCodeList.push(...flight.airlines.airlineListforFilter);
                     cabins.add(JSON.stringify({id: flight.cabin, name: cabinas[flight.cabin]}));
                     stops.add(flight.stops.numberOfStops <= 2 ? String(flight.stops.numberOfStops) : "2");
@@ -359,156 +285,212 @@ export default function FormAndResults({ params }) {
                     const isArgentina = flight.searchRegion === filtros.defaults.searchRegions;
 
                     return (
+                        // Row
+                        <div
+                            class="flex flex-row border border-gray-900 dark:border-white items-center justify-between min-w-0 shrink">
 
-                        <div class="flex flex-row border border-gray-900 items-center justify-between py-2">
+                          {/*Column begins*/}
+                          <div class={`flex flex-col justify-center min-w-0 shrink ${bgColor}`}>
+                            {/*Row begins*/}
+                            <div class="flex flex-row items-stretch justify-between min-w-0 shrink py-4">
 
-                          <div class={`flex flex-col justify-center min-w-0 w-48 shrink ${bgColor}`}>
+                              <div class={`flex flex-col justify-center min-w-0 w-64 shrink-0.7 ${bgColor}`}>
 
-                            <div class={`flex flex-col justify-center min-w-0 shrink ${bgColor}`}>
-                              <span
-                                  class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'>{isRoundtrip && 'Ida: '}{formatFlightDateWeekDay(flight.departureDate)} </span>
-                            </div>
+                                <div class={`flex flex-col justify-center min-w-0 shrink ${bgColor}`}>
+                                  <span
+                                      class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis shrink'>{formatFlightDateWeekDay(flight.departureDate)} </span>
+                                </div>
 
-                            <div class={`flex flex-row justify-center min-w-0 shrink ${bgColor}`}>
-                              <div class={`flex flex-col justify-center min-w-0 shrink ${bgColor}`}>
-                                <span
-                                    class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'>{formatFlightTimeShort(flight.departureDate)} - {formatFlightTimeShort(flight.arrival.date)}
-                                </span>
-                              </div>
-                              <div class={`flex flex-col justify-start min-w-0 shrink ${bgColor}`}>
+                                <div class={`flex flex-row justify-center min-w-0 shrink ${bgColor}`}>
+                                  <div class={`flex flex-col justify-center min-w-0 shrink ${bgColor}`}>
                                     <span
-                                        class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis text-[0.65rem]'>+{flight.arrival.dateDiff} </span>
-                                <span
-                                    class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis text-[0.65rem] invisible'>+{flight.arrival.dateDiff} </span>
-
-                              </div>
-                            </div>
-
-                            <div class={`flex flex-col justify-start min-w-0 shrink ${bgColor}`}>
-                              <span
-                                  class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {flight.airlines.airlineListString} </span>
-                            </div>
-
-                            {isRoundtrip &&
-                                <>
-                                  <div class={`flex flex-col justify-center min-w-0 shrink ${bgColor} pt-2`}>
-                              <span
-                                  class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'>{'Vuelta: ' + formatFlightDateWeekDay(isRoundtrip)} </span>
+                                        class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'>{formatFlightTimeShort(flight.departureDate)} - {formatFlightTimeShort(flight.arrival.date)}
+                                    </span>
                                   </div>
-
-                                  <div class={`flex flex-row justify-center min-w-0 shrink ${bgColor}`}>
-                                    <div class={`flex flex-col justify-center min-w-0 shrink ${bgColor}`}>
-                                <span
-                                    class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'>{formatFlightTimeShort(isRoundtrip)} - {formatFlightTimeShort(flight.arrival.return.date)}
-                                </span>
-                                    </div>
-                                    <div class={`flex flex-col justify-start min-w-0 shrink ${bgColor}`}>
-                                    <span
-                                        class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis text-[0.65rem]'>+{flight.arrival.return.dateDiff} </span>
-                                      <span
-                                          class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis text-[0.65rem] invisible'>+{flight.arrival.return.dateDiff} </span>
-
-                                    </div>
-                                  </div>
-
                                   <div class={`flex flex-col justify-start min-w-0 shrink ${bgColor}`}>
-                              <span
-                                  class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {flight.airlines.return.airlineListString} </span>
+                                        <span
+                                            class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis text-[0.65rem]'>+{flight.arrival.dateDiff} </span>
+                                    <span
+                                        class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis text-[0.65rem] invisible'>+{flight.arrival.dateDiff} </span>
+
                                   </div>
+                                </div>
 
-                                </>
-                            }
-
-                          </div>
-
-
-                          <div class={`flex flex-col justify-around h-full min-w-0 w-24 shrink ${bgColor} px-2`}>
-                            <div class={`flex flex-col justify-start min-w-0 shrink ${bgColor}`}>
-                              <div class={`flex flex-col justify-start min-w-0 shrink ${bgColor}`}>
-                              <span
-                                  class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {flight.duration.hours}h {flight.duration.minutes}min </span>
-                              </div>
-                              <div class={`flex flex-col justify-start min-w-0 shrink ${bgColor}`}>
-                              <span
-                                  class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'>{flight.origin}-{flight.destination}</span>
-                              </div>
-                            </div>
-
-                            {isRoundtrip &&
                                 <div class={`flex flex-col justify-start min-w-0 shrink ${bgColor}`}>
-                                  <div class={`flex flex-col justify-start min-w-0 shrink ${bgColor}`}>
-                                    <span
-                                        class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {flight.duration.return.hours}h {flight.duration.return.minutes}min </span>
+                                  <span
+                                      class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {flight.airlines.airlineListString} </span>
+                                </div>
+
+                              </div>
+
+
+                              {/*Wrap begins*/}
+                              <div class={`flex flex-col justify-center min-w-0 shrink ${bgColor}`}>
+
+                              <div
+                                  class="flex flex-row items-between justify-between flex-wrap min-w-0 shrink h-full">
+                                {/*Wrap above begins*/}
+                                <div class="flex flex-row items-center justify-between min-w-0 shrink">
+
+                                  {/*shrink-[0.28]*/}
+                                  <div class={`flex flex-col justify-around h-full min-w-0 w-20 shrink ${bgColor}`}>
+                                    <div class={`flex flex-col justify-start min-w-0 shrink ${bgColor}`}>
+                                      <div class={`flex flex-col justify-start min-w-0 shrink ${bgColor}`}>
+                                  <span
+                                      class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {flight.duration.hours}h {flight.duration.minutes}min </span>
+                                      </div>
+                                      <div class={`flex flex-col justify-start min-w-0 shrink ${bgColor}`}>
+                                  <span
+                                      class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'>{flight.origin}-{flight.destination}</span>
+                                      </div>
+                                    </div>
                                   </div>
-                                  <div class={`flex flex-col justify-start min-w-0 shrink ${bgColor}`}>
-                                  <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'>{flight.destination}-{flight.origin}</span>
+
+                                  <div
+                                      class={`flex flex-col justify-around h-full min-w-0 w-[4.6rem] shrink ${bgColor}`}>
+                                <span
+                                    class='min-w-0 whitespace-normal overflow-hidden text-ellipsis'> {flight.stops.numberOfStops || "Directo"} {flight.stops.numberOfStops === 1 ? 'Escala' : ''} {flight.stops.numberOfStops > 1 ? 'Escalas' : ''}</span>
+                                    {/*<span*/}
+                                    {/*    class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {flight.stops > 0 ? flight.stopList : ''}</span>*/}
                                   </div>
 
                                 </div>
-                            }
+                                {/*Wrap above ends*/}
+                                {/*Wrap below begins*/}
+                                <div class="flex flex-row items-center justify-between min-w-0 shrink">
 
-
-                          </div>
-
-                          <div class={`flex flex-col justify-around h-full min-w-0 w-24 shrink ${bgColor} px-2`}>
-                            <span
-                                class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {flight.stops.numberOfStops || "Directo"} {flight.stops.numberOfStops === 1 ? 'Escala' : ''} {flight.stops.numberOfStops > 1 ? 'Escalas' : ''}</span>
-                            {/*<span*/}
-                            {/*    class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {flight.stops > 0 ? flight.stopList : ''}</span>*/}
-                            {isRoundtrip &&
-                                <>
-                                <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'>
-                                  {flight.stops.return.numberOfStops || "Directo"} {flight.stops.return.numberOfStops === 1 ? 'Escala' : ''} {flight.stops.return.numberOfStops > 1 ? 'Escalas' : ''}
-                                </span>
-
-                                </>
-                            }
-
-
-                          </div>
-
-                          <div class={`flex flex-col justify-around h-full min-w-0 w-24 shrink ${bgColor} px-2`}>
-                            <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {flight.availableSeats} asientos </span>
-                            {isRoundtrip &&
-                                <>
-                                  <span
-                                      class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {flight.returnAvailableSeats} asientos </span>
-                                </>
-                            }
-                          </div>
-
-                          <div class={`flex flex-col justify-around h-full min-w-0 w-24 shrink ${bgColor} px-2`}>
-                            <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {filtros.cabinas[flight.cabin]} </span>
-                            {isRoundtrip &&
-                                <>
-                                  <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {filtros.cabinas[flight.returnCabin]} </span>
-                                </>
-                            }
-
-                          </div>
-
-                          <div class={`flex flex-col justify-center min-w-0 w-28 shrink ${bgColor} px-2`}>
+                                  <div class={`flex flex-col justify-around h-full min-w-0 w-20 shrink ${bgColor}`}>
                                 <span
-                                    class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {new Intl.NumberFormat("es-AR").format(flight.fare.miles)} millas</span>
+                                    class='min-w-0 whitespace-normal overflow-hidden text-ellipsis'> {filtros.cabinas[flight.cabin]} </span>
+                                  </div>
+
+                                  <div
+                                      class={`flex flex-col justify-around h-full min-w-0 w-[4.6rem] shrink ${bgColor}`}>
+                                <span
+                                    class='min-w-0 whitespace-normal overflow-hidden text-ellipsis'> {flight.availableSeats} asientos </span>
+                                  </div>
+                                  {/*Wrap below ends*/}
+
+                                </div>
+                                {/*Wrap ends*/}
+                              </div>
+                              </div>
+                              {/* Row ends*/}
+                            </div>
+
+                            {isRoundtrip &&
+                            <div class="flex flex-row items-stretch justify-between min-w-0 shrink py-4">
+
+                              <div class={`flex flex-col justify-center min-w-0 w-64 shrink-0.7 ${bgColor}`}>
+
+                                <div class={`flex flex-col justify-center min-w-0 shrink ${bgColor}`}>
+                                  <span
+                                      class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis shrink'>{formatFlightDateWeekDay(flight.returnDate)} </span>
+                                </div>
+
+                                <div class={`flex flex-row justify-center min-w-0 shrink ${bgColor}`}>
+                                  <div class={`flex flex-col justify-center min-w-0 shrink ${bgColor}`}>
+                                    <span
+                                        class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'>{formatFlightTimeShort(flight.returnDate)} - {formatFlightTimeShort(flight.arrival.return.date)}
+                                    </span>
+                                  </div>
+                                  <div class={`flex flex-col justify-start min-w-0 shrink ${bgColor}`}>
+                                        <span
+                                            class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis text-[0.65rem]'>+{flight.arrival.return.dateDiff} </span>
+                                    <span
+                                        class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis text-[0.65rem] invisible'>+{flight.arrival.return.dateDiff} </span>
+
+                                  </div>
+                                </div>
+
+                                <div class={`flex flex-col justify-start min-w-0 shrink ${bgColor}`}>
+                                  <span
+                                      class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {flight.airlines.return.airlineListString} </span>
+                                </div>
+
+                              </div>
+
+
+                              {/*Wrap begins*/}
+                              <div class={`flex flex-col justify-center min-w-0 shrink ${bgColor}`}>
+
+                              <div
+                                  class="flex flex-row items-between justify-between flex-wrap min-w-0 shrink h-full">
+                                {/*Wrap above begins*/}
+                                <div class="flex flex-row items-center justify-between min-w-0 shrink">
+
+                                  {/*shrink-[0.28]*/}
+                                  <div class={`flex flex-col justify-around h-full min-w-0 w-20 shrink ${bgColor}`}>
+                                    <div class={`flex flex-col justify-start min-w-0 shrink ${bgColor}`}>
+                                      <div class={`flex flex-col justify-start min-w-0 shrink ${bgColor}`}>
+                                  <span
+                                      class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {flight.duration.return.hours}h {flight.duration.return.minutes}min </span>
+                                      </div>
+                                      <div class={`flex flex-col justify-start min-w-0 shrink ${bgColor}`}>
+                                  <span
+                                      class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'>{flight.destination}-{flight.origin}</span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div
+                                      class={`flex flex-col justify-around h-full min-w-0 w-[4.6rem] shrink ${bgColor}`}>
+                                <span
+                                    class='min-w-0 whitespace-normal overflow-hidden text-ellipsis'> {flight.stops.return.numberOfStops || "Directo"} {flight.stops.return.numberOfStops === 1 ? 'Escala' : ''} {flight.stops.return.numberOfStops > 1 ? 'Escalas' : ''}</span>
+                                    {/*<span*/}
+                                    {/*    class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {flight.stops > 0 ? flight.stopList : ''}</span>*/}
+                                  </div>
+
+                                </div>
+                                {/*Wrap above ends*/}
+                                {/*Wrap below begins*/}
+                                <div class="flex flex-row items-center justify-between min-w-0 shrink">
+
+                                  <div class={`flex flex-col justify-around h-full min-w-0 w-20 shrink ${bgColor}`}>
+                                <span
+                                    class='min-w-0 whitespace-normal overflow-hidden text-ellipsis'> {filtros.cabinas[flight.returnCabin]} </span>
+                                  </div>
+
+                                  <div
+                                      class={`flex flex-col justify-around h-full min-w-0 w-[4.6rem] shrink ${bgColor}`}>
+                                <span
+                                    class='min-w-0 whitespace-normal overflow-hidden text-ellipsis'> {flight.returnAvailableSeats} asientos </span>
+                                  </div>
+                                  {/*Wrap below ends*/}
+
+                                </div>
+                                {/*Wrap ends*/}
+                              </div>
+                              </div>
+                              {/* Row ends*/}
+                            </div>
+                            }
+
+                            {/* Column ends*/}
+                          </div>
+
+                          <div class={`flex flex-col justify-center min-w-0 w-28 shrink-[0.3] ${bgColor}`}>
+                                    <span
+                                        class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'> {new Intl.NumberFormat("es-AR").format(flight.fare.miles)} millas</span>
 
                             <span class='min-w-0 whitespace-nowrap overflow-hidden text-ellipsis'>
-                                  {flight.fare.airlineTax ? `${new Intl.NumberFormat(isArgentina ? 'es-AR' : 'pt-BR', {
-                                    style: 'currency',
-                                    currency: isArgentina ? 'ARS' : 'BRL',
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2,
-                                  }).format(flight.fare.airlineTax)}` : "?"}
-                              </span>
+                                      {flight.fare.airlineTax ? `${new Intl.NumberFormat(isArgentina ? 'es-AR' : 'pt-BR', {
+                                        style: 'currency',
+                                        currency: isArgentina ? 'ARS' : 'BRL',
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2,
+                                      }).format(flight.fare.airlineTax)}` : "?"}
+                                  </span>
                           </div>
 
                           <div class={`flex flex-col justify-center min-w-0 shrink ${bgColor}`}>
-                            <a target="_blank" href={getLink(flight)}>
-                              <ArrowRightCircleIcon class='w-7 h-7 flex shrink min-w-0'/>
+                            <a target="_blank" href={getLink(flight)} className={"flex shrink min-w-0"}>
+                              <ArrowRightCircleIcon class='w-7 h-7 flex shrink-[0.7] min-w-0'/>
                             </a>
                           </div>
                         </div>
                     );
-                  })}
+                 })}
               </div>
             </div>
           )}

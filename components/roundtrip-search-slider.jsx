@@ -66,7 +66,7 @@ export default function RoundtripSearchSlider() {
                             return {
                                 ...resolvedSlotProps,
                                 className: clsx(
-                                    `h-1.5 w-1/2 py-8 inline-flex items-center relative touch-none ${
+                                    `h-1.5 w-1/2 portrait:w-full py-8 inline-flex items-center relative touch-none shrink min-w-0 ${
                                         ownerState.disabled
                                             ? 'opacity-50 cursor-default pointer-events-none text-slate-300 dark:text-slate-600'
                                             : 'hover:opacity-100 cursor-pointer text-blue-600 dark:text-[#1B73E9]'
@@ -83,7 +83,7 @@ export default function RoundtripSearchSlider() {
                             return {
                                 ...resolvedSlotProps,
                                 className: clsx(
-                                    'block absolute w-full h-[4px] rounded-full bg-current opacity-40',
+                                    'block absolute w-full h-[4px] rounded-full bg-current opacity-40 min-w-0',
                                     resolvedSlotProps?.className,
                                 ),
                             };
@@ -97,7 +97,7 @@ export default function RoundtripSearchSlider() {
                             return {
                                 ...resolvedSlotProps,
                                 className: clsx(
-                                    'block absolute h-[4px] rounded-full bg-current',
+                                    'block absolute h-[4px] rounded-full bg-current shrink min-w-0',
                                     resolvedSlotProps?.className,
                                 ),
                             };
@@ -128,7 +128,7 @@ export default function RoundtripSearchSlider() {
                             return {
                                 ...resolvedSlotProps,
                                 className: clsx(
-                                    'flex justify-center w-full relative top-6 cursor-default pointer-events-none min-w-0 whitespace-nowrap overflow-hidden text-ellipsis text-black dark:text-white !left-0',
+                                    'flex justify-center w-full relative top-6 cursor-default pointer-events-none min-w-0 whitespace-nowrap overflow-visible text-ellipsis text-black dark:text-white !left-0 shrink',
                                     resolvedSlotProps?.className,
                                 ),
                             };

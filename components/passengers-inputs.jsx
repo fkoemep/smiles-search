@@ -14,7 +14,7 @@ export default function PassengerInputs({params}) {
 
     return (
         <CustomPopover customIcon={<PopoverButtonDisplay passengers={parentValues}/>} class={"gap-8"} position={'center'}
-           buttonclass={numberOfAdultsParent + numberOfKidsParent > 9 ? "!text-red-700 !dark:text-red-700 !gap-2" : "!gap-2"}>
+           buttonclass={numberOfAdultsParent + numberOfKidsParent > 9 ? "!text-red-700 !dark:text-red-700 !gap-2 portrait:!gap-1 portrait:p-1" : "!gap-2 portrait:!gap-1 portrait:p-1"}>
             {/*using close method from Popover panel*/}
             {({ open, close }) => (
                 <>

@@ -69,7 +69,7 @@ export default function MainForm({ params, monthSearchSignal, golSearchSignal, r
 
                   <div className="flex flex-col gap-2 shrink min-w-0 justify-between">
 
-                      <div className="flex flex-row gap-1 shrink min-w-0">
+                      <div className="flex flex-row gap-0 shrink min-w-0">
                           <RountripSearchDropdown signal={roundtripSearchSignal}/>
                           <PassengerInputs params={params}/>
 

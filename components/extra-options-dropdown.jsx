@@ -7,7 +7,7 @@ import { AdjustmentsVerticalIcon } from "icons";
 
 export default function ExtraOptionsDropdown({ golSearchSignal, fastSearchSignal, expandedSearchSignal, monthSearchSignal, searchTypeSignal, searchType, params }) {
   return (
-      <CustomPopover text={'Opciones'} position={'end'} customIcon={<AdjustmentsVerticalIcon class="w-5 h-5 flex shrink min-w-0"/>} buttonclass={'!gap-2'}>
+      <CustomPopover text={'Opciones'} position={'end'} customIcon={<AdjustmentsVerticalIcon class="w-5 h-5 flex shrink min-w-0"/>} buttonclass={'!gap-2 portrait:!gap-1 portrait:p-1'}>
           <div className="flex flex-col">
               <GolSearchSwitch signal={golSearchSignal} params={params}/>
               <FastSearchSwitch signal={fastSearchSignal}/>
