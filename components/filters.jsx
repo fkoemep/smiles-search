@@ -21,7 +21,7 @@ export default function Filtros({ onChange, airlineCodeList, layoverAirports, ca
                 onChange(filters);
             }}
         >
-                <div class='flex flex-row pt-1 justify-center mt-4 flex-wrap items-center'>
+                <div class='flex flex-row py-2 justify-center mt-4 flex-wrap items-center'>
                         <Dropdown
                             name="airlines"
                             defaultValue={filtros.defaults.airlineCodes}
