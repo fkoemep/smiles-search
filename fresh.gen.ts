@@ -8,7 +8,7 @@ import * as $index from "./routes/index.tsx";
 import * as $footer from "./islands/footer.jsx";
 import * as $form_and_results from "./islands/form-and-results.jsx";
 import * as $main_form from "./islands/main-form.jsx";
-import { type Manifest } from "$fresh/server.ts";
+import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
   routes: {
