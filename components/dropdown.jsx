@@ -1,6 +1,6 @@
 import { useRef } from "preact/hooks";
 import { Fragment } from "preact";
-import { Listbox, Transition } from "@headlessui/react";
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "icons";
 import {
     checkStyle,
@@ -35,7 +35,7 @@ function Dropdown(props) {
 
 Dropdown.Button = function DropdownButton({ children, class: className, customIcon, ...props }) {
   return (
-        <Listbox.Button as='div'
+        <ListboxButton as='button'
             class={`flex flex-row relative justify-between items-center rounded-lg p-2 text-left text-sm font-normal focus:outline-none focus-visible:ring focus-visible:ring-opacity-75 ring-black ring-opacity-5 ${disclosureButtonStyle} ${className ? className : ''} !bg-transparent shrink min-w-0`} {...props}>
                 {(childrenProps) => (
                   <>
@@ -48,23 +48,23 @@ Dropdown.Button = function DropdownButton({ children, class: className, customIc
                         : <ChevronDownIcon class={`h-5 w-5 ${chevronIcons} flex shrink min-w-0`} />}
                   </>
                 )}
-        </Listbox.Button>
+        </ListboxButton>
 );
 };
 
 Dropdown.Options = function DropdownOptions({class: className, children, position}) {
   return (
-    <Transition
-        class={`flex flex flex-col ${position ? 'items-' + position : ''}`}
-        unmount={false}
-        enter="transition ease-in-out duration-150"
-        enterFrom="opacity-0 relative z-10"
-        enterTo="opacity-100 relative z-10"
-        leave="transition ease-in-out duration-150"
-        leaveFrom="opacity-100 relative z-10"
-        leaveTo="opacity-0 relative z-10"
-    >
-      <Listbox.Options unmount={true} as={Fragment}
+    // <Transition
+    //     class={`flex flex flex-col ${position ? 'items-' + position : ''}`}
+    //     unmount={false}
+    //     enter="transition ease-in-out duration-150"
+    //     enterFrom="opacity-0 relative z-10"
+    //     enterTo="opacity-100 relative z-10"
+    //     leave="transition ease-in-out duration-150"
+    //     leaveFrom="opacity-100 relative z-10"
+    //     leaveTo="opacity-0 relative z-10"
+    // >
+      <ListboxOptions unmount={true} as='div'
         // class={`absolute flex flex-col whitespace-nowrap mt-1 rounded-md py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm ${spanBgStyle}`}
       >
           {({ open }) => (
@@ -72,8 +72,8 @@ Dropdown.Options = function DropdownOptions({class: className, children, positio
                     {children}
                 </ul>
           )}
-      </Listbox.Options>
-    </Transition>
+      </ListboxOptions>
+    // </Transition>
   );
 };
 
@@ -81,7 +81,7 @@ Dropdown.Option = function DropdownOption(
   { children, class: className = "", ...props },
 ) {
   return (
-    <Listbox.Option as={Fragment} {...props}>
+    <ListboxOption as='div' {...props}>
         {({ active, selected, childrenProps }) => (
             <li className={`${className} cursor-pointer flex flex-row items-center justify-start p-2 relative cursor-default select-none gap-2 ui-active:text-blue-900 ui-not-active:text-gray-900 ${selected && 'bg-[#8ba7d9] dark:bg-[#43516B]'} ${active && !selected && 'bg-[#48494D] dark:bg-[#48494D]'} ${props.customClass ?? ''}`}>
                 <span class={`${checkStyle}`}>
@@ -92,7 +92,7 @@ Dropdown.Option = function DropdownOption(
              </div>
            </li>
        )}
-    </Listbox.Option>
+    </ListboxOption>
   );
 };
 
