@@ -18,7 +18,7 @@ export default function CustomPopover(
                           : <ChevronDownIcon class={`h-5 w-5 flex shrink min-w-0`}/>}
 
                   </PopoverButton>
-                  <div class={`flex flex-col ${position ? 'items-' + position : ''}`}>
+                  <div class={`flex flex-col ${position ? 'items-' + position : ''} z-10`}>
                       <PopoverPanel
                         unmount={false}
                         transition
