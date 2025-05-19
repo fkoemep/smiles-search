@@ -8,6 +8,7 @@ import DatesSelect from "components/dates-select.jsx";
 import { useSignal } from "@preact/signals";
 import { filtros } from "utils/flight.js";
 import ExtraOptionsDropdown from "../components/extra-options-dropdown.jsx";
+import ExpandedSearch from "../components/expanded-search-dropdown.jsx";
 import { useEffect } from "preact/hooks";
 import { MagnifyingGlassIcon } from "icons";
 import CountryLanguageDropdown from "../components/country-language-dropdown.jsx";
@@ -70,13 +71,21 @@ export default function MainForm({ params, monthSearchSignal, golSearchSignal, r
                   <div className="flex flex-col gap-2 shrink min-w-0 justify-between">
 
                       <div className="flex flex-row gap-0 shrink min-w-0">
-                          <RountripSearchDropdown signal={roundtripSearchSignal}/>
-                          <PassengerInputs params={params}/>
 
-                          <ExtraOptionsDropdown golSearchSignal={golSearchSignal} fastSearchSignal={fastSearchSignal}
-                                                searchTypeSignal={searchTypeSignal} searchType={searchType}
-                                                params={params} monthSearchSignal={monthSearchSignal}
-                                                expandedSearchSignal={expandedSearchSignal}/>
+                          <div className="flex flex-row gap-0 shrink min-w-0">
+                              <RountripSearchDropdown signal={roundtripSearchSignal}/>
+                              <PassengerInputs params={params}/>
+
+                              <ExtraOptionsDropdown golSearchSignal={golSearchSignal}
+                                                    fastSearchSignal={fastSearchSignal}
+                                                    searchTypeSignal={searchTypeSignal} searchType={searchType}
+                                                    params={params} monthSearchSignal={monthSearchSignal}
+                                                    expandedSearchSignal={expandedSearchSignal}/>
+                          </div>
+
+                              {/*<ExpandedSearch expandedSearchSignal={expandedSearchSignal}*/}
+                              {/*                monthSearchSignal={monthSearchSignal}/>*/}
+
                       </div>
 
                       <div className="flex flex-row gap-1 items-center shrink min-w-0 flex-wrap">
@@ -107,7 +116,7 @@ export default function MainForm({ params, monthSearchSignal, golSearchSignal, r
                   </div>
               </div>
           </form>
-    </div>
-)
-    ;
+      </div>
+  )
+      ;
 }

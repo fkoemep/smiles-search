@@ -287,7 +287,7 @@ export default function FormAndResults({ params }) {
                     return (
                         // Row
                         <div
-                            class="flex flex-row border border-gray-900 dark:border-white items-center justify-between min-w-0 shrink">
+                            class="flex flex-row border border-gray-900 dark:border-white items-center justify-between min-w-0 shrink pr-2">
 
                           {/*Column begins*/}
                           <div class={`flex flex-col justify-center min-w-0 shrink ${bgColor}`}>

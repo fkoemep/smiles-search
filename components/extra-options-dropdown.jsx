@@ -12,7 +12,7 @@ export default function ExtraOptionsDropdown({ golSearchSignal, fastSearchSignal
               <GolSearchSwitch signal={golSearchSignal} params={params}/>
               <FastSearchSwitch signal={fastSearchSignal}/>
               <SearchTypeDropdown value={searchType} signal={searchTypeSignal}/>
-              <ExpandedSearchDropdown signal={expandedSearchSignal} monthSearchSignal={monthSearchSignal}/>
+              <ExpandedSearchDropdown expandedSearchSignal={expandedSearchSignal} monthSearchSignal={monthSearchSignal}/>
           </div>
       </CustomPopover>
 );

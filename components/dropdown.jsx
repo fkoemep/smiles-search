@@ -64,7 +64,8 @@ Dropdown.Options = function DropdownOptions({class: className, children, positio
     //     leaveFrom="opacity-100 relative z-10"
     //     leaveTo="opacity-0 relative z-10"
     // >
-      <ListboxOptions unmount={true} as='div'
+      <ListboxOptions unmount={true} as='div' transition
+                      class={`flex flex flex-col ${position ? 'items-' + position : ''} transition ease-in-out duration-150 data-[closed]:opacity-0 data-[closed]:relative z-10 data-[enter]:data-[closed]:opacity-100 relative z-10 data-[leave]:opacity-100 data-[leave]:relative z-10 data-[leave]:data-[closed]:opacity-0`}
         // class={`absolute flex flex-col whitespace-nowrap mt-1 rounded-md py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm ${spanBgStyle}`}
       >
           {({ open }) => (
